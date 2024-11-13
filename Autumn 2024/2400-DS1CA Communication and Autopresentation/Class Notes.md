@@ -67,3 +67,12 @@ How do you know that someone is listening your presentation?
 
 # C6
 Continuation in presenting
+
+# C7
+Video - The 3 magic ingredients of amazing presentation - Phil Waknell
+- Critised and appreciated at the same time 
+
+ Watch the audience if they listen
+ 
+ 
+
