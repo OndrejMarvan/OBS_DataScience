@@ -13,3 +13,8 @@ We can use T test for normal distribution
 
 One sample test: When to use each test? (graph of the professor in photos on personal phone)
 - Visualise via Napkin.ai
+
+Remember: Mean and Median are same in the symmetric distribution 
+
+
+
