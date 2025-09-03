@@ -1,0 +1,184 @@
+{
+  "main": {
+    "id": "9277fd4dcde302a3",
+    "type": "split",
+    "children": [
+      {
+        "id": "cb8b3820717867b3",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "18f376b013afc17b",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Autumn 2024/2400-DS1UL Unsupervised Learning/Kon_1.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Kon_1"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "9f6123700b834a04",
+    "type": "split",
+    "children": [
+      {
+        "id": "5dd37ac9fdaaa507",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "feae6fc1f7684c2d",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "00efbaef125e41b7",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "dc8289e4d005d4bc",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "bbda65ddc08b0ba8",
+    "type": "split",
+    "children": [
+      {
+        "id": "11efff34019fa311",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "c0e10f9f7dd96914",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Autumn 2024/2400-DS1UL Unsupervised Learning/Kon_1.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for Kon_1"
+            }
+          },
+          {
+            "id": "2d75cfe4bb23d135",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Autumn 2024/2400-DS1UL Unsupervised Learning/Kon_1.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Kon_1"
+            }
+          },
+          {
+            "id": "05689196624d0161",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "a363374e21ccf3f7",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Autumn 2024/2400-DS1UL Unsupervised Learning/Kon_1.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of Kon_1"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "feae6fc1f7684c2d",
+  "lastOpenFiles": [
+    "Autumn 2024/2400-DS1UL Unsupervised Learning/Rules of assessment",
+    "Autumn 2024/2400-DS1ST Statistics and Exploratory Data Analysis/2400-DS1ST Statistics and Exploratory Data Analysis.md",
+    "Autumn 2024/2400-DS1ST Statistics and Exploratory Data Analysis/Exercises_Lab_2.pdf",
+    "Autumn 2024/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/01 lecture.pdf",
+    "Autumn 2024/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/02 lecture.pdf",
+    "Autumn 2024/2400-DS1IDS Introduction to Data Science/2400-DS1IDS Introduction to Data Science.md",
+    "Autumn 2024/2400-DS1CA Communication and Autopresentation/2400-DS1CA Communication and Autopresentation.md",
+    "Autumn 2024/2400-DS1AMI Applied Microeconomics/2400-DS1AMI Applied Microeconomics.md",
+    "Autumn 2024/2400-DS1AMA Applied Macroeconomics/2400-DS1AMA Applied Macroeconomics.md"
+  ]
+}
