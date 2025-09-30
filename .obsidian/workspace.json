@@ -4,19 +4,19 @@
     "type": "split",
     "children": [
       {
-        "id": "cb8b3820717867b3",
+        "id": "06958dffd26f276e",
         "type": "tabs",
         "children": [
           {
-            "id": "18f376b013afc17b",
+            "id": "f021e3d52fbc6b57",
             "type": "leaf",
             "state": {
               "type": "pdf",
               "state": {
-                "file": "Autumn 2024/2400-DS1AMA Applied Macroeconomics/L1_Solow_Model.pdf"
+                "file": "Autumn 2024/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/02 lecture.pdf"
               },
               "icon": "lucide-file-text",
-              "title": "L1_Solow_Model"
+              "title": "02 lecture"
             }
           }
         ]
@@ -72,8 +72,7 @@
               "title": "Bookmarks"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -149,13 +148,23 @@
               "icon": "lucide-list",
               "title": "Outline of Kon_1"
             }
+          },
+          {
+            "id": "bba9d1cd8b2e7900",
+            "type": "leaf",
+            "state": {
+              "type": "git-view",
+              "state": {},
+              "icon": "git-pull-request",
+              "title": "Source Control"
+            }
           }
-        ]
+        ],
+        "currentTab": 4
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -169,15 +178,21 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "00efbaef125e41b7",
+  "active": "f021e3d52fbc6b57",
   "lastOpenFiles": [
+    "Autumn 2024/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/01 lecture.pdf",
+    "Autumn 2024/2400-DS1AMA Applied Macroeconomics/L1 & L2 Introduction & Growth Facts & Solow Model.md",
+    "Untitled 2.base",
+    "2025-09-30.md",
+    "Untitled 3.canvas",
+    "Untitled 2.canvas",
+    "Untitled 1.base",
+    "Untitled.base",
+    "Autumn 2024/2400-DS1AMA Applied Macroeconomics/L1_Solow_Model.pdf",
     "Autumn 2024/2400-DS1UL Unsupervised Learning/#USL 00 Rules of assessment.pdf",
     "Autumn 2024/2400-DS1AMA Applied Macroeconomics/L1_Solow_Solutions.pdf",
-    "Autumn 2024/2400-DS1AMA Applied Macroeconomics/L1_Solow_Model.pdf",
-    "Autumn 2024/2400-DS1AMA Applied Macroeconomics/L1 & L2 Introduction & Growth Facts & Solow Model.md",
     "Autumn 2024/2400-DS1AMA Applied Macroeconomics/L1_Solow.pdf",
     "Autumn 2024/2400-DS1UL Unsupervised Learning/Kon_1.md",
-    "2025-09-30.md",
     "Untitled 1.canvas",
     "Untitled.canvas",
     "Autumn 2024/2400-DS1AMA Applied Macroeconomics/Initial email - Groups, Links.md",
@@ -185,17 +200,13 @@
     "Autumn 2024/2400-DS1AMA Applied Macroeconomics/Unconfirmed 82467.crdownload",
     "Autumn 2024/2400-DS1AMA Applied Macroeconomics/Unconfirmed 932432.crdownload",
     "Autumn 2024/2400-DS1AMA Applied Macroeconomics/Unconfirmed 623204.crdownload",
-    "Autumn 2024/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/01 lecture.pdf",
     "Autumn 2024/2400-DS1IDS Introduction to Data Science/L02.md",
     "Autumn 2024/2400-DS1IDS Introduction to Data Science/L01.md",
     "Autumn 2024/2400-DS1CA Communication and Autopresentation/Class Notes.md",
     "Autumn 2024/2400-DS1AMI Applied Microeconomics/2400-DS1AMI Applied Microeconomics.md",
     "Formatting.md",
     "General.md",
-    "Autumn 2024/2400-DS1UL Unsupervised Learning/Rules of assessment",
     "Autumn 2024/2400-DS1ST Statistics and Exploratory Data Analysis/2400-DS1ST Statistics and Exploratory Data Analysis.md",
-    "Autumn 2024/2400-DS1ST Statistics and Exploratory Data Analysis/Exercises_Lab_2.pdf",
-    "Autumn 2024/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/02 lecture.pdf",
     "Autumn 2024/2400-DS1IDS Introduction to Data Science/2400-DS1IDS Introduction to Data Science.md",
     "Autumn 2024/2400-DS1CA Communication and Autopresentation/2400-DS1CA Communication and Autopresentation.md"
   ]
