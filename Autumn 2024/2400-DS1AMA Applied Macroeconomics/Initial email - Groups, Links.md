@@ -1,4 +1,4 @@
-Dear All,  
+Dear All,  lorem ipsum
 
 Welcome to the Applied Macro course. I would like share with you some important information before beginning of the course.  
 
