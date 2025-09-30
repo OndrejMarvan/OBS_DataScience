@@ -1,4 +1,5 @@
-## General data
+## General data, lorem ipsum
+
 |   |   |
 |---|---|
 |Course ID:|2400-DS1AMA|
