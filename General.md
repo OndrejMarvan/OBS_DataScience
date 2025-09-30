@@ -11,3 +11,8 @@ Autumn 2024
 ![[2023_USOSWeb_Irok_en.pdf]]
 
 
+
+
+General but important notes
+
+**text**

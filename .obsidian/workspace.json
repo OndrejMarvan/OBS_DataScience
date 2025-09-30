@@ -11,14 +11,12 @@
             "id": "18f376b013afc17b",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "pdf",
               "state": {
-                "file": "Autumn 2024/2400-DS1UL Unsupervised Learning/Kon_1.md",
-                "mode": "source",
-                "source": false
+                "file": "Autumn 2024/2400-DS1AMA Applied Macroeconomics/L1_Solow_Model.pdf"
               },
-              "icon": "lucide-file",
-              "title": "Kon_1"
+              "icon": "lucide-file-text",
+              "title": "L1_Solow_Model"
             }
           }
         ]
@@ -74,7 +72,8 @@
               "title": "Bookmarks"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
@@ -166,19 +165,38 @@
       "daily-notes:Open today's daily note": false,
       "templates:Insert template": false,
       "command-palette:Open command palette": false,
-      "bases:Create new base": false
+      "bases:Create new base": false,
+      "obsidian-git:Open Git source control": false
     }
   },
-  "active": "feae6fc1f7684c2d",
+  "active": "00efbaef125e41b7",
   "lastOpenFiles": [
+    "Autumn 2024/2400-DS1UL Unsupervised Learning/#USL 00 Rules of assessment.pdf",
+    "Autumn 2024/2400-DS1AMA Applied Macroeconomics/L1_Solow_Solutions.pdf",
+    "Autumn 2024/2400-DS1AMA Applied Macroeconomics/L1_Solow_Model.pdf",
+    "Autumn 2024/2400-DS1AMA Applied Macroeconomics/L1 & L2 Introduction & Growth Facts & Solow Model.md",
+    "Autumn 2024/2400-DS1AMA Applied Macroeconomics/L1_Solow.pdf",
+    "Autumn 2024/2400-DS1UL Unsupervised Learning/Kon_1.md",
+    "2025-09-30.md",
+    "Untitled 1.canvas",
+    "Untitled.canvas",
+    "Autumn 2024/2400-DS1AMA Applied Macroeconomics/Initial email - Groups, Links.md",
+    "Autumn 2024/2400-DS1AMA Applied Macroeconomics/2400-DS1AMA Applied Macroeconomics.md",
+    "Autumn 2024/2400-DS1AMA Applied Macroeconomics/Unconfirmed 82467.crdownload",
+    "Autumn 2024/2400-DS1AMA Applied Macroeconomics/Unconfirmed 932432.crdownload",
+    "Autumn 2024/2400-DS1AMA Applied Macroeconomics/Unconfirmed 623204.crdownload",
+    "Autumn 2024/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/01 lecture.pdf",
+    "Autumn 2024/2400-DS1IDS Introduction to Data Science/L02.md",
+    "Autumn 2024/2400-DS1IDS Introduction to Data Science/L01.md",
+    "Autumn 2024/2400-DS1CA Communication and Autopresentation/Class Notes.md",
+    "Autumn 2024/2400-DS1AMI Applied Microeconomics/2400-DS1AMI Applied Microeconomics.md",
+    "Formatting.md",
+    "General.md",
     "Autumn 2024/2400-DS1UL Unsupervised Learning/Rules of assessment",
     "Autumn 2024/2400-DS1ST Statistics and Exploratory Data Analysis/2400-DS1ST Statistics and Exploratory Data Analysis.md",
     "Autumn 2024/2400-DS1ST Statistics and Exploratory Data Analysis/Exercises_Lab_2.pdf",
-    "Autumn 2024/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/01 lecture.pdf",
     "Autumn 2024/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/02 lecture.pdf",
     "Autumn 2024/2400-DS1IDS Introduction to Data Science/2400-DS1IDS Introduction to Data Science.md",
-    "Autumn 2024/2400-DS1CA Communication and Autopresentation/2400-DS1CA Communication and Autopresentation.md",
-    "Autumn 2024/2400-DS1AMI Applied Microeconomics/2400-DS1AMI Applied Microeconomics.md",
-    "Autumn 2024/2400-DS1AMA Applied Macroeconomics/2400-DS1AMA Applied Macroeconomics.md"
+    "Autumn 2024/2400-DS1CA Communication and Autopresentation/2400-DS1CA Communication and Autopresentation.md"
   ]
 }
