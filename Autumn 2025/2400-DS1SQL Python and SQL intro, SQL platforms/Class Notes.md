@@ -20,3 +20,7 @@ Homework
 - If we plan to speed up the code 5 sec but spend on it few hours, not worth it. Just write the code 
 - **What?** Understanding the difference between functional and object-oriented programming – both paradigms have different advantages, and recognizing when to use each is important.
 
+> [!PDF|yellow] [[python_1.pdf#page=7&selection=0,0,12,7&color=yellow|python_1, p.7]]
+> > Final Exam Format: Multiple-choice questions (MCQs) (A multiple-choice question is a type of objective assessment in which a question has zero or more possible answers) Number of questions: 25 Time limit: 90 minutes Date of exam – during the examination session: 26 January 2026 – 8 February 2026 (to be determined later by the administration office)
+> 
+> Final Presentation Project must be done individually Deadlines: Presentation + code submission 07.01.2026 via Moodle Final project must include: Problem/Dataset: choose dataset (Kaggle, open data, or self-collected); define clear research question/goal. Data Wrangling (Pandas + NumPy): import, clean (missing values, duplicates), exploratory analysis (summaries, aggregations). Logic & Functions: Python functions, if/loops, simple algorithms (e.g. similarity, rules). Visualization: Seaborn/Matplotlib; 5–10 plots (trends, comparisons, distributions). SQL: queries, joins, filtering, aggregations. Presentation Layer: Streamlit (interactive charts, filters) or Django (web app with models/views/templates)
