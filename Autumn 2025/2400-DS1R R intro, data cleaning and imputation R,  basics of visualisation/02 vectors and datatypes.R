@@ -323,9 +323,13 @@ vectorSimple
 num <- 4.75
 num
 
+class(num)
+
 # Convert it to an integer
 num_int <- as.integer(num)
 num_int
+
+class(num_int)
 
 # Convert it to a character
 num_char <- as.character(num_int)
@@ -338,8 +342,8 @@ class(num_char)
 # What are the differences? Why?
 
 # Create two text variables
-text1 <- "Hello"
-text2 <- "World"
+text1 <- "Lorem"
+text2 <- "Ipsum"
 
 # Use paste()
 help(paste)
