@@ -319,9 +319,45 @@ vectorSimple
 # 1. Create a numerical value with decimal part. Convert it to integer and then
 # to character. See what are the changes (in values and printing). 
 
+# Create a num value with a decimal part
+num <- 4.75
+num
+
+# Class check
+class(num)
+
+# Convert it to an integer
+num_int <- as.integer(num)
+num_int
+
+# Class check
+class(num_int)
+
+# Convert it to a character
+num_chart <- as.character(num_int)
+num_chart
+
+# Class check
+class(num_chart)
+
 # 2. Create two variables with text. Check the documentation of paste() and try
 # to use it on created vectors. Compare the results of paste() function and c(). 
 # What are the differences? Why?
+
+# Create two text variables
+
+text1 <- "Lorem"
+text2 <- "Ipsum"
+
+# Use paste()
+help(paste)
+result_paste <-paste(text1, text2, sep = " ")
+result_paste
+
+# Use c()
+help(c)
+result_c <- c(text1, text2)
+result_c
 
 # 3. a) Convert vector vecDate <- c("09:12:12", "28:02:16", "31:05:22") to Date class. 
 # HINT: DONT CHANGE ANYTHING BY HAND in the original data. Make sure to utilise function parameters. 
