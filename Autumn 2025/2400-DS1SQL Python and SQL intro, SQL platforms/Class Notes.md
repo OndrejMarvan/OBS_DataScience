@@ -27,4 +27,4 @@ Homework
 ![[python_1.pdf#page=8&selection=2,0,39,44&color=yellow]]
 
 
-== SHINY ==
+Don't analyse basic datasets (like Titanic probably), take something of your interest. 
