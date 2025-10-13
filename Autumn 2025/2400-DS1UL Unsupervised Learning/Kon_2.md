@@ -2,13 +2,13 @@ Password
 
 Attendance list
 Excel sheet when to present - updated every Tuesday, so one week to prepare. 
-Password protected: USL_@)@$
+Password protected: **USL_@)@$**
 
 Some research papers are good, some are a bit crappy - we need to figure it out and work with it, critical comments, good and why...
 
 Q: What is the difference between Superwised and Unsuperwised Learning? 
 
-Always take a lokk at the literature - reinventing the wheel
+Always take a look at the literature - reinventing the wheel
 Everything that we works was probably also invented
 Reinventing the wheel 
 
