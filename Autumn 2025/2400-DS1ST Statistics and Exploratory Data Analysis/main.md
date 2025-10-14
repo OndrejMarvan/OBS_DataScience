@@ -17,4 +17,14 @@ One sample test: When to use each test? (graph of the professor in photos on per
 Remember: Mean and Median are same in the symmetric distribution 
 
 
+## 2
+-#1
+**Normal distribution** 
+
+**Log-normal distribution** - e.g. **age** in developing countries or **salaries**, **chess rating**
+
+**Gamma distribution** - much rarer than normal and log-normal distribution, parameters of scale and shape
+
+**Chr-Square distrbution** - "probability distribution in inferential statstics"
+
 
