@@ -15,3 +15,9 @@ USL_@)@$
 - basic datasets between 2-14 k, more for bigger datasets
 - ![[Pasted image 20251014174410.png]]
 		- 5 is the best option, 3 is ok as well, so can be used as well. In practise, we would test both on and choose which one is stable. 
+
+==At least 1 project in Python, 1 in R**==
+
+Professor recommends using Stata
+To get the same results in R with prof., we would have to set up seeds. 
+
