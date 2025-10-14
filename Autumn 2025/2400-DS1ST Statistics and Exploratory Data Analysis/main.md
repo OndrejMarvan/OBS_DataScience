@@ -30,7 +30,11 @@ Remember: Mean and Median are same in the symmetric distribution
 -# 2 presentation
 Winsor mean and trimm mean - the more you trim, the less accurate data you have 
 
-
+sceneraios mode, mean, median to get to know where are the outliers
+> [!PDF|yellow] [[Lecture_2_Measures of location .pdf#page=18&selection=0,0,61,36&color=yellow|Lecture_2_Measures of location , p.18]]
+> > Mean, median, mode O projekcie R Descriptive statistics BibliographyMeasures of location Review of location measures Measures of location in R By looking at the graph can you guess what is the relationship between the mean, median, and mode of the Pinot Grigio ratings distribution displayed here?
+> 
+> 
 
 
 
