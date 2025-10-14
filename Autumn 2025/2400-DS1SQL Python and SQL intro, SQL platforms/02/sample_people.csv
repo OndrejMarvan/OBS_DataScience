@@ -1,0 +1,11 @@
+id,name,age,city,income
+1,Alice,28,London,63000
+2,Bob,17,London,0
+3,Charlie,35,Paris,82000
+4,Diana,35,,77000
+5,Edgar,42,Berlin,91000
+6,Farah,19,Berlin,38000
+7,Gita,,Warsaw,52000
+8,Hiro,16,Paris,0
+9,Imran,31,Warsaw,68000
+10,Jill,27,London,61000
