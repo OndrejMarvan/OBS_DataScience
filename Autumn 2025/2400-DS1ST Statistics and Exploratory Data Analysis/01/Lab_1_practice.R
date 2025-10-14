@@ -151,8 +151,8 @@ plot(X1, cdf_norm, type="l", lty=1, xlab="x value",
 # degrees of freedom and compare it to the normal distribution
 
 #Let's start with standard normal distribution
-X2 <- seq(-4, 4, length=100) #define x values
-pdfx <- dnorm(X2) #calculate pdf
+X2 <- seq(-4, 4, length=100) #define x values, generates a vector (list, array) between +4 and -4
+pdfx <- dnorm(X2) #calculate pdf (values of pdf for each those elements in vector)
 
 par(mfrow = c(1, 1)) #set the plotting window to display one graph
 plot(X2, pdfx, type="l",lty=2, xlab="x value",
@@ -227,3 +227,5 @@ summary(fit_g)
 plot.legend <- c("normal", "lognormal", "gamma")
 denscomp(list(fit_n, fit_ln, fit_g), legendtext = plot.legend)
 cdfcomp (list(fit_n, fit_ln, fit_g), legendtext = plot.legend)
+
+
