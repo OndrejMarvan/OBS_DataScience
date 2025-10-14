@@ -18,7 +18,7 @@ Remember: Mean and Median are same in the symmetric distribution
 
 
 ## 2
--#1
+-#1 presentation
 **Normal distribution** 
 
 **Log-normal distribution** - e.g. **age** in developing countries or **salaries**, **chess rating**
@@ -26,5 +26,12 @@ Remember: Mean and Median are same in the symmetric distribution
 **Gamma distribution** - much rarer than normal and log-normal distribution, parameters of scale and shape
 
 **Chr-Square distrbution** - "probability distribution in inferential statstics"
+
+-# 2 presentation
+Winsor mean and trimm mean - the more you trim, the less accurate data you have 
+
+
+
+
 
 
