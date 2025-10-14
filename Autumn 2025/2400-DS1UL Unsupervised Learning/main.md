@@ -10,3 +10,8 @@ USL_@)@$
 	- ==AIC== from econometrics 
 	- "equidistant" = as close/far to two clusters (example of bats as mammals)
 	- ![[Pasted image 20251014174045.png]] which on is better? Answer **Red one**
+
+- 0 k is non-sense, 1 k is not giving further insight
+- basic datasets between 2-14 k, more for bigger datasets
+- ![[Pasted image 20251014174410.png]]
+		- 5 is the best option, 3 is ok as well, so can be used as well. In practise, we would test both on and choose which one is stable. 
