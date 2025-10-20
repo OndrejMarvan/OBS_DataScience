@@ -29,3 +29,8 @@ Combine clustering (identify typologies), spatial analysis (spillovers), and Mon
 Climate change, energy prices focus, expertise on energy prices and consumption, public tenders (BIP system, public tenders)
 
 28th May Deadline (meaning to be done mid May)
+
+
+# 20.10.2025
+- no updates
+- 
