@@ -33,4 +33,6 @@ Climate change, energy prices focus, expertise on energy prices and consumption,
 
 # 20.10.2025
 - no updates
+- R markdown - Quartoo
+- Commentable -> editable, so better to keep it in Word
 - 
