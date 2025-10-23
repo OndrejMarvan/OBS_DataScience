@@ -16,3 +16,5 @@ Autumn 2024
 General but important notes
 
 **text**
+
+Project Ledger (23.10.2025)
