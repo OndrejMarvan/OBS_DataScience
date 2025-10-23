@@ -26,3 +26,10 @@ A[extract(2,3,5)]
 A(2,3,5) 
 ✅A(c(2,3,5))
 
+## L4 (23.10.2025)
+
+To list value in second row, third column (Age), use: 
+data1 [2,3]
+data1[2, "Age"]
+data1$Age[2]
+
