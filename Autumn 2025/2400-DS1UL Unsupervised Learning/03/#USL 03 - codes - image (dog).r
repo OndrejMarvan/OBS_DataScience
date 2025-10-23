@@ -5,6 +5,7 @@
 # libraries
 install.packages("jpeg")
 library(jpeg)
+install.packages('plotrix')
 install.packages("rasterImage")
 library(rasterImage)
 
