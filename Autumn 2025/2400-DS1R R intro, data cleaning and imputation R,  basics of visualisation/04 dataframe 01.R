@@ -163,7 +163,18 @@ str(CO2)
 # 1. Create and add unique names to five vectors of length 8. Make their types 
 # diverse. Create a dataframe named "mySet1" out of created vector. 
 # a) Show the 5th row of created dataframe. 
+column1 <- c(1:8)
+column2 <- c("Anna", "Tom", "Sue", "Jim", "Jan", "Jana", "John", "Joe")
+column3 <- c(T, T, F, F, T, T, T, F)
+column4 <- c(10, 20, 30, 40, 50, 60, 70, 80)
+column5 <- c(0, 1, 0, 1, 0, 1, 0, 1)
+
+dataset1 <- data.frame(column1, column2, column3, column4, column5)
+dataset1
+
 # b) Change the name of the second column of mySet1 dataframe to "column02"
+
+
 # c) Show 7 first rows of mySet1 dataframe. Use two different methods - with 
 # indexes and with a function. 
 
