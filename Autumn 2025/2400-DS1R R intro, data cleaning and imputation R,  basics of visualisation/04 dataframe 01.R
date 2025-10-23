@@ -169,14 +169,21 @@ column3 <- c(T, T, F, F, T, T, T, F)
 column4 <- c(10, 20, 30, 40, 50, 60, 70, 80)
 column5 <- c(0, 1, 0, 1, 0, 1, 0, 1)
 
-dataset1 <- data.frame(column1, column2, column3, column4, column5)
-dataset1
+mySet1 <- data.frame(column1, column2, column3, column4, column5)
+mySet1
 
 # b) Change the name of the second column of mySet1 dataframe to "column02"
+colnames(mySet1) # names of vectors are stored as column names
+colnames(mySet1)[2] <- "name"
+mySet1
 
+colnames(mySet1)
+colnames(mySet1)[2] <- "column02"
+mySet1
 
 # c) Show 7 first rows of mySet1 dataframe. Use two different methods - with 
 # indexes and with a function. 
+head(mySet1, 7)
 
 # 2. Use iris dataset. Using indexing show values of every 3rd row between 
 # 40th and 120th observations. Try to use a one-liner (shorten the code so that 
