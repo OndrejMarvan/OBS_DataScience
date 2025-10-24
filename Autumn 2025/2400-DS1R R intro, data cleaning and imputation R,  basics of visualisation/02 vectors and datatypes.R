@@ -394,6 +394,8 @@ help(seq)
 vec4 <- seq(from = 3, by = 3, length.out = 100)
 vec4
 
+#probabl a mistake
+
 
 
 # 8. Using only one line of code create a vector "vec3" with following structure: 
