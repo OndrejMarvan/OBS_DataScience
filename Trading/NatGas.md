@@ -1,0 +1,2 @@
+![[Pasted image 20251024235137.png]]![[Pasted image 20251024235204.png]]![[Pasted image 20251024235234.png]]![[Pasted image 20251024235246.png]]![[Pasted image 20251024235327.png]] Available historygram in the xStation
+![[Pasted image 20251024235439.png]]
