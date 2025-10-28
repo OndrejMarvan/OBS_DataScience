@@ -21,3 +21,18 @@ USL_@)@$
 Professor recommends using Stata
 To get the same results in R with prof., we would have to set up seeds. 
 
+Projects: 
+
+P1 - Energy mix clustering 
+data source for energy mix
+https://ourworldindata.org/energy-mix
+https://ourworldindata.org/grapher/global-energy-substitution.csv?v=1&csvType=full&useColumnShortNames=true
+
+
+
+GDP per capita: 
+PPP: 
+Geographical features 
+Coal and Gas price (dark spread/spark spread)
+
+
