@@ -43,5 +43,7 @@ Skip the elbow methos but dont skip Silhoutte and GAP method
 
 We should distinguish between Jaccard distant and Jaccard similarity
 
+ASW = Avg. Silhoutte Width
+
 
 
