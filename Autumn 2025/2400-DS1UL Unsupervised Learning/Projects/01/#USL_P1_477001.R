@@ -8,6 +8,9 @@
 Sys.setlocale("LC_ALL","English")
 Sys.setenv(LANGUAGE='en')
 
+install.packages("tidyverse")
+
+
 # Load the libraries
 library(tidyverse)
 library(jsonlite)

@@ -37,6 +37,6 @@ Coal and Gas price (dark spread/spark spread)
 
 ## 4
 silhoutte width, index, etc. - it's all the same
-
+For silh we wwant to see values +1, negative may mean a mistake but doenst mean to 
 
 
