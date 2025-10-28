@@ -162,38 +162,87 @@ str(CO2)
 
 # 1. Create and add unique names to five vectors of length 8. Make their types 
 # diverse. Create a dataframe named "mySet1" out of created vector. 
-# a) Show the 5th row of created dataframe. 
 column1 <- c(1:8)
-column2 <- c("Anna", "Tom", "Sue", "Jim", "Jan", "Jana", "John", "Joe")
+column2 <- c("Ania", "Tom", "Ewa", "Piotr", "Jan", "Ola", "Adam", "Zuza")
 column3 <- c(T, T, F, F, T, T, T, F)
-column4 <- c(10, 20, 30, 40, 50, 60, 70, 80)
-column5 <- c(0, 1, 0, 1, 0, 1, 0, 1)
+column4 <- c(10, 15, 12, 18, 20, 14, 11, 17) 
+column5 <- c("A", "B", "A", "B", "A", "B", "A", "B") 
 
 mySet1 <- data.frame(column1, column2, column3, column4, column5)
-mySet1
+
+str(mySet1)
+
+# a) Show the 5th row of created dataframe. 
+mySet1[5, ]
 
 # b) Change the name of the second column of mySet1 dataframe to "column02"
 colnames(mySet1) # names of vectors are stored as column names
-colnames(mySet1)[2] <- "name"
-mySet1
-
-colnames(mySet1)
+# Use colnames() just as in the lesson example
 colnames(mySet1)[2] <- "column02"
-mySet1
+
+# Check the result
+print(mySet1)
 
 # c) Show 7 first rows of mySet1 dataframe. Use two different methods - with 
 # indexes and with a function. 
+# Method 1: Using the head() function
 head(mySet1, 7)
+
+# Method 2: Using indexing (specifying rows 1 through 7)
+mySet1[1:7, ]
 
 # 2. Use iris dataset. Using indexing show values of every 3rd row between 
 # 40th and 120th observations. Try to use a one-liner (shorten the code so that 
 # it fits in one line only, without any intermediate steps).
 
+iris[seq(from = 40, to = 120, by = 3), ]
+
+
 # 3. Use built-in "women" dataset. 
+# Load and inspect the dataset
+data(women)
+str(women)
+
 # a) Change type of the first column to character.
+# Use the $ operator to select the column and as.character() to change it
+women$height <- as.character(women$height)
+
+# Verify the change
+str(women)
+
 # b) Add two new rows to the dataset with made-up numbers. Make sure that you 
 # don't loose the types of variables in the main dataframe in the process. 
+# To preserve types, we must add a data.frame, not a vector.
+# This new data.frame must have the exact same column names: "height" and "weight"
+# Remember 'height' is now a character, so the new values must be in quotes.
+new_rows <- data.frame(height = c("70", "71"), 
+                       weight = c(170, 175))
+
+# Use rbind() to combine the old and new dataframes
+women <- rbind(women, new_rows)
+
+# Check the end of the dataframe to see the new rows
+tail(women)
+
+
 # c) Add new variable to the dataset and name it "shoe_size". Using runif function
 # create the values for this variable. Shoe size must be an integer between 35 and 42. 
+# The lesson uses runif, so we will too.
 
+  # 1. Get the number of rows
+num_rows <- nrow(women)
+
+  # 2. Use runif(n, min, max) to get decimals from 35 up to (but not including) 43
+# We use 43 because floor() always rounds down, so floor(42.99) becomes 42.
+random_decimals <- runif(num_rows, min = 35, max = 43)
+
+  # 3. Use floor() to convert the decimals to integers (e.g., 35.8 becomes 35)
+shoe_sizes <- floor(random_decimals)
+
+  # 4. Add the new vector as a column using the $ operator
+women$shoe_size <- shoe_sizes
+
+# Check the final dataframe
+head(women)
+str(women)
   
