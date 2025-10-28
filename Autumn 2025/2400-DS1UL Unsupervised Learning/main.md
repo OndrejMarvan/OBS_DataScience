@@ -41,5 +41,7 @@ For silh we wwant to see values +1, negative may mean a mistake but doenst mean 
 
 Skip the elbow methos but dont skip Silhoutte and GAP method 
 
+We should distinguish between Jaccard distant and Jaccard similarity
+
 
 
