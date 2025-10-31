@@ -8,6 +8,12 @@ Homework
 - sth that uses database, is connected to Python and has web application (can be used e.g. Django, but required to write raw SQL queries that can be skipped in Django)
 - We'll create SQL in Jupyter notebook for our projects
 
+## Used libraries
+- Keyword
+- Math
+- Numpy
+- Pandas
+
 ## SQL Part
 - Use of SQL Lite database
 - https://app.genmymodel.com/api/login
