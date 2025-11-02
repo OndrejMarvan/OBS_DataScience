@@ -1,6 +1,15 @@
 ## passoword
 USL_@)@$
 
+## 1 
+Distance-base approach
+Appropriate number of clusters 
+- Silhoutte analysis, width, etc. 
+K-means
+Clustering: partitioning around medoids (PAM)
+Hierarchical Clustering
+- Linkage methods
+
 ## 2
 ###Continuation with presentation #1 
 - Too many K -> over fitting
