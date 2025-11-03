@@ -77,3 +77,5 @@ Wineyards - geospatial analysis
 analyse temperature, precipitation, soil quality 
 Create map software, some kind of calculator (how many degrees increase, based on it a forecast)
 Green to prepare it. 
+
+https://www.theguardian.com/environment/2013/apr/08/climate-change-wine-production
