@@ -73,3 +73,7 @@ Climate change, energy prices focus, expertise on energy prices and consumption,
     
 
 ## 03.11.2025
+Wineyards - geospatial analysis
+analyse temperature, precipitation, soil quality 
+Create map software, some kind of calculator (how many degrees increase, based on it a forecast)
+Green to prepare it. 
