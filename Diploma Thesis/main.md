@@ -72,4 +72,4 @@ Climate change, energy prices focus, expertise on energy prices and consumption,
 - **Causal Inference in the EU ETS Market**: This project could use causal inference techniques to understand the causal relationships between different factors in the EU ETS. For example, you could investigate the causal effect of natural gas prices on EUA prices, isolating it from other confounding factors.
     
 
-I hope these ideas help you get started on your diploma thesis. Good luck!
+## 03.11.2025
