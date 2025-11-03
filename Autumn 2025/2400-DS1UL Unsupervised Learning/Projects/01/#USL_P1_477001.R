@@ -8,8 +8,10 @@
 Sys.setlocale("LC_ALL","English")
 Sys.setenv(LANGUAGE='en')
 
-# install.packages("tidyverse")
+# --- 1. Load Libraries and Data
+Library(tidyverse)
 
+# Load the pre-processed and pivoted data
+clustering_data_raw <- read_csv("world_energy_shares_pivot.csv")
 
-# Load the libraries
-library(tidyverse)
+# --- 2. Prepare Data for Clustering ---
