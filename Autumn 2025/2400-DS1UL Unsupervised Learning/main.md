@@ -66,6 +66,8 @@ Class dates
 - 18.11. classes
 - 25.11. cancelled 
 
+Homework till Wed EOD (12.11.) - more available on Moodle 
+submit via email - ideally notebook 
 
 
 
