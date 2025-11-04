@@ -61,6 +61,11 @@ ARIMA considered as easier one
 Nocasting as a super cool and hyped...
 Seed will make our project fully replicable
 
+Class dates
+- 11.11 moved to 14.11
+- 18.11. classes
+- 25.11. cancelled 
+
 
 
 
