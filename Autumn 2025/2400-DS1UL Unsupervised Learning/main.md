@@ -54,5 +54,13 @@ We should distinguish between Jaccard distant and Jaccard similarity
 
 ASW = Avg. Silhoutte Width
 
+## 5 (04.11.2025)
+Clustering for forecasting - practical at work and well recommended 
+ARIMA considered as easier one 
+
+Nocasting as a super cool and hyped...
+Seed will make our project fully replicable
+
+
 
 
