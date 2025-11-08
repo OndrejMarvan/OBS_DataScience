@@ -1,0 +1,474 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 11.08.0 ] */
+
+/* [wxMaxima: title   start ]
+Zadanie przyk³adowe1
+
+   [wxMaxima: title   end   ] */
+
+/* [wxMaxima: fold    start ] */
+
+/* [wxMaxima: comment start ]
+Zadanie przyk³adowe 1
+min   1/2*x1^2-2*x2;
+p.o.  x1^2+x2^2<=4;
+       x1>=0;
+       x2>=0;
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+load(draw)$
+
+/*tutaj wpisz funkcjê*/
+f:1/2*x1^2-2*x2;
+
+/*tutaj wpisz ograniczenie*/
+w1:x1^2+x2^2-4;
+
+Lagr:f-lambda*w1;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/*ograniczenia nierownosciowe - wykorzystujemy na koniec*/
+og1:diff(Lagr,x1,1)>=0;
+og2:diff(Lagr,x2,1)>=0;
+og3:diff(Lagr,lambda,1)>=0;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/*warunki równoœciowe*/
+eq1:x1*diff(Lagr,x1,1)=0;
+eq2:x2*diff(Lagr,x2,1)=0;
+eq3:lambda*diff(Lagr,lambda,1)=0;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/*dopisz tyle rownañ i tyle zmiennych ile zosta³o wybranych w powy¿szych warunkach równoœciowych*/
+d:solve([eq1,eq2,eq3], [x1,x2,lambda]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/*wybierz tyle ponizszych elementów ile wysz³o rozwi¹zañ rzeczywistych*/
+r1:d[1]$
+x1:rhs(r1[1])$
+x2:rhs(r1[2])$
+lambda:rhs(r1[3])$
+disp("dla x1, x2, lambda", x1,x2,lambda)$
+disp ("funkcja rowna sie", ''f)$
+disp("czy spe³nia warunki?")$
+war: maybe (maybe (x1>=0)and maybe (x2>=0)and maybe(lambda<=0)and maybe(''og1)and maybe(''og2)and maybe (''og3));
+if war then (fm: ''f) and (x1m: ''x1) and (x2m: ''x2) and (lambdam: ''lambda)and p:1 else p:0$
+
+r2:d[2]$
+x1:rhs(r2[1])$
+x2:rhs(r2[2])$
+lambda:rhs(r2[3])$
+disp("dla x1, x2, lambda", x1, x2,lambda)$
+disp ("funkcja rowna sie", ''f)$
+disp("czy spe³nia warunki?")$
+war: maybe (maybe (x1>=0)and maybe (x2>=0)and maybe(lambda<=0)and maybe(''og1)and maybe(''og2)and maybe (''og3));
+if war and p=0 then (fm: ''f) and (x1m: ''x1) and (x2m: ''x2) and (lambdam: ''lambda) and p:1 else if war and p=1 then if ''f<fm then (fm:''f)and (x1m: ''x1) and (x2m: ''x2) and (lambdam: ''lambda)$
+
+r3:d[3]$
+x1:rhs(r3[1])$
+x2:rhs(r3[2])$
+lambda:rhs(r3[3])$
+disp("dla x1, x2, lambda", x1, x2,lambda)$
+disp ("funkcja rowna sie", ''f)$
+disp("czy spe³nia warunki?")$
+war: maybe (maybe (x1>=0)and maybe (x2>=0)and maybe(lambda<=0)and maybe(''og1)and maybe(''og2)and maybe (''og3));
+if war and p=0 then (fm: ''f) and (x1m: ''x1) and (x2m: ''x2) and (lambdam: ''lambda) and p:1 else if war and p=1 then if ''f<fm then (fm:''f)and (x1m: ''x1) and (x2m: ''x2) and (lambdam: ''lambda)$
+
+r4:d[4]$
+x1:rhs(r4[1])$
+x2:rhs(r4[2])$
+lambda:rhs(r4[3])$
+disp("dla x1, x2, lambda", x1, x2,lambda)$
+disp ("funkcja rowna sie", ''f)$
+disp("czy spe³nia warunki?")$
+war: maybe (maybe (x1>=0)and maybe (x2>=0)and maybe(lambda<=0)and maybe(''og1)and maybe(''og2)and maybe (''og3));
+if war and p=0 then (fm: ''f) and (x1m: ''x1) and (x2m: ''x2) and (lambdam: ''lambda) and p:1 else if war and p=1 then if ''f<fm then (fm:''f)and (x1m: ''x1) and (x2m: ''x2) and (lambdam: ''lambda)$
+
+r5:d[5]$
+x1:rhs(r5[1])$
+x2:rhs(r5[2])$
+lambda:rhs(r5[3])$
+disp("dla x1, x2, lambda", x1, x2,lambda)$
+disp ("funkcja rowna sie", ''f)$
+disp("czy spe³nia warunki?")$
+war: maybe (maybe (x1>=0)and maybe (x2>=0)and maybe(lambda<=0)and maybe(''og1)and maybe(''og2)and maybe (''og3));
+if war and p=0 then (fm: ''f) and (x1m: ''x1) and (x2m: ''x2) and (lambdam: ''lambda) and p:1 else if war and p=1 then if ''f<fm then (fm:''f)and (x1m: ''x1) and (x2m: ''x2) and (lambdam: ''lambda)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/*wyniki*/
+disp("x1 =", x1m)$
+disp("x2 =" ,x2m)$
+disp("lambda =" ,lambdam)$
+disp("min funkcji =", fm)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: fold    end   ] */
+
+/* [wxMaxima: title   start ]
+Zadanie przyk³adowe 2
+   [wxMaxima: title   end   ] */
+
+/* [wxMaxima: fold    start ] */
+
+/* [wxMaxima: comment start ]
+Zadanie przyk³adowe 2
+max   (x1-1)^2+x2^2;
+p.o.  x1+3*x2<=6;
+      4*x1-3*x2<=9;
+       x1>=0;       
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+load(draw)$
+
+/*tutaj wpisz funkcjê*/
+f:(x1-1)^2+x2^2;
+
+/*tutaj wpisz ograniczenia*/
+w1:x1+3*x2-6;
+w2:4*x1-3*x2-9;
+
+Lagr:-f-lambda1*w1-lambda2*w2;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/*ograniczenia nierownosciowe - wykorzystujemy na koniec */
+og1:diff(Lagr,x1,1)>=0;
+og2:diff(Lagr,lambda1,1)>=0;
+og3:diff(Lagr,lambda2,1)>=0;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/*wybierz warunki równoœciowe*/
+eq0:diff(Lagr,x2,1)=0; 
+eq1:x1*diff(Lagr,x1,1)=0;
+eq2:x2*diff(Lagr,x2,1)=0;
+eq3:lambda1*diff(Lagr,lambda1,1)=0;
+eq4:lambda2*diff(Lagr,lambda2,1)=0;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/*jest wiecej rownan niz zmiennych bo jeden nic nie wnosi ale to nie szkodzi, maxima zrobi to za nas*/
+d:solve([eq0,eq1,eq2,eq3,eq4],[x1,x2,lambda1,lambda2]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/*wybierz tyle ponizszych elementów ile wysz³o rozwi¹zañ rzeczywistych*/
+r1:d[1]$
+x1:rhs(r1[1])$
+x2:rhs(r1[2])$
+lambda1:rhs(r1[3])$
+lambda2:rhs(r1[4])$
+disp("dla x1, x2, lambda1, lambda2", x1,x2,lambda1,lambda2)$
+disp ("funkcja rowna sie", ''f)$
+disp("czy spe³nia warunki?")$
+war:maybe (maybe (x1>=0)and maybe (lambda1<=0)and maybe(lambda2<=0)and maybe(''og1)and maybe(''og2)and maybe (''og3));
+if war then (fm: ''f) and (x1m: ''x1) and (x2m: ''x2) and (lambda2m: ''lambda2) and (lambda1m: ''lambda1)and p:1 else p:0$
+
+r2:d[2]$
+x1:rhs(r2[1])$
+x2:rhs(r2[2])$
+lambda1:rhs(r2[3])$
+lambda2:rhs(r2[4])$
+disp("dla x1, x2, lambda1, lambda2", x1,x2,lambda1,lambda2)$
+disp ("funkcja rowna sie", ''f)$
+disp("czy spe³nia warunki?")$
+war:maybe (maybe (x1>=0)and maybe (lambda1<=0)and maybe(lambda2<=0)and maybe(''og1)and maybe(''og2)and maybe (''og3));
+if war and p=0 then (fm: ''f) and (x1m: ''x1) and (x2m: ''x2) and (lambda2m: ''lambda2) and (lambda1m: ''lambda1) and p:1 else if war and p=1 then if ''f>fm then (fm:''f)and (x1m: ''x1) and (x2m: ''x2) and (lambda2m: ''lambda2) and (lambda1m: ''lambda1)$
+
+r3:d[3]$
+x1:rhs(r3[1])$
+x2:rhs(r3[2])$
+lambda1:rhs(r3[3])$
+lambda2:rhs(r3[4])$
+disp("dla x1, x2, lambda1, lambda2", x1,x2,lambda1,lambda2)$
+disp ("funkcja rowna sie", ''f)$
+disp("czy spe³nia warunki?")$
+war:maybe (maybe (x1>=0)and maybe (lambda1<=0)and maybe(lambda2<=0)and maybe(''og1)and maybe(''og2)and maybe (''og3));
+if war and p=0 then (fm: ''f) and (x1m: ''x1) and (x2m: ''x2) and (lambda2m: ''lambda2) and (lambda1m: ''lambda1) and p:1 else if war and p=1 then if ''f>fm then (fm:''f)and (x1m: ''x1) and (x2m: ''x2) and (lambda2m: ''lambda2) and (lambda1m: ''lambda1)$
+
+r4:d[4]$
+x1:rhs(r4[1])$
+x2:rhs(r4[2])$
+lambda1:rhs(r4[3])$
+lambda2:rhs(r4[4])$
+disp("dla x1, x2, lambda1, lambda2", x1,x2,lambda1,lambda2)$
+disp ("funkcja rowna sie", ''f)$
+disp("czy spe³nia warunki?")$
+war:maybe (maybe (x1>=0)and maybe (lambda1<=0)and maybe(lambda2<=0)and maybe(''og1)and maybe(''og2)and maybe (''og3));
+if war and p=0 then (fm: ''f) and (x1m: ''x1) and (x2m: ''x2) and (lambda2m: ''lambda2) and (lambda1m: ''lambda1) and p:1 else if war and p=1 then if ''f>fm then (fm:''f)and (x1m: ''x1) and (x2m: ''x2) and (lambda2m: ''lambda2) and (lambda1m: ''lambda1)$
+
+r5:d[5]$
+x1:rhs(r5[1])$
+x2:rhs(r5[2])$
+lambda1:rhs(r5[3])$
+lambda2:rhs(r5[4])$
+disp("dla x1, x2, lambda1, lambda2", x1,x2,lambda1,lambda2)$
+disp ("funkcja rowna sie", ''f)$
+disp("czy spe³nia warunki?")$
+war:maybe (maybe (x1>=0)and maybe (lambda1<=0)and maybe(lambda2<=0)and maybe(''og1)and maybe(''og2)and maybe (''og3));
+if war and p=0 then (fm: ''f) and (x1m: ''x1) and (x2m: ''x2) and (lambda2m: ''lambda2) and (lambda1m: ''lambda1) and p:1 else if war and p=1 then if ''f>fm then (fm:''f)and (x1m: ''x1) and (x2m: ''x2) and (lambda2m: ''lambda2) and (lambda1m: ''lambda1)$
+
+r6:d[6]$
+x1:rhs(r6[1])$
+x2:rhs(r6[2])$
+lambda1:rhs(r65[3])$
+lambda2:rhs(r6[4])$
+disp("dla x1, x2, lambda1, lambda2", x1,x2,lambda1,lambda2)$
+disp ("funkcja rowna sie", ''f)$
+disp("czy spe³nia warunki?")$
+war:maybe (maybe (x1>=0)and maybe (lambda1<=0)and maybe(lambda2<=0)and maybe(''og1)and maybe(''og2)and maybe (''og3));
+if war and p=0 then (fm: ''f) and (x1m: ''x1) and (x2m: ''x2) and (lambda2m: ''lambda2) and (lambda1m: ''lambda1) and p:1 else if war and p=1 then if ''f>fm then (fm:''f)and (x1m: ''x1) and (x2m: ''x2) and (lambda2m: ''lambda2) and (lambda1m: ''lambda1)$
+
+r7:d[7]$
+x1:rhs(r7[1])$
+x2:rhs(r7[2])$
+lambda1:rhs(r7[3])$
+lambda2:rhs(r7[4])$
+disp("dla x1, x2, lambda1, lambda2", x1,x2,lambda1,lambda2)$
+disp ("funkcja rowna sie", ''f)$
+disp("czy spe³nia warunki?")$
+war:maybe (maybe (x1>=0)and maybe (lambda1<=0)and maybe(lambda2<=0)and maybe(''og1)and maybe(''og2)and maybe (''og3));
+if war and p=0 then (fm: ''f) and (x1m: ''x1) and (x2m: ''x2) and (lambda2m: ''lambda2) and (lambda1m: ''lambda1) and p:1 else if war and p=1 then if ''f>fm then (fm:''f)and (x1m: ''x1) and (x2m: ''x2) and (lambda2m: ''lambda2) and (lambda1m: ''lambda1)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/*wyniki*/
+disp("x1 =", x1m)$
+disp("x2 =" ,x2m)$
+disp("lambda1 =" ,lambda1m)$
+disp("lambda2 =" ,lambda2m)$
+disp("max funkcji =", fm)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: fold    end   ] */
+
+/* [wxMaxima: title   start ]
+Zadanie 3
+   [wxMaxima: title   end   ] */
+
+/* [wxMaxima: fold    start ] */
+
+/* [wxMaxima: comment start ]
+Zadanie 3 minimalizacja funkcji kosztów
+Energia z elektrociep³owni przesy³ana jest do dwóch zu¿ywaj¹cych j¹ zak³adów produkcyjnych. 
+Firma chce tak rozdzieliæ pomiêdzy zak³ady dzienn¹ produkcjê energii wynosz¹c¹ 16MWh, aby minimalizowaæ koszty przesy³u energii. 
+Funkcja kosztów przesy³ania energii do tych zak³adów w zale¿noœci od wielkoœci przesy³u dana jest wzorem:
+f(x1, x2)=5*x1^2 - 8*x1*x2 + 7*x2^2 - 12*x1 - 4*x2 + 81
+Gdzie: x1 - wielkoœæ przesy³anej energii do zak³adu pierwszego
+       	x2 - wielkoœæ przesy³anej energii do zak³adu drugiego
+min   5*x1^2-8*x1*x2+7*x2^2-12*x1-4*x2+81;
+p.o.  x1+x2=16;
+       x1>=0;
+       x2>=0;
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+load(draw)$
+
+/*tutaj wpisz funkcjê*/
+f:5*x1^2-8*x1*x2+7*x2^2-12*x1-4*x2+81;
+
+/*tutaj wpisz ograniczenie*/
+w1:x1+x2-16;
+
+Lagr:f-lambda*w1;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/*ograniczenia nierownosciowe*/
+og1:diff(Lagr,x1,1)>=0;
+og2:diff(Lagr,x2,1)>=0;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/*warunki równoœciowe*/
+eq1:x1*diff(Lagr,x1,1)=0;
+eq2:x2*diff(Lagr,x2,1)=0;
+eq3:lambda*diff(Lagr,lambda,1)=0;
+eq4:diff(Lagr,lambda,1)=0;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/*dopisz tyle rownañ i tyle zmiennych ile zosta³o wybranych w powy¿szych warunkach*/
+d:solve([eq1,eq2,eq3,eq4], [x1,x2,lambda]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/*wybierz tyle ponizszych elementów ile wysz³o rozwi¹zañ rzeczywistych*/
+r1:d[1]$
+x1:rhs(r1[1])$
+x2:rhs(r1[2])$
+lambda:rhs(r1[3])$
+disp("dla x1, x2, lambda", x1,x2,lambda)$
+disp ("funkcja rowna sie", ''f)$
+disp("czy spe³nia warunki?")$
+war:maybe (maybe (x1>=0)and maybe (x2>=0)and maybe(''og1)and maybe(''og2));
+if war then (fm: ''f) and (x1m: ''x1) and (x2m: ''x2) and (lambdam: ''lambda)and p:1 else p:0$
+
+r2:d[2]$
+x1:rhs(r2[1])$
+x2:rhs(r2[2])$
+lambda:rhs(r2[3])$
+disp("dla x1, x2, lambda", x1, x2,lambda)$
+disp ("funkcja rowna sie", ''f)$
+disp("czy spe³nia warunki?")$
+war:maybe (maybe (x1>=0)and maybe (x2>=0)and maybe(''og1)and maybe(''og2));
+if war and p=0 then (fm: ''f) and (x1m: ''x1) and (x2m: ''x2) and (lambdam: ''lambda) and p:1 else if war and p=1 then if ''f<fm then (fm:''f)and (x1m: ''x1) and (x2m: ''x2) and (lambdam: ''lambda)$
+
+r3:d[3]$
+x1:rhs(r3[1])$
+x2:rhs(r3[2])$
+lambda:rhs(r3[3])$
+disp("dla x1, x2, lambda", x1, x2,lambda)$
+disp ("funkcja rowna sie", ''f)$
+disp("czy spe³nia warunki?")$
+war:maybe (maybe (x1>=0)and maybe (x2>=0)and maybe(''og1)and maybe(''og2));
+if war and p=0 then (fm: ''f) and (x1m: ''x1) and (x2m: ''x2) and (lambdam: ''lambda) and p:1 else if war and p=1 then if ''f<fm then (fm:''f)and (x1m: ''x1) and (x2m: ''x2) and (lambdam: ''lambda)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/*wyniki*/
+disp("x1 =", x1m)$
+disp("x2 =" ,x2m)$
+disp("lambdam =" ,lambdam)$
+disp("min funkcji =", fm)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+load(draw)$
+assume(x1>0,x2>0)$
+f:5*x1^2-8*x1*x2+7*x2^2-12*x1-4*x2+81;
+draw3d(
+key = "fcost",
+contour_levels = {100,200,300,400,500},
+color = blue,
+contour = both , /* rzutowanie na p³aszczyznê */
+explicit(f,x1, 1, 16, x2,1, 16))$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: fold    end   ] */
+
+/* [wxMaxima: title   start ]
+Zadanie 4
+   [wxMaxima: title   end   ] */
+
+/* [wxMaxima: fold    start ] */
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+load(draw)$
+
+f: x1^2*0.0547^2+x2^2*0.0361^2+2*x1*0.0547*x2*0.0361*0.5;
+
+w1: x1*0.0209+x2*0.0095-0.02;
+w2: x1+x2-1;
+
+Lagr: f-lambda1*w1-lambda2*w2;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/*warunki równoœciowe*/
+eq1:x1*diff(Lagr,x1,1)=0;
+eq2:x2*diff(Lagr,x2,1)=0;
+eq3:lambda1*diff(Lagr,lambda1,1)=0;
+eq4:lambda2*diff(Lagr,lambda2,1)=0;
+eq5:diff(Lagr,lambda2,1)=0;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/*ograniczenia nierównoœciowe*/
+og1:diff(Lagr,x1,1)<=0;
+og2:diff(Lagr,x2,1)<=0;
+og3:diff(Lagr,lambda1,1)>=0;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+d:solve([eq1,eq2,eq3,eq4,eq5],[x1,x2,lambda1,lambda2]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/*wybierz tyle ponizszych elementów ile wysz³o rozwi¹zañ rzeczywistych*/
+r1:d[1]$
+x1:rhs(r1[1])$
+x2:rhs(r1[2])$
+lambda1:rhs(r1[3])$
+lambda2:rhs(r1[4])$
+disp("dla x1, x2, lambda1, lambda2", x1,x2,lambda1,lambda2)$
+disp ("funkcja rowna sie", ''f)$
+disp("czy spe³nia warunki?")$
+war:maybe (maybe (x1>=0)and maybe (lambda1>=0)and maybe(x2>=0)and maybe(''og1)and maybe(''og2)and maybe (''og3));
+if war then (fm: ''f) and (x1m: ''x1) and (x2m: ''x2) and (lambda2m: ''lambda2) and (lambda1m: ''lambda1)and p:1 else p:0$
+
+r2:d[2]$
+x1:rhs(r2[1])$
+x2:rhs(r2[2])$
+lambda1:rhs(r2[3])$
+lambda2:rhs(r2[4])$
+disp("dla x1, x2, lambda1, lambda2", x1,x2,lambda1,lambda2)$
+disp ("funkcja rowna sie", ''f)$
+disp("czy spe³nia warunki?")$
+war:maybe (maybe (x1>=0)and maybe (lambda1>=0)and maybe(x2>=0)and maybe(''og1)and maybe(''og2)and maybe (''og3));
+if war and p=0 then (fm: ''f) and (x1m: ''x1) and (x2m: ''x2) and (lambda2m: ''lambda2) and (lambda1m: ''lambda1) and p:1 else if war and p=1 then if ''f>fm then (fm:''f)and (x1m: ''x1) and (x2m: ''x2) and (lambda2m: ''lambda2) and (lambda1m: ''lambda1)$
+
+r3:d[3]$
+x1:rhs(r3[1])$
+x2:rhs(r3[2])$
+lambda1:rhs(r3[3])$
+lambda2:rhs(r3[4])$
+disp("dla x1, x2, lambda1, lambda2", x1,x2,lambda1,lambda2)$
+disp ("funkcja rowna sie", ''f)$
+disp("czy spe³nia warunki?")$
+war:maybe (maybe (x1>=0)and maybe (lambda1>=0)and maybe(x2>=0)and maybe(''og1)and maybe(''og2)and maybe (''og3));
+if war and p=0 then (fm: ''f) and (x1m: ''x1) and (x2m: ''x2) and (lambda2m: ''lambda2) and (lambda1m: ''lambda1) and p:1 else if war and p=1 then if ''f>fm then (fm:''f)and (x1m: ''x1) and (x2m: ''x2) and (lambda2m: ''lambda2) and (lambda1m: ''lambda1)$
+
+r4:d[4]$
+x1:rhs(r4[1])$
+x2:rhs(r4[2])$
+lambda1:rhs(r4[3])$
+lambda2:rhs(r4[4])$
+disp("dla x1, x2, lambda1, lambda2", x1,x2,lambda1,lambda2)$
+disp ("funkcja rowna sie", ''f)$
+disp("czy spe³nia warunki?")$
+war:maybe (maybe (x1>=0)and maybe (lambda1>=0)and maybe(x2>=0)and maybe(''og1)
+and maybe(''og2)and maybe (''og3));
+if war and p=0 then (fm: ''f) and (x1m: ''x1) and (x2m: ''x2) and (lambda2m: ''lambda2) 
+and (lambda1m: ''lambda1) and p:1 else if war and p=1 then if ''f>fm then (fm:''f)and 
+(x1m: ''x1) and (x2m: ''x2) and (lambda2m: ''lambda2) and (lambda1m: ''lambda1)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/*wyniki*/
+disp("x1 =", x1m)$
+disp("x2 =" ,x2m)$
+disp("lambda1 =", lambda1m)$
+disp("lambda2 =", lambda2m)$
+disp("min funkcji =", fm)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+load(draw)$
+assume(x1>0,x2>0)$
+f:x1^2*0.0547^2+x2^2*0.0361^2+2*x1*0.0547*x2*0.0361*0.5;
+draw3d(
+key = "f",
+color = blue,
+contour = both , /* rzutowanie na p³aszczyznê */
+explicit(f,x1, 0, 1, x2,0, 1))$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: fold    end   ] */
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$

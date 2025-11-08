@@ -1,0 +1,415 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 24.02.1 ] */
+/* [wxMaxima: input   start ] */
+kill(all)$
+load(draw)$
+
+/******************************************************************/
+/* Economy Parameters ********/
+/*The model is very sensitive to parameter changes try :) */
+/******************************************************************/
+
+/* Households */
+
+alpha_rich: 0.6$
+beta_rich: 0.4$
+K_rich: 4$
+L_rich: 0.25$
+
+alpha_poor: 0.5$
+beta_poor: 0.5$
+K_poor: 0.5$
+L_poor: 7$
+
+/* Production */
+
+delta_1: 0.4$
+A1: 1.5$
+delta_2: 0.8$
+A2: 1$
+
+/* Numeraire w = 1 */
+w: 1$
+
+/****************************************************/
+/* Base Model 0 *************************************/
+/* Zeroing taxes and subsidies **********************/
+/****************************************************/
+
+/* Supply of production factors */
+K_supply: K_poor + K_rich$
+L_supply: L_poor + L_rich$
+
+/* Demand for production factors */
+K_1: (A1^-1) * ((delta_1 / (1 - delta_1))^(1 - delta_1)) * ((w / r)^(1 - delta_1)) * X1$
+L_1: (A1^-1) * (((1 - delta_1) / delta_1)^(delta_1)) * ((r / w)^(delta_1)) * X1$
+K_2: (A2^-1) * ((delta_2 / (1 - delta_2))^(1 - delta_2)) * ((w / r)^(1 - delta_2)) * X2$
+L_2: (A2^-1) * (((1 - delta_2) / delta_2)^(delta_2)) * ((r / w)^(delta_2)) * X2$
+
+/* Equilibrium in the production factor market */ 
+S1: (K_1 + K_2) - K_supply$
+S2: (L_1 + L_2) - L_supply$
+
+/* Income from production factors */
+M_poor: r * K_poor + w * L_poor$
+M_rich: r * K_rich + w * L_rich$
+
+/* Demand for goods X1 and X2 */
+x1_poor: (alpha_poor / (alpha_poor + beta_poor)) * (M_poor / p1)$
+x1_rich: (alpha_rich / (alpha_rich + beta_rich)) * (M_rich / p1)$
+x2_poor: (beta_poor / (alpha_poor + beta_poor)) * (M_poor / p2)$
+x2_rich: (beta_rich / (alpha_rich + beta_rich)) * (M_rich / p2)$
+
+/* Equilibrium in the goods market */ 
+S3: (x1_poor + x1_rich) - X1$ 
+S4: (x2_poor + x2_rich) - X2$
+
+/* Zero profit condition */
+S5: (w * (L_1 + L_2) + r * (K_1 + K_2)) - (p1 * X1 + p2 * X2)$
+
+/* Minimizing the sum of deviations from equilibrium */
+ssr: ev(S1^2 + S2^2 + S3^2 + S4^2 + S5^2)$
+star_0: lbfgs(ssr, [X1, X2, p1, p2, r], [1, 1, 1, 1, 1], 1e-2, [-1, 0])$
+
+/********************** Results ********************/
+/***************************************************/
+X1: rhs(star_0[1])$
+X2: rhs(star_0[2])$
+p1: rhs(star_0[3])$
+p2: rhs(star_0[4])$
+r: rhs(star_0[5])$
+
+X1_0: ''X1$
+X2_0: ''X2$
+p1_0: ''p1$
+p2_0: ''p2$
+r_0: ''r$
+K_1_0: ''K_1$
+L_1_0: ''L_1$
+K_2_0: ''K_2$
+L_2_0: ''L_2$
+M_poor_0: ''M_poor$
+M_rich_0: ''M_rich$
+x1_poor_0: ''x1_poor$
+x1_rich_0: ''x1_rich$
+x2_poor_0: ''x2_poor$
+x2_rich_0: ''x2_rich$
+
+U_poor_0: ''(x1_poor_0^alpha_poor) * (x2_poor_0^beta_poor)$ 
+U_rich_0: ''(x1_rich_0^alpha_rich) * (x2_rich_0^beta_rich)$ 
+
+kill(X1, X2, p1, p2, r, K_1, L_1, K_2, L_2, M_poor, M_rich, x1_poor, x1_rich, x2_poor, x2_rich, S1, S2, S3, S4, S5)$
+
+/********************************************************/
+/* Model 1 Under Study */
+/* Changes --> Taxes and Subsidies */
+/********************************************************/
+
+/* Taxes and Subsidies */
+t_X1: 0.2$ /* Sales tax on X1 */
+t_X2: 0.1$ /* Sales tax on X2 */
+
+t_k: 0.2$  /* Tax on capital income */
+t_l: 0.2$  /* Tax on labor income */
+
+t_p: 0.2$ /* Tax on production revenue */
+
+/* Transfers to households as a percentage of collected taxes */
+s_rich: 0.1$ /* Subsidies for the rich */
+s_poor: (1 - s_rich)$ /* Subsidies for the poor */
+
+/********************************************************/
+
+/* Supply of production factors */
+K_supply: K_poor + K_rich$
+L_supply: L_poor + L_rich$
+
+/* Demand for production factors */
+K_1: (A1^-1) * ((delta_1 / (1 - delta_1))^(1 - delta_1)) * ((w / r)^(1 - delta_1)) * X1$
+L_1: (A1^-1) * (((1 - delta_1) / delta_1)^(delta_1)) * ((r / w)^(delta_1)) * X1$
+
+K_2: (A2^-1) * ((delta_2 / (1 - delta_2))^(1 - delta_2)) * ((w / r)^(1 - delta_2)) * X2$
+L_2: (A2^-1) * (((1 - delta_2) / delta_2)^(delta_2)) * ((r / w)^(delta_2)) * X2$
+
+/* Equilibrium in the production factor market */ 
+S1: (K_1 + K_2) - K_supply$
+S2: (L_1 + L_2) - L_supply$
+
+/* Income from production factors */
+M_poor: (1 - t_k) * r * K_poor + (1 - t_l) * w * L_poor + s_poor * T$
+M_rich: (1 - t_k) * r * K_rich + (1 - t_l) * w * L_rich + s_rich * T$
+
+/* Demand for goods X1 and X2 */
+x1_poor: (alpha_poor / (alpha_poor + beta_poor)) * (M_poor / ((1 + t_X1) * p1))$
+x1_rich: (alpha_rich / (alpha_rich + beta_rich)) * (M_rich / ((1 + t_X1) * p1))$
+x2_poor: (beta_poor / (alpha_poor + beta_poor)) * (M_poor / ((1 + t_X2) * p2))$
+x2_rich: (beta_rich / (alpha_rich + beta_rich)) * (M_rich / ((1 + t_X2) * p2))$
+
+/* Equilibrium in the goods market */ 
+S3: (x1_poor + x1_rich) - X1$ 
+S4: (x2_poor + x2_rich) - X2$
+
+/* Zero profit condition */
+S5: (w * (L_1 + L_2) + r * (K_1 + K_2)) - (p1 * X1 + p2 * X2) * (1 - t_p)$
+
+/* Taxes on sales of goods */
+T_x12: t_X1 * p1 * x1_poor + t_X1 * p1 * x1_rich + t_X2 * p2 * x2_poor + t_X2 * p2 * x2_rich$
+
+/* Taxes on income from production factors */
+T_kl: t_k * r * (K_poor + K_rich) + t_l * w * (L_poor + L_rich)$
+
+/* Taxes on production revenue */
+T_p: ''((p1 * X1 + p2 * X2) * t_p)$
+
+/* Taxes equal the sum of transfers */
+S6: T_x12 + T_kl + T_p - T$
+
+ssr: ev(S1^2 + S2^2 + S3^2 + S4^2 + S5^2 + S6^2)$
+star_1: lbfgs(ssr, [X1, X2, p1, p2, r, T], [1, 1, 1, 1, 1, 1], 1e-2, [-1, 0])$
+
+/**************** Results *******/
+
+X1: ''rhs(star_1[1])$
+X2: ''rhs(star_1[2])$
+p1: ''rhs(star_1[3])$
+p2: ''rhs(star_1[4])$
+r: ''rhs(star_1[5])$
+T: ''rhs(star_1[6])$
+
+X1_1: ''X1$
+X2_1: ''X2$
+p1_1: ''p1$
+p2_1: ''p2$
+r_1: ''r$
+K_1_1: ''K_1$
+L_1_1: ''L_1$
+K_2_1: ''K_2$
+L_2_1: ''L_2$
+M_poor_1: ''M_poor$
+M_rich_1: ''M_rich$
+x1_poor_1: ''x1_poor$
+x1_rich_1: ''x1_rich$
+x2_poor_1: ''x2_poor$
+x2_rich_1: ''x2_rich$
+
+U_poor_1: ''(x1_poor_1^alpha_poor) * (x2_poor_1^beta_poor)$ 
+U_rich_1: ''(x1_rich_1^alpha_rich) * (x2_rich_1^beta_rich)$ 
+
+/* Taxes on sales of goods */
+T_x12: ''T_x12$
+
+/* Taxes on income from production factors */
+T_kl: ''T_kl$
+
+/* Taxes on production revenue */
+T_p: ''((p1 * X1 + p2 * X2) * t_p)$
+
+/* Subsidies */
+Sub_poor: ''s_poor * T$
+Sub_rich: ''s_rich * T$
+
+EV_poor: ((U_poor_1 - U_poor_0) / U_poor_0) * (p1_1 * x1_poor_0 + p2_1 * x2_poor_0) / (p1_0 * x1_poor_0 + p2_0 * x2_poor_0)$
+EV_rich: ((U_rich_1 - U_rich_0) / U_rich_0) * (p1_1 * x1_rich_0 + p2_1 * x2_rich_0) / (p1_0 * x1_rich_0 + p2_0 * x2_rich_0)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+draw2d(
+    title = "Change in Production/Consumption of Goods X1 and X2",
+    xrange = [-0.5, 1.5],
+    yrange = [0, 10],
+    key          = "X1 at t = 0",
+    fill_color   = light_blue,
+    fill_density = 0.2,
+    bars([-0.1, X1_0, 0.2]),
+    key          = "X2 at t = 0",
+    fill_color   = light_red,
+    fill_density = 0.2,
+    line_width   = 1,
+    bars([0.1, X2_0, 0.2]), 
+    key          = "X1 at t = 1",
+    fill_color   = blue,
+    fill_density = 0.2,
+    bars([0.9, X1_1, 0.2]),
+    key          = "X2 at t = 1",
+    fill_color   = red,
+    fill_density = 0.2,
+    line_width   = 1,
+    bars([1.1, X2_1, 0.2]),
+    xaxis = false
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+draw2d(
+    title = "Change in Production/Consumption of Goods X1 and X2 (poor) ",
+    xrange = [-0.5, 1.5],
+    yrange = [0, 10],
+    key          = "X1 poor at t = 0",
+    fill_color   = light_blue,
+    fill_density = 0.2,
+    bars([-0.1, x1_poor_0, 0.2]),
+    key          = "X2 poor at t = 0",
+    fill_color   = light_red,
+    fill_density = 0.2,
+    line_width   = 1,
+    bars([0.1, x2_poor_0, 0.2]), 
+    key          = "X1 poor at t = 1",
+    fill_color   = blue,
+    fill_density = 0.2,
+    bars([0.9, x1_poor_1, 0.2]),
+    key          = "X2 poor at t = 1",
+    fill_color   = red,
+    fill_density = 0.2,
+    line_width   = 1,
+    bars([1.1, x2_poor_1, 0.2]),
+    xaxis = false
+)$
+
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+draw2d(
+    title = "Change in Production/Consumption of Goods X1 and X2 (rich) ",
+    xrange = [-0.5, 1.5],
+    yrange = [0, 10],
+    key          = "X1 rich at t = 0",
+    fill_color   = light_blue,
+    fill_density = 0.2,
+    bars([-0.1, x1_rich_0, 0.2]),
+    key          = "X2 rich at t = 0",
+    fill_color   = light_red,
+    fill_density = 0.2,
+    line_width   = 1,
+    bars([0.1, x2_rich_0, 0.2]), 
+    key          = "X1 rich at t = 1",
+    fill_color   = blue,
+    fill_density = 0.2,
+    bars([0.9, x1_rich_1, 0.2]),
+    key          = "X2 rich at t = 1",
+    fill_color   = red,
+    fill_density = 0.2,
+    line_width   = 1,
+    bars([1.1, x2_rich_1, 0.2]),
+    xaxis = false
+)$
+
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+/* Adjusted Graphs According to Previous Changes */
+
+/* Graph for Changes in Price p1 */
+draw2d(
+    title = "Changes in Price p1",
+      fill_density = 0.2,
+    bars([0, 0, 0]),
+    bars([0.4, 18, 0]),
+    key          = "Base Model 0",
+    fill_color   = red,
+    bars([0.1, p1_0, 0.1]),
+    key          = "Studied Model 1",
+    fill_color   = blue,
+    bars([0.3, p1_1, 0.1])
+)$
+
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+/* Graph for Changes in Price p2 */
+draw2d(
+    title = "Changes in Price p2",
+      fill_density = 0.2,
+    bars([0, 0, 0]),
+    bars([0.4, 18, 0]),
+    key          = "Base Model 0",
+    fill_color   = red,
+    bars([0.1, p2_0, 0.1]),
+    key          = "Studied Model 1",
+    fill_color   = blue,
+    bars([0.3, p2_1, 0.1])
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+/* Graph for Changes in Interest Rates */
+draw2d(
+    xaxis       = true,
+    title       = "Changes in Interest Rates",
+      fill_density = 0.2,
+    bars([0, 0, 0]),
+    bars([0.4, 4, 0]),
+    key          = "r for Base Model 0",
+    fill_color   = red,
+    bars([0.1, r_0, 0.1]),
+    key          = "r for Studied Model 1",
+    fill_color   = blue,
+    bars([0.3, r_1, 0.1])
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+/* Graph for Equivalent Variation (EV) */
+draw2d(
+    fill_density = 0.2,
+    xrange = [0.5, 2.5],
+    yrange = [-2, 5],
+    xaxis       = true,
+    title       = "EV - Equivalent Variation",
+    key          = "EV for Poor",
+    fill_color   = red,
+    bars([1, EV_poor, 0.5]),
+    key          = "EV for Rich",
+    fill_color   = blue,
+    bars([2, EV_rich, 0.5])
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+/* Graph for Subsidies */
+draw2d(
+    title       = "Subsidies",
+    xrange = [0.5, 2.5],
+    yrange = [0, 10],
+    fill_density = 0.2,
+    key          = "Subsidies for Poor",
+    fill_color   = red,
+    bars([1, Sub_poor, 0.5]),
+    key          = "Subsidies for Rich",
+    fill_color   = blue,
+    bars([2, Sub_rich, 0.5])
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+/* Graph for Tax Structure */
+draw2d(
+    title       = "Tax Structure",
+    
+    xrange = [0.5, 3.5],
+    yrange = [0, 10],
+    fill_density = 0.2,
+    key          = "Taxes on Sales of Goods X1, X2",
+    fill_color   = red,
+    bars([1, T_x12, 0.5]),
+    key          = "Taxes on Production Factors",
+    fill_color   = brown,
+    bars([2, T_kl, 0.5]),
+    key          = "Tax on Revenue",
+    fill_color   = dark_orange,
+    bars([3, T_p, 0.5])
+)$
+/* [wxMaxima: input   end   ] */
+
+
+
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima 24.02.1"$
