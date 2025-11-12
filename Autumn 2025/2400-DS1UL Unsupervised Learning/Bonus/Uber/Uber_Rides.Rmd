@@ -1,6 +1,6 @@
 ---
-title: "Enhanced Uber Trip Data Clustering Analysis"
-author: "Ondřej Marvan (USOS ID: 477001)"
+title: "Uber Trip Data Clustering Analysis"
+author: 'Ondřej Marvan (USOS ID: 477001)'
 date: "`r Sys.Date()`"
 output:
   html_document:
@@ -8,50 +8,323 @@ output:
     toc_float: true
     theme: united
     number_sections: true
+  pdf_document:
+    toc: true
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 ```
 
-```{r load libraries, include=FALSE}
-# If you don't have these, install them first:
+# 1. Main
+The task is as following: 
+Uber trip data:
+1.1	Load the data [uber-data.csv]
+	Discover and comment clusters of Uber data based on locations (longitude & latitude)
+	Analyze the cluster centers by time
+	Analyze the cluster centers by date
+	Remember to choose the right algorithm, compute the optimal number of clusters and quality measures
+	Develop adequate plots
+	Apply the dataset for forecasting 
+
+## 1.1 Load Libraries
+
+```{r load libraries, include=TRUE}
 # install.packages("tidyverse")
 # install.packages("lubridate")
 # install.packages("cluster")
 # install.packages("factoextra")
 # install.packages("forecast")
+install.packages("leaflet") # not installed yet on my machine
 
-# For data loading, manipulation (dplyr), and plotting (ggplot2)
-library(tidyverse)
-# For easier date-time parsing
-library(lubridate)
-# For k-means and silhouette analysis
-library(cluster)
-# For cluster visualization (e.g., elbow plot)
-library(factoextra)
-# For time-series forecasting
-library(forecast)
 
-# Set system language to English for consistent outputs
+
+library(tidyverse) # For data loading, manipulation, and plotting
+library(lubridate) # For easier date-time parsing
+library(cluster) # For k-means and silhouette analysis
+library(factoextra) # For cluster visualization
+library(forecast) # For time-series forecasting
+library(leaflet) # For map of New York display
+library(dbscan) #
+
+# Set system language as English
 Sys.setlocale("LC_ALL", "en_US.UTF-8")
 Sys.setenv(LANGUAGE = 'en')
 
-# Set a consistent seed for reproducibility
+# Seed seed
 set.seed(123)
 ```
 
+## 1.2 Load data
 
-```{r load data, include=FALSE}
+```{r load data, include=TRUE}
 # Load the data
-# Assumes "uber-data.csv" is in the same directory as this .Rmd file
 uber_data_raw <- read_csv("uber-data.csv")
 
 # Display the first few rows
-print("First few rows of raw data:")
+print("Raw data:")
 head(uber_data_raw)
 
 # Display the structure
 print("Structure of raw data:")
 glimpse(uber_data_raw)
+```
+column names "Date/Time" (as a character -> parse), "Lat" (lattitude), "Lon" (longitude), and "Base" (not figured out yet). There are over 1 mil rows. 
+
+## 1.3 Summary statistics
+```{r summary, include=TRUE}
+summary(uber_data_raw)
+```
+Nothing extraordinary here.
+
+
+## 1.4 Inspect "Base" Column
+```{r base column}
+print("Base values")
+table(uber_data$base)
+```
+Base 'B02764' handled the most trips, while 'B02512' handled the fewest. No clue what it refers to. 
+
+# 2. Data Preparation
+## 2.1 Data Cleaning 
+
+```{r data cleaning, include=TRUE}
+uber_data <- uber_data_raw %>%
+  # Columns rename
+  rename(
+    datetime = `Date/Time`,
+    latitude = Lat,
+    longitude = Lon,
+    base = Base
+  ) %>%
+  # DateTime Parse
+  mutate(
+    datetime = mdy_hms(datetime), # Parse
+    hour = hour(datetime),       # Extract hour
+    date = as.Date(datetime)     # Extract date
+  )
+
+# Check for missing data
+na_count <- sum(is.na(uber_data))
+print(paste("Missing values:", na_count))
+
+# Show the first few rows of the new, cleaned data
+print("Cleaned data:")
+head(uber_data)
+```
+
+## 2.2 Data scaling for clustering
+
+```{r data scaling for cluestering, include=TRUE}
+# Latitude and Longitude columns only for the scale
+location_data <- uber_data %>%
+  select(latitude, longitude) %>%
+  scale()
+
+print("Scaled location data (first 6 rows):")
+head(location_data)
+```
+latitude and longitude standardization for clustering purposes. 
+
+
+# 3. Clustering Analysis (K-Means)
+## 3.1 Find Optimal Number of Clusters (k)
+
+```{r Elbow method, include=TRUE}
+# 10k sample from the scaled data for the elbow plot (20k were too much)
+sample_data_elbow <- location_data[sample(nrow(location_data), 10000), ]
+
+# Compute and plot the elbow method using the factoextra package
+fviz_nbclust(sample_data_elbow, kmeans, method = "wss", k.max = 8) +
+  ggtitle("Elbow Method for Optimal k")
+```
+10k sample is approx. 1 % of the whole dataset. The resulting plot shows "elbow" at k=4. Adding more clusters no longer leads to a significant reduction the sum of squares. 
+
+
+## 3.2 Perform K-Means Clustering
+
+```{r K-means Clustering, include=TRUE}
+# This runs the algorithm 25 times and picks
+# the best result.
+k_fit <- kmeans(location_data, centers = 4, nstart = 25)
+
+uber_data$cluster <- as.factor(k_fit$cluster)
+
+print("K-means complete.")
+head(uber_data)
+```
+
+# 4. Visualize and Analyze Clusters
+
+## 4.1. Plot Clusters on Map
+
+```{r Plotting Clusters, include=TRUE}
+### 4.1. Plot Clusters on Map
+
+# 50k point sample so the map loads quickly (lagging anyway).
+uber_data_sample <- uber_data %>%
+  sample_n(50000)
+
+# 1. Create a color palette for the clusters
+# Use of "viridis" as recommended during the R Intro classes. 
+pal <- colorFactor(
+  palette = "viridis",
+  domain = uber_data_sample$cluster
+)
+
+# 2. Create the leaflet map with help of Gemini
+leaflet(data = uber_data_sample) %>%
+  
+  # Add the map background.
+  # "CartoDB.Positron" is a clean map.
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  
+  # Add our clustered points
+  addCircleMarkers(
+    lng = ~longitude,
+    lat = ~latitude,
+    color = ~pal(cluster), # Use the palette we defined
+    radius = 2,            # Small dots
+    stroke = FALSE,        # No outline
+    fillOpacity = 0.5,     # Make them semi-transparent
+  ) %>%
+
+  # Add a legend to explain the colors
+  addLegend(
+    "bottomright",
+    pal = pal,
+    values = ~cluster,
+    title = "Cluster",
+    opacity = 1
+  )
+```
+
+Each row in the dataset is a record of a single pickup (most probably), with the Date/Time being the time of the pickup and the Lat/Lon being the location. 
+
+## 4.2. Cluster Sizes
+
+```{r Sluster size, include=TRUE}
+print("Cluster sizes:")
+table(uber_data$cluster)
+```
+
+Cluster 1 (540,075 trips): high-density pickup area of Manhattan.
+Cluster 2 (381,501 trips): Brooklyn.
+Cluster 3 (35,979 trips): The smallest cluster, JFK Airport and Rhode Island (low density).
+Cluster 4 (70,581 trips): Represents the Bronx and Upper Manhattan area (lower density).
+
+## 4.3. Cluster Quality (Silhouette Analysis)
+
+```{r cluster quality, include=TRUE}
+sample_indices <- sample(nrow(location_data), 10000)
+sample_data_sil <- location_data[sample_indices, ]
+
+sample_clusters <- k_fit$cluster[sample_indices]
+
+# Calculate and plot the silhouette
+sil <- silhouette(sample_clusters, dist(sample_data_sil))
+fviz_silhouette(sil) + ggtitle("Silhouette Analysis")
+```
+Avg. Silhoutte width is 0.4 that is quite fair score. Cluster 1 and 3 is realatively well definied while clusters 2 and 4 achieved poorer score and both with negative tails. 
+
+## 4.4 DBSCAN
+```{r dbscan-eps-plot}
+# Take a 10k sample to find optimal eps
+sample_data_dbscan <- location_data[sample(nrow(location_data), 10000), ]
+
+# Plot the k-distance plot
+# We set k = minPts = 50
+kNNdistplot(sample_data_dbscan, k = 50, ylim = c(0, 0.2))
+abline(h = 0.1, col = "red", lty = 2)
+```
+Optimal EPS value isn't really visible, so it requires to zoom in the plot. 
+
+```{r dbscan-eps-plot-zoom}
+# 1. Calculate the 50-nearest neighbor distances
+# We use the same 10k sample from the previous chunk
+knn_data <- kNN(sample_data_dbscan, k = 50)
+
+# 2. Get *only* the distances for the 50th neighbor and sort them
+sorted_distances <- sort(knn_data$dist[, 50])
+
+# 3. Create the plot using the standard plot() function
+# This allows us to use ylim to zoom in
+plot(sorted_distances, 
+     type = 'l', 
+     ylab = "50-NN Distance", 
+     xlab = "Points (sorted by distance)",
+     main = "k-NN Distance Plot (Zoomed)",
+     ylim = c(0, 0.2)) 
+
+# Reference line
+abline(h = 0.1, col = "red", lty = 2)
+```
+```{r dbscan-run}
+# Take a larger 50k sample to run the algorithm
+dbscan_sample_indices <- sample(nrow(location_data), 50000)
+dbscan_sample_data <- location_data[dbscan_sample_indices, ]
+
+# Run dbscan
+# Cluster "0" is special: it represents all the "noise" points.
+set.seed(123) # for reproducibility
+db_fit <- dbscan(dbscan_sample_data, eps = 0.1, minPts = 50)
+
+# Add cluster results back to the original (unscaled) data for plotting
+dbscan_results <- uber_data[dbscan_sample_indices, ]
+dbscan_results$dbscan_cluster <- as.factor(db_fit$cluster)
+
+print("DBSCAN cluster counts (Cluster 0 = Noise):")
+table(dbscan_results$dbscan_cluster)
+```
+
+
+# 5. Time-Based Analysis
+
+## 5.1. Analysis by Hour (Movement Path)
+
+```{r cluster quality, include=TRUE}
+# Calculate average location per cluster, per hour
+uber_hourly <- uber_data %>%
+  group_by(cluster, hour) %>%
+  summarize(
+    avg_lat = mean(latitude),
+    avg_lon = mean(longitude),
+    .groups = 'drop'
+  )
+
+# Plot the 24-hour path
+ggplot(uber_hourly, aes(x = avg_lon, y = avg_lat, color = hour)) +
+  geom_path(linewidth = 1) + # Connects the points in order of hour
+  geom_point() +             # Adds a point for each hour
+  facet_wrap(~ cluster, scales = "free") + # One map for each cluster
+  scale_color_gradient(low = "lightblue", high = "darkblue") +
+  labs(
+    title = "24-Hour Movement of Cluster Centers",
+    x = "Average Longitude",
+    y = "Average Latitude",
+    color = "Hour of Day"
+  ) +
+  theme_minimal()
+```
+
+```{r cluster quality, include=TRUE}
+# Calculate average location per cluster, per date
+uber_daily <- uber_data %>%
+  group_by(cluster, date) %>%
+  summarize(
+    avg_lat = mean(latitude),
+    avg_lon = mean(longitude),
+    .groups = 'drop'
+  )
+
+# Plot average latitude by date
+ggplot(uber_daily, aes(x = date, y = avg_lat, color = cluster)) +
+  geom_line() +
+  labs(
+    title = "Average Latitude of Clusters by Date",
+    x = "Date",
+    y = "Average Latitude"
+  ) +
+  scale_x_date(date_breaks = "1 week", date_labels = "%b %d") +
+  theme_minimal()
 ```
