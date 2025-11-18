@@ -69,6 +69,14 @@ Class dates
 Homework till Wed EOD (12.11.) - more available on Moodle 
 submit via email - ideally notebook 
 
+## 06 (revise on 18.11.)
+- why dim reduction - because of analysis of the dataset based on literature review or recommendation
+- Done after cleaning the data 
+- thanks to that, we speed up the analysis, find new trends and make better visualizations
+- Sometimes done automatically 
+- Make two dimensional data (x and y) only x, so data will be in linear order (like a line). 
+- 
+
 
 
 
