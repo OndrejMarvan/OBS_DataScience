@@ -75,6 +75,9 @@ submit via email - ideally notebook
 - thanks to that, we speed up the analysis, find new trends and make better visualizations
 - Sometimes done automatically 
 - Make two dimensional data (x and y) only x, so data will be in linear order (like a line). 
+- t -SNE for those ambitious with their projects, would be recognised as something extra 
+	- useful for text dimensioning for next year 
+- Packages for MDS in R located on Moodle for analysis -> to make our life easier
 - 
 
 
