@@ -9,10 +9,21 @@ Sys.setlocale("LC_ALL","English")
 Sys.setenv(LANGUAGE='en')
 
 ################################################################################
+#Notes_OM
+?str() # Check structure
+?min() # Smallest value
+?max() # Largest value
+?mean() # Mean
+?median()Median
+quantile(X, p=0.25)Quantile (of given percentage)
+IQR()Interquartile range
+sd() # Standard deviation
+var()Variance
 
 ### Basic statistics ###########################################################
 
-water <- read.csv("data/graphics - water quality/water_potability.csv", sep = ",", dec=".")
+setwd("~/Documents/GitHub/OBS_DataScience/OBS_DataScience/Autumn 2025/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/Datasets")
+water <- read.csv("graphics - water quality/water_potability.csv", sep = ",", dec=".")
 head(water) 
 
 # Data structure
@@ -163,23 +174,51 @@ tapply(waterNoMiss$Hardness, waterNoMiss$kmeans, mean)
 ### Tasks ######################################################################
 
 # 1. a) Load the dataset "Life Expectancy Data.csv" into R and name it "life" 
+setwd("~/Documents/GitHub/OBS_DataScience/OBS_DataScience/Autumn 2025/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/Datasets/dataset - life expectancy")
+life <- read.csv("Life Expectancy Data.csv")
+
+
 # b) Preview its structure and summarise the values (two lines of code).
+str(life)
+summary(life)
+
+
 # c) Filter the dataset - show data for 2013 only (use the $ notation where you can).
 # Summarize the values of the subset (summary()) without saving the data to a 
 # separate intermediate variable.
+summary(life[life$Year == 2013, ])
+
+
+
 # d) Calculate median of life.expectancy for Developing Countries (status variable) 
 # in 2010. Use only one line of code, with no intermediate objects. Get the numerical result.
-# e) What the average Polio vaccination share was over the world in the year 2014?
+median(life$Life.expectancy[life$Status == "Developing" & life$Year == 2010], na.rm = TRUE)
 
+# e) What the average Polio vaccination share was over the world in the year 2014?
+mean(life$Polio[life$Year == 2014], na.rm = TRUE)
 
 # 2. a) Create a subset of "life" dataset for year 2008 only, name it life2008.
+life2008 <- life[life$Year == 2008, ]
+
+
 # b) Remove rows which include missing values from your dataset.
+life2008 <- life2008[complete.cases(life2008), ]
+
 # c) Build a linear model for the "life2008" dataset, in which the dependent (y) variable
 # will be the GDP, and the regressors (x) will be Polio, Alcohol and infant.deaths
 # (in that order). Name the output object model2008.
+model2008 <- lm(GDP ~ Polio + Alcohol + infant.deaths, data = life2008)
+
 # d) Check the summary of the modelling results and the structure of output.
+summary(model2008)
+str(model2008)
+
 # e) Print out the coeficient for infant.deaths (use $ notation where possible).
+model2008$coefficients["infant.deaths"]
+# OR accessing by index if position is known, but name is safer
+
 # f) Calculate the variance of the absolute difference between real GDP values 
 # and the values fitted by your model (fitted.values element). Hint: use abs() function.
+var(abs(life2008$GDP - model2008$fitted.values))
 
 
