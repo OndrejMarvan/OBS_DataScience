@@ -1,0 +1,185 @@
+################################################################################
+#######################  Maria Kubara, PhD #####################################
+########################## RIntro 2025/26 ######################################
+############################ Class 7 ###########################################
+################################################################################
+
+# changing the language to English
+Sys.setlocale("LC_ALL","English")
+Sys.setenv(LANGUAGE='en')
+
+################################################################################
+
+### Basic statistics ###########################################################
+
+water <- read.csv("data/graphics - water quality/water_potability.csv", sep = ",", dec=".")
+head(water) 
+
+# Data structure
+
+str(water) # structure of dataset
+
+# Minimum and maximum values
+min(water$ph, na.rm = TRUE)
+max(water$ph, na.rm = TRUE)
+
+# automatic showing of min and max
+range(water$ph, na.rm = TRUE)
+
+# range
+max(water$ph, na.rm = TRUE) - min(water$ph, na.rm = TRUE)
+
+# mean
+mean(water$ph, na.rm = TRUE)
+
+# truncated mean
+mean(water$ph, na.rm = TRUE, trim = 0.1)
+
+# median
+median(water$ph, na.rm = TRUE)
+
+# quantiles
+quantile(water$ph, 0.25, na.rm = TRUE)
+
+quantile(water$ph, 0.5, na.rm = TRUE)
+
+quantile(water$ph, 0.75, na.rm = TRUE)
+
+# IQR - interquartile range
+IQR(water$ph, na.rm = TRUE)
+
+# standard deviation
+sd(water$ph, na.rm = TRUE) 
+
+# variance
+var(water$ph, na.rm = TRUE)
+
+# automatic calculation of statistics for variables -> lapply 
+lapply(water[, 1:3], mean, na.rm = TRUE)
+
+# summarizing the dataset
+summary(water)
+
+# additional function with statistical summary 
+install.packages("pastecs")
+library(pastecs)
+
+stat.desc(water) # issue with readability of the data
+
+options(scipen = 999) # turning off the matematical notation
+stat.desc(water)
+
+round(stat.desc(water),2) # rounding the results 
+
+
+### Modelling ##################################################################
+
+# Build-in dataset longley
+summary(longley)
+str(longley)
+
+
+
+# Building a linear regression model
+
+cor(longley$GNP, longley$Employed)
+
+model <- lm(GNP ~ Employed, data = longley)
+model
+
+summary(model)
+str(model)
+
+# analysis the structure of the output
+
+# List elements can be called with $ notation by its names
+model$coefficients
+model[[1]] # same result
+
+# Data frame
+model$model
+
+# how to get only one variable from this dataframe?
+model$model$GNP # calling the location one by one
+model[[12]]$GNP
+model[[12]][,1] #alternative notations
+
+
+
+# Adding one more variable
+
+model1 <- lm(GNP ~ Employed + Armed.Forces, data = longley)
+
+summary(model1)
+str(model1) # structure is similar -> this results from lm() function call
+
+# more coefficients because the model is richer
+model1$coefficients
+model1[[1]] # same result
+
+# how to get the intercept?
+model1$coefficients[1]
+model1[[1]][1] # same result
+model1$coefficients['(Intercept)'] # same result
+
+# We usually use the $ notation with names, for as long as we can for given
+# output object. This gives much more clarity in the code about what is being read
+
+
+
+### Clustering #################################################################
+
+set.seed(123)
+
+# k-means function has problems with missing data, let's put them aside
+waterNoMiss <- water[complete.cases(water),]
+
+clustering <- kmeans(waterNoMiss, 4)
+summary(clustering)
+
+str(clustering)
+clustering$centers
+
+# let's add clustering vector to our data
+clustering$cluster # vector with assignment to k-means groups of each observations
+waterNoMiss$kmeans <- clustering$cluster #creating a new variable with clusters
+
+# Getting the mean of water Hardness in each group
+tapply(waterNoMiss$Hardness, waterNoMiss$kmeans, mean)
+
+
+
+### Small spoiler:
+# 1. Getting the mean for groups with tidyverse
+
+# library(tidyverse)
+# waterNoMiss %>% group_by(kmeans) %>% summarize(mean = mean(Hardness))
+
+# 2. Graphics - using the clustering result as a "coloring" factor 
+
+# plot(waterNoMiss$Hardness, waterNoMiss$ph, col=waterNoMiss$kmeans)
+
+
+### Tasks ######################################################################
+
+# 1. a) Load the dataset "Life Expectancy Data.csv" into R and name it "life" 
+# b) Preview its structure and summarise the values (two lines of code).
+# c) Filter the dataset - show data for 2013 only (use the $ notation where you can).
+# Summarize the values of the subset (summary()) without saving the data to a 
+# separate intermediate variable.
+# d) Calculate median of life.expectancy for Developing Countries (status variable) 
+# in 2010. Use only one line of code, with no intermediate objects. Get the numerical result.
+# e) What the average Polio vaccination share was over the world in the year 2014?
+
+
+# 2. a) Create a subset of "life" dataset for year 2008 only, name it life2008.
+# b) Remove rows which include missing values from your dataset.
+# c) Build a linear model for the "life2008" dataset, in which the dependent (y) variable
+# will be the GDP, and the regressors (x) will be Polio, Alcohol and infant.deaths
+# (in that order). Name the output object model2008.
+# d) Check the summary of the modelling results and the structure of output.
+# e) Print out the coeficient for infant.deaths (use $ notation where possible).
+# f) Calculate the variance of the absolute difference between real GDP values 
+# and the values fitted by your model (fitted.values element). Hint: use abs() function.
+
+
