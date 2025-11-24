@@ -90,12 +90,15 @@ https://www.theguardian.com/environment/2013/apr/08/climate-change-wine-producti
 - `prec` (Precipitation)
 
 other variables: 
-topography maps
 Soil quality
+topography maps
 
 To share: 
 - how much to submit before 
-- Indeces - grape ripening (dojrzewanie winogron)
+- Indeces - grape ripening (dojrzewanie winogron) - important to consider min temperature in the case of northern Europe. 
+- Introduction
+- Scope - Most probably only Europe (on the other hand I may come to interesting results in other regions, such as finding completely new countries suitable for viticulture).
+- Colletcing the data 
 - ![[Pasted image 20251124173945.png]]
 
 
