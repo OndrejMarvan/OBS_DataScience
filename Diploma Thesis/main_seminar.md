@@ -79,3 +79,33 @@ Create map software, some kind of calculator (how many degrees increase, based o
 Green to prepare it. 
 
 https://www.theguardian.com/environment/2013/apr/08/climate-change-wine-production
+
+## 23.11.2025
+**Variables:**
+
+- `tmin` (Minimum Temperature)
+    
+- `tmax` (Maximum Temperature)
+    
+- `prec` (Precipitation)
+
+
+## All wineries - Features
+https://github.com/oOo0oOo/winerymap?tab=readme-ov-file
+[](https://github.com/oOo0oOo/winerymap?tab=readme-ov-file#features)
+
+- 34k wineries in 2078 regions around the world
+- Fully rendered client side, all data is delivered upon first page load
+- Search for wineries and regions by name
+- Debounced rendering of markers
+- Grape varieties are available for approximately 12% of the wineries
+- Simple design: Leaflet and vanilla JS
+![[Pasted image 20251123191953.png]]
+![Global change in viticulture suitability RCP 8.5. Change in viticulture suitability is shown between current (1961 – 2000) and 2050 (2041 – 2060) time periods, showing agreement among a 17-GCM ensemble. Areas with current suitability that decreases by midcentury are indicated in red ( > 50% GCM agreement). Areas with current suitability that is retained are indicated in light green ( > 50% GCM agreement) and dark green ( > 90% GCM agreement), whereas areas not suitable in the current time period but suitable in the future are shown in light blue ( > 50% GCM agreement) and dark blue ( > 90% GCM agreement). Insets : Greater detail for major wine-growing regions: California/western North America ( A ), Chile ( B ), Cape of South Africa ( C ), New Zealand ( D ), and Australia ( E ).](https://www.researchgate.net/profile/Gary-Tabor/publication/236140651/figure/fig1/AS:299393841418240@1448392462150/Global-change-in-viticulture-suitability-RCP-85-Change-in-viticulture-suitability-is.png)
+![[Pasted image 20251123210742.png]]
+## Weather conditions
+The minimum climatic requirements for viticulture include an average annual temperature of at least 9°C, an average temperature of the warmest month of at least 18°C, and a maximum low temperature in winter of minus 13°C. The minimum temperature necessary for grapevine physiological activity is 10°C (50°F), which serves as the base temperature for calculating growing degree-days.
+
+For optimal grape growth, temperatures should ideally range between 25°C and 28°C. However, grapevines can be injured by temperatures below their critical thresholds; for example, most _Vitis vinifera_ varieties are considered very tender and can be damaged at temperatures between 5°F and -5°F (-15°C to -21°C). The cold hardiness of grapevines varies by variety, with some being more tolerant of low temperatures than others.
+
+In terms of temperature variation, diurnal temperature variation—the difference between daytime highs and nighttime lows—is an important factor, particularly for white wine production, as it helps maintain acidity in grapes. The Winkler Index, which calculates growing degree-days above 10°C from April to October in the Northern Hemisphere, is used to classify regions based on heat accumulation and is strongly correlated with grapevine phenology and berry composition at harvest.
