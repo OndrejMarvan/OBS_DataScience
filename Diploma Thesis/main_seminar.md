@@ -89,6 +89,17 @@ https://www.theguardian.com/environment/2013/apr/08/climate-change-wine-producti
     
 - `prec` (Precipitation)
 
+other variables: 
+topography maps
+Soil quality
+
+To share: 
+- how much to submit before 
+- Indeces - grape ripening (dojrzewanie winogron)
+- ![[Pasted image 20251124173945.png]]
+
+
+
 
 ## All wineries - Features
 https://github.com/oOo0oOo/winerymap?tab=readme-ov-file
@@ -109,3 +120,7 @@ The minimum climatic requirements for viticulture include an average annual temp
 For optimal grape growth, temperatures should ideally range between 25°C and 28°C. However, grapevines can be injured by temperatures below their critical thresholds; for example, most _Vitis vinifera_ varieties are considered very tender and can be damaged at temperatures between 5°F and -5°F (-15°C to -21°C). The cold hardiness of grapevines varies by variety, with some being more tolerant of low temperatures than others.
 
 In terms of temperature variation, diurnal temperature variation—the difference between daytime highs and nighttime lows—is an important factor, particularly for white wine production, as it helps maintain acidity in grapes. The Winkler Index, which calculates growing degree-days above 10°C from April to October in the Northern Hemisphere, is used to classify regions based on heat accumulation and is strongly correlated with grapevine phenology and berry composition at harvest.
+
+![[Pasted image 20251124174334.png]]
+
+![[Pasted image 20251124174346.png]]
