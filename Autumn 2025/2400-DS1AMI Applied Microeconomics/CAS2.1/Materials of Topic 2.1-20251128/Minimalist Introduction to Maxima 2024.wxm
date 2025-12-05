@@ -1,0 +1,857 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 23.05.1 ] */
+/* [wxMaxima: title   start ]
+Minimalist Introduction
+   [wxMaxima: title   end   ] */
+
+
+/* [wxMaxima: section start ]
+START
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Some starting informations
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+Maxima is case sensitive.
+The program executes the contents of the entire cell.
+The cell is marked by the left-hand buckle [.
+The active cell is marked in red (edit) grey rectangle (selection).
+The error cell is marked in a red rectangle (selection).
+
+   Activate a cell -> Mark the cell and push at the same time Shift-Enter
+   
+The program works in input/output mode.
+Inputs and outputs are numbered.
+You can refer to them with %. (i...%) input or (o...%) output.
+You can refer to the last computed output using (%).
+
+A single statement can take several lines.
+At the end of the statement you have to place the end mark:  
+    (;) the result will be printed
+    ($) the result will be hidden
+
+In some cases, it is more convenient to divide the code into several cells(but it is not recommended)
+
+There are several ways to enter commands:
+- you can write your code
+- copy it from notes
+- use graphical interface in the menu bar(but it is not recommended)
+
+If Maxima is unstable, then it is good to restart the program (Menu -> Maxima -> Restart Maxima).
+    
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: subsect start ]
+The begining of the code
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: subsubsect start ]
+kill(all);
+   [wxMaxima: subsubsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+One instruction must be at the beginning of the code.
+
+kill(all); It cleans the memory of the program.
+ 
+Maxima stores variable declarations. In the absence of the command kill(all);
+The program will use in future calculations the declared/calculated values of the variables.
+
+Example 1a 
+Run it two or three times.
+The result is inserted for further calculations.
+The new results are unpredictable.
+
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+eq1: 100 = x1^2*x2^4;
+solve(eq1,x1);
+x1:rhs(%[2]);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Example 1b (OK)
+Command kill (all); is at the beginning.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all);
+eq1: 100 = x1^2*x2^4;
+solve(eq1,x1);
+x1:rhs(%[2]);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsubsect start ]
+The declaration of properties
+assume(variable > < value, ...)
+declare (variable_1, property_1, property_2, propert_2, ...)
+   [wxMaxima: subsubsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+Declaring the properties of a variable makes it easy to work with a program. 
+There are two basic command:  
+assume(variable >< value, ...); declares the intervals the variables belong to. 
+declare (variable_1, propert_1, variable_2, propert_2, ...)
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: comment start ]
+Simple declarations of type a > 0 or b < 1 and b > 0 can:
+ - Speed up work of Maxima.
+ - Allow completing the procedure
+
+Maxima will limit the calculations to the numerical interval we are interested in, or where possible solutions are.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: comment start ]
+Example 2a:
+The code without declaration assume(a > 0); will execute indefinitely.
+You have to restart the program (Menu -> Maxima -> Restart Maxima).
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all);
+load (newton1);
+newton (x^2 - a^2, x, a/2, a^2/100);
+''(x^2 - a^2, x = %);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Example 2b:
+With the statement assume (); Maxima will complete the task.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+assume (a > 0);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Maxima may ask us about the characteristics of the variable. 
+After such a conversation, you can declare the variable type at the beginning of the code. 
+With the declaration, we will not repeat this conversation after every run of the code.
+
+Declare (a_1, p_1, a_2, p_2, ...);
+
+where:
+a_i - variables
+p_i - property of a_i 
+
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: comment start ]
+Example 3a: Maxima asks us to declare parameter a.
+You can answer this question during program execution (-> no; -> Shift  Enter)
+It is not convenient.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all);
+assume(x>0);
+eq1:10=x^a;
+solve(eq1,x);
+/* [wxMaxima: input   end   ] */
+/* [wxMaxima: question  start ] */
+<math><st>Is </st><mi>a</mi><st> an </st><mi>integer</mi><st>?</st></math>
+/* [wxMaxima: question  end   ] */
+/* [wxMaxima: answer  start ] */
+y;
+/* [wxMaxima: answer  end   ] */
+
+
+/* [wxMaxima: comment start ]
+When the declaration is placed at the beginning of the code, 
+Maxima will not ask us anything when we execute the code.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all);
+assume(x>0);
+declare (a, noninteger);
+eq1:10=x^a;
+solve(eq1,x);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+The operators =, : , := 
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+Assignment operators are used in the following cases
+    :  assigning a variable value 
+    =  declaring an equation
+    := declaring a function f(x1,x2)
+
+The assignment operator (: =) is time-consuming to write. You can use the : operator instead.  
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all);
+h:3;
+
+f1(x1,x2):= h*x1*h/2*x2; 
+eq1: 100 = h*x1*h/2*x2;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+Maxima sometimes inserts the previously declared values, sometimes does not do it. 
+You have to force the program to insert the previously declared values(or not to do it) 
+
+Substitution
+'' Inserts the previously declared value to the expression.
+'  Does not allow to insert the previously declared value to the expression.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all);
+h:3;
+
+f1(x1,x2):= '(h*x1*h/2*x2); 
+eq1: 100 = '(h*x1*h/2*x2);
+
+f1(x1,x2):= ''(h*x1*h/2*x2); 
+eq1: 100 = ''(h*x1*h/2*x2);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+Using result most recently computed by Maxima % is a convenient way to avoid the declaration of new variables.
+
+% the output most recently computed by Maxima 
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all);
+assume(x>0);
+declare (a, noninteger);
+10=x^a;
+solve(%,x);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: section start ]
+The list operationsts,:,[n],lhs,rhs 
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+Maxima likes to use and create lists.
+
+A list creates everything in brackets []: numbers, variables, functions, text, other lists.
+List items are separated by a comma.
+Address: b[n] is the n-th  item of the list b.
+
+Simple list declaration is by the operator (:)
+B: [b1, b2, ..., bi]
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+f2(x):=[c=x^a]$
+b:["tekst",''f2(x)]$
+d:[[10,"text"],b];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Extracting an item from the list must be spread over several steps.
+Example: We are interested in extracting the equation c = x ^ 3 from list d. 
+It is an element in one list that is part of the other list which is a part of another list.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+f2(x):=[c=x^a]$
+b:["tekst",''f2(x)]$
+d:[[10,"text"],b];
+
+ d[2];
+%[2];
+%[1];
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+However, we are not interested in the whole equation, only part of it (x^a). 
+To extract the item we use 
+    rhs () extract the left side of equation 
+    lhs () extract the right side of equation 
+
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+f2(x):=[c=x^a]$
+b:["tekst",''f2(x)]$
+d:[[10,"text"],b];
+
+ d[2];
+%[2];
+eq1:%[1];
+
+
+rhs(eq1)$
+print("the right side of equation =",%)$ 
+
+
+lhs(eq1)$
+print("the left side of equation =",%)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+IMPORTANT:
+
+The results of calculations are usually presented as a list.
+
+Below is an example of selecting an item from the results list.
+
+We have the function Y = f (X1, X2) and we have to represent it as: X2 = g(Y, X1);
+The solution shows results in the form of a list.
+We have to determine which element we are interested in, extract the element from the list
+and extract the right side of the equation with rhs ().
+
+When we do not know which solution is correct,
+we can substitute numerical values to create an intuition.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all);
+assume(x1>0, x2>0, y>0)$
+eq1: y = a/(1+r) + b/(1+r)^2;
+solve([eq1],[r]);
+x2:rhs(%[1]);
+y:100;
+a:120; b:30;c:40;
+float(solve([eq1],[r]));
+x2:(rhs(%[1]));
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: section start ]
+Simplification
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+Maxima generates the results of the calculations sometimes in a very complex form. In this case, you can use dedicated commands:
+- radcan ()
+- ratsimp ()
+- fullratsimp ()
+.....
+After the procedure, the form of the result is better. 
+The bad form of results may block further calculations.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all);
+assume(x1>0, x2>0, y>0)$
+eq1:y=(x1^(1/3))*(x2^(2/3));
+solve([eq1],[x2]);
+x2:rhs(%[1]);
+y:10;
+x1:20;
+x2:''x2; 
+x2:radcan(x2);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Maxima is a symbolic calculations program and even treates numbers as symbols.
+To force Maxima to numerically treat the result we use the float () command;
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all);
+assume(x1>0, x2>0, y>0)$
+eq1:y=(x1^(1/3))*(x2^(2/3));
+solve([eq1],[x2]);
+x2:rhs(%[1]);
+y:10;
+x1:20;
+x2:''x2;
+x2:radcan(''x2);
+float(x2);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: section start ]
+Comparison 
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+This is a very helpful function where we have to compare two complex expressions.
+
+This command compare() works fine if:
+1) we well and fully declare variable properties (use assume ())
+2) we will use (radcan()) to simplify the expression.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+assume(x1>0,x2>0,p1>0,p2>0,U>0,a>0,b>0)$
+x:radcan((0.4641*a^0.6*b^1.4*M^2)/((b+a)^2.0*p1^2.6*p2^3.4)-(0.0441*a^0.6*b^1.4*M^2)/((b+a)^2.0*p1^2.6*p2^3.4));
+
+compare (x,0)$
+print("x is " , compare (x,0), "than 0")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: section start ]
+Maxima in economics 
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+In economics there is not much "real math" problems, it is only calculus.
+Just a few commands are enough to handle with most economic problems.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Derivatives 
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+Partial derivative: diff (function, variable, the degree of derivative).
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all);
+assume(x1>0, x2>0, y>0)$
+y:(x1^(1/3))*(x2^(2/3));
+diff(y,x1,1)$
+print(%," first derivative of y",y, "respect to x1")$
+
+diff(y,x2,2)$
+print(%," second derivative of y",y, "respect x2")$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Hessian ia a matrix of second derivatives of a function.
+hessian(expression, list of variables);
+hessian(f(x1,x2), [x1, x2]);
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all);
+assume(x1>0, x2>0, y>0)$
+y:(x1^(1/3))*(x2^(1/3));
+hessian(y, [x1, x2]);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+We can calculate its determinant too.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all);
+assume(x1>0, x2>0, y>0)$
+y:(x1^(1/3))*(x2^(1/3));
+hessian(y, [x1, x2]);
+d_h: determinant(%);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Solving Equations
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+The command 
+solve([list of equations], [list of variables])  
+solve linear and nonlinear equations.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all);
+assume(x1>0, x2>0)$
+eq1: x1 + x2 = 200;
+eq2: x1^2/x2 = 1/4;
+
+''solve([eq1, eq2],[x1,x2]);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+The function maximising
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+Maximising the function of one variable can be done in two steps:
+- calculate the first derivative equation to its
+zero.
+- Calculate the second derivative and compare it with 0
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all);
+assume(Y>0, L>0, p>0, w>0)$
+Y: L^0.5;
+profit : p*Y - w*L;
+eq1: diff(profit,L,1)=0;
+Lhat: solve([%],[L]);
+sd: compare( diff(profit,L,2),0);
+print("The second derivative is", sd, " than",0) $
+print("Function ", profit, " takes maximum value at",Lhat) $
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+A typical optimisation problem in economics is maximising the function of many variables with constraints.
+
+We use solution by substitution (see the example below) or we use the Lagrange method
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: comment start ]
+Example: 
+
+Minimize cost function C: w1X1 + w2X2 with constraint (X1^(1/3))(X2^(2/3)) = Y 
+Kreps, Microeconomic Theory, 1995)
+
+From the production function X1^(1/3))(X2^(2/3)) = Y
+
+X2 = Y ^ (3/2) / sqrt (X1)
+
+Substitution of cost functions C = (w2Y ^(3/2))/sqrt(X1)) + w1X1
+
+Minimise function of one variable X1. 
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all);
+assume(X1>0, X2>0,w1>0,w2>0,Y>0, a>1)$
+
+eq1:Y =(X1^(1/3))*(X2^(2/3));
+solve([eq1],[X2]);
+X2:rhs(%[1]);
+C:w1*X1+w2*X2;
+eq2:diff(C,X1,1)=0;
+solve([eq2],[X1]);
+X1:rhs(%[3]);
+X2:''X2;
+C:w1*X1+w2*X2;
+print ("For production functions", eq1, "cost function takes the form C =",%) $
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+ Limits  
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+The function limit at point x can be calculated using the following procedure:
+limit (expr, x, val, dir),
+Where:
+- expr  expression 
+- x  variable
+- val value
+- dir  direction. 
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: comment start ]
+Example:
+The limit of the function f (x) = log(x)/x, where x tends to 0 from the right
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+assume(x>0)$
+(1/x)*log(x);
+limit(%,x,0,plus);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Integration 
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+Unconditional integral
+
+Example: 
+Integral of function exp (-x ^ 2/2) / sqrt (2 *% pi)
+Note: ' means do not execute
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+assume(x > 0)$
+y: exp (-x^2/2)/sqrt(2 * %pi);
+'integrate (''y, x);
+integrate (''y, x);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Solve definite the definite integral for the function with limits -inf, inf. 
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+assume(y > 0)$
+y: exp (-x^2/2)/sqrt(2 * %pi);
+a:3$ b:0$ c:3$
+'integrate(y, x, b, c);
+''integrate(y, x, b, c);
+float(%);
+
+''integrate(y, x, -inf, inf);
+float(%);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: section start ]
+Graphs
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: subsect start ]
+Graphs 2d
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+The ability to quickly evaluate features using 2d and 3d graphs is one of the greatest benefits of Maxima. You can use several types of graphs.
+
+Preferred by me are the functions draw3d and draw2d, but you can use  plot2d and plot3d instead.
+
+If you use draw3d and draw2d you should always load package draw at the beginning of the cell (load (draw);)
+
+You need to close the drawing interface to make the next graph appear.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all);
+load(draw);
+assume(x1>0, x2>0, p>0, w>0)$
+Y:L^0.5;
+zysk :p*Y - w*L;
+p:100;
+w:2;
+draw2d(explicit(zysk,L, 20, 100) )$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Maxima has a great plot editing capability.
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all);
+load(draw);
+assume(x1>0, x2>0, y>0)$
+y:(x1^(1/3))*(x2^(2/3));
+x2:20;
+y_1:''y;
+x2:40;
+y_2:''y;
+draw2d(
+
+xrange = [0,100],
+yrange = [0,100],
+
+xlabel = "Zmienna x1",
+ylabel = "f(x1)",
+
+color  = blue,
+key   = "F(x1,x2) dla x2= 20",
+explicit(y_1,x1, 1, 100), 
+
+color  = red,
+key   = "F(x1,x2) dla x2= 40",
+explicit(y_2,x1, 1, 100))$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: subsect start ]
+The 3d graph
+   [wxMaxima: subsect end   ] */
+
+
+/* [wxMaxima: comment start ]
+The 3d charts give you the possibility not only of spatial visualisation but also projection on the plane -> ( contour = both).
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+load(draw);
+assume(x1>0,x2>0,p1>0,p2>0,U>0,a>0,b>0,t>1)$
+y:x1^0.4*x2^0.5;
+
+draw3d(
+key = "U",
+color = blue,
+contour = both , /* rzutowanie na p³aszczyznê */
+explicit(y,x1, 1, 100, x2,1, 100))$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: section start ]
+Matrix operations 
+   [wxMaxima: section end   ] */
+
+
+/* [wxMaxima: comment start ]
+Maxima is not a matrix language, but it has a lot of built-in matrix instructions
+
+Basic matrix operations:
+- a matrix declaration with dimensions i on j -> matrix ([a11, a12, ... a1j], [a21, a22, ... a2j] ... [ai1, aj2, ... aij]];
+- declaration of the identity matrix k on k -> ident (k)
+- multiplication matrix ->. (Note: * means element multiplication by element)
+- matrix transposition -> transpose(M)
+ 
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+A: matrix([5, 4, 3], [3, 2,2], [1,1,2]);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Determinant of the matrix
+Determinant (A);
+Government matrix
+rank (A);
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+Z : matrix([1, 2, 3], [4, 5,6], [7,8,9]);
+determinant (Z);
+rank(Z);
+
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+ident (5);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+The inverted matrix 
+invert (A)
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+Z : matrix([7, 2, 3], [4, 5,6], [7,8,9]);
+determinant (Z);
+rank(Z);
+A: invert (Z);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+Z : matrix([1, 12, 3], [8, 5,6], [7,8,9]);
+determinant (Z);
+rank(Z);
+
+A: invert (Z);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+Maxima syntax allows users to map the structure of the microeconomic task and replicate typical pen and paper computation steps in the code structure. Technically, it can be achieved by using the assignment operator (:) and avoiding function operator (:=). Textbooks mainly promote the second approach (:=), while for students, the first approach (:) is easier . The operator (:=) requires very extensive ways of declaring a function with inclusion not only variables but also all function parameters as arguments. The operator's properties (:) allow to efficiently fulfil the postulate to present the solution in the functional form. Compare "programmer's code" based on (:=) operator with "didactic code" based on (:) operator. Even without additional comments, you sholul much easier guess the economic problem coded with the (:) operator. 
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+/*Code (programmer's) based on (:=) operator */
+kill(all);
+y: [y1, y2];
+p(y1,y2,a,b,c,d) := [a- b*y[1], c-d*y[2]];
+TC(y1,y2,fc,c1,c2):= fc + (c1*y[1]- c2*y[2])^2;
+R(y1,y2,a,b,c,d,fc,c1,c2):=(p(y1,y2,a,b,c,d).y-TC(y1,y2,fc,c1,c2));
+solve([diff(R(y1,y2,a,b,c,d,fc,c1,c2)-TC(y1,y2,fc,c1,c2),y[1]),''diff(R(y1,y2,a,b,c,d,fc,c1,c2)-TC(y1,y2,fc,c1,c2),y[2])],[y[1], y[2]]);	
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+/*Code (user's) based on (:) operator */
+kill(all);
+p_1: a – b*y_1;  
+p_2: c – d*y_2;
+R: p_1*y_1 + p_2*y_2$
+TC: fc + (c1*y_1 – c2*y_2)^2$
+profit: R - TC$ 
+eq1: diff(profit,y_1,1) = 0$
+eq2: diff(profit,y_2,1) = 0$
+solve([eq1,eq2],[y_1,y_2]);
+/* [wxMaxima: input   end   ] */
+
+
+
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima 23.05.1"$
