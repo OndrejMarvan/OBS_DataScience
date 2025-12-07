@@ -1,0 +1,282 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 23.05.1 ] */
+/* [wxMaxima: input   start ] */
+kill(all)$
+load(draw)$
+assume(p_s>0,p_d>0,q>0,q>0,q_star>0)$
+"**********************************************"$
+/* Enter your individual numbers [0-9]*/
+N1: 9$ 
+N2: 9$ 
+N3: 9$ 
+N4: 9$ 
+N5: 9$
+/* Draw parametres min and max of x and y axes - You can adiust them */
+x_min: 0$
+x_max: 250$
+y_min: 0$
+y_max: 450$
+/********************/
+/* Demand function*/
+eq1: q = ((N2 + N1 + 50)/5) * 50  -  2 * p_d $        
+solve([eq1],[p_d])$
+p_d: rhs(%[1])$ /* Inverse demand function */
+/* Suplly function */
+eq2:q = -50 + 5*p_s$          
+solve([eq2],[p_s])$  
+p_s:rhs(%[1])$  /* Inverse suplly function */
+
+/* Equlibrium */
+eq3: p_d = p_s$
+/* main code do not change */
+solve([eq3],[q])$
+q_star:rhs(%[1])$
+q:ev(''q_star)$
+p_s_star:ev(''p_s)$
+p_d_star:ev(''p_d)$
+kill(q)$
+CS: ev(integrate(''p_d, q, 0, ''q_star) - integrate(''p_d_star, q, 0, ''q_star))$
+PS:  ev(integrate(''p_s_star, q, 0, ''q_star) - integrate (''p_s, q, 0, ''q_star))$
+SW: ev(''CS + ''PS )$
+
+p_s_00   : ev(''p_s)$
+q_star_00: ev(''q_star)$
+
+q_star_0: float(ev(''q_star))$
+p_s_star_0: float(ev(''p_s_star))$
+p_d_star_0: float(ev(''p_d_star))$
+CS_0: float(ev(''CS))$
+PS_0: float(ev(''PS))$
+S_0 : float(ev(''S))$
+SW_0: float(ev(''SW))$
+print("........")$
+print("q = ", (q_star_0) )$
+print("p_d = ", (p_d_star_0) )$
+print("p_s = ", (p_s_star_0) )$
+print("CS = ", round(CS_0) )$
+print("PS = ", round(PS_0) )$
+print("SW = ", round(SW_0))$
+float(ev(max(''q_star_00,''q_star_0,''q_star_0))) $
+
+draw2d(grid= true,
+xlabel = "q", ylabel = "p",
+yrange = [''y_min, ''y_max],   
+xrange = [''x_min, ''x_max],
+
+fill_color  = light-green,
+filled_func = ''p_s_star_0,
+explicit(''p_s,q,0,''q_star_0),
+
+fill_color  = light-red,
+filled_func = ''p_d,
+explicit(''p_d_star_0,q,0,''q_star_0),
+
+fill_color  =  light-blue,
+filled_func = ''p_d_star_0,
+explicit(''p_s_star_0,q,0,''q_star_0),  
+
+filled_func = false,
+line_width  = 2,
+color  = green,
+explicit(''p_s,q,0,''x_max ),
+color  = red,
+explicit(''p_d,q,0,''x_max ) )$
+
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+load(draw)$
+assume(q_star>0)$
+
+EX: 100*q_star -  (q_star/4)^2$
+draw2d( grid= true, xlabel = "q", ylabel = "EX(q)", line_width  = 3,
+    key =" EX",  color  = brown, 
+    explicit(''EX, q_star, 1,1750))$
+
+
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+load(draw)$
+load("fmin_cobyla")$  /* loading the optimization package */
+assume(p_s>0,p_d>0,q>0,q_star>0,s>0)$
+/* Enter your individual numbers [0-9]*/
+N1:9$
+N2: 9$
+N3: 9$
+N4: 9$
+N5: 9$
+/* Draw parametres min and max of x and y axes - You can adjust them */
+x_min: -1.7$
+x_max: 1.7$
+
+/********************/
+/* Demand function*/
+eq1: q = ((N2 + N1 + 50)/5) * 50  -  2 * p_d $        
+solve([eq1],[p_d])$
+p_d: rhs(%[1])$ /* Inverse demand function */
+/* Suplly function */
+eq2:q = -50 + 5*p_s$          
+solve([eq2],[p_s])$  
+p_s:rhs(%[1])$  /* Inverse suplly function */
+
+
+/* Equlibrium */
+eq3: p_d = p_s*(1 + t_s) $
+solve([eq3],[q])$
+q_star:rhs(%[1])$
+q:ev(''q_star)$
+p_s_star:ev(''p_s)$
+p_d_star:ev(''p_d)$
+kill(q)$
+T_S: ev('' t_s*''p_s_star*''q_star)$
+CS: ev(integrate(''p_d, q, 0, ''q_star)      - integrate(''p_d_star, q, 0, ''q_star))$
+PS: ev(integrate(''p_s_star, q, 0, ''q_star) - integrate (''p_s, q, 0, ''q_star))$
+EX: 100*q_star -  (q_star/4)^2$
+SW: ev(''CS + ''PS  + ''EX+ ''T_S)$
+
+
+draw2d(
+grid= true,
+xlabel = "t_s",
+ylabel = "SW,S,EX",
+line_width  = 2,
+color  = grey,
+key = " T_S ",
+explicit(''T_S, t_s ,x_min,x_max),
+color  = red,
+key = " CS ",
+explicit(''CS, t_s,x_min,x_max),
+color  = light-green,
+key = " PS ",
+explicit(''PS, t_s,x_min,x_max),
+color  = light-blue,
+key = " SW ",
+explicit(''SW, t_s,x_min,x_max),
+color  = brown, 
+key = " EX ",
+explicit(''EX, t_s,x_min,x_max) )  ;
+
+fmin_cobyla(-''SW, [t_s], [0.1], constraints = [ t_s>= x_min,  t_s <=x_max],iprint=1);
+print( "for t_s = ",%[1], "SW reaches maximum = ", -round(%[2]) )$
+
+fmin_cobyla(-''EX, [t_s], [0.1], constraints = [ t_s>= x_min,  t_s <=x_max],iprint=1);
+print( "for t_s = ",%[1], "EX reaches maximum = ", -round(%[2]) )$
+
+fmin_cobyla(-''T_S, [t_s], [0.1], constraints = [ t_s>= x_min,  t_s <=x_max],iprint=1);
+print( "for t_s = ",%[1], "T_S reaches maximum = ", -round(%[2]) )$
+
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+load(draw)$
+load("fmin_cobyla")$  /* loading the optimization package */
+assume(p_s>0,p_d>0,q>0,q_star>0,s>0)$
+/* Enter your individual numbers [0-9]*/
+N1:1$
+N2: 1$
+N3: 1$
+N4: 1$
+N5: 1$
+/* Enter the tax rate t and experiment*/
+t_s_0:  -0.5$
+
+
+/* Draw parametres min and max of x and y axes - You can adjust them */
+x_min: 0$
+x_max: 700$
+y_min: 0$
+y_max: 300$
+
+/********************/
+/* Demand function*/
+eq1: q = ((N2 + N1 + 50)/5) * 50  -  2 * p_d $        
+solve([eq1],[p_d])$
+p_d: rhs(%[1])$ /* Inverse demand function */
+/* Suplly function */
+eq2:q = -50 + 5*p_s$          
+solve([eq2],[p_s])$  
+p_s:rhs(%[1])$  /* Inverse suplly function */
+
+
+/* Equlibrium */
+eq3: p_d = p_s*(1 + t_s) $
+solve([eq3],[q])$
+q_star:rhs(%[1])$
+q:ev(''q_star)$
+p_s_star:ev(''p_s)$
+p_d_star:ev(''p_d)$
+kill(q)$
+
+kill(q)$
+T: ev(''t_s*''p_s_star*''q_star)$
+CS: ev(integrate(''p_d, q, 0, ''q_star)      - integrate(''p_d_star, q, 0, ''q_star))$
+PS: ev(integrate(''p_s_star, q, 0, ''q_star) - integrate (''p_s, q, 0, ''q_star))$
+SW: ev(''CS + ''PS  + ''T);
+
+t_s: t_s_0$ 
+/* The first equilibrium point */
+
+p_s_00   : ev(''p_s)$
+q_star_00: ev(''q_star)$
+q_star_0: float(ev(''q_star))$
+p_s_star_0: float(ev(''p_s_star))$
+p_d_star_0: float(ev(''p_d_star))$
+CS_0: float(ev(''CS))$
+PS_0: float(ev(''PS))$
+T_0 : float(ev(''T))$
+SW_0: float(ev(''SW))$
+print("....equlibrium conditions after enter t ....")$
+print("t   = ", t_s )$
+print("q  = ", (q_star_0) )$
+print("p_d  = ", (p_d_star_0) )$
+print("p_s  = ", (p_s_star_0) )$
+print("CS  = ", round(CS_0) )$
+print("PS  = ", round(PS_0) )$
+print("T   = ", round(T_0) )$
+print("SW  = ", round(SW_0))$
+float(ev(max(''q_star_00,''q_star_0,''q_star_0))) $
+
+draw2d(
+grid= true,
+xlabel = "q",
+ylabel = "p",
+yrange = [''y_min, ''y_max],   
+xrange = [''x_min, ''x_max],
+
+fill_color  = light-green,
+filled_func = ''p_s_star_0,
+explicit(''p_s,q,0,''q_star_0),
+
+fill_color  = light-red,
+filled_func = ''p_d,
+explicit(''p_d_star_0,q,0,''q_star_0),
+
+fill_color  =  light-blue,
+filled_func = ''p_d_star_0,
+explicit(''p_s_star_0,q,0,''q_star_0),  
+
+fill_color  = grey,
+filled_func = ''p_d,
+explicit(''p_s,q,''q_star_0,''max(q_star_00,''q_star_0,q_star_0) ),  
+
+filled_func = false,
+
+line_width  = 2,
+color  = green,
+explicit(''p_s,q,0,''x_max),
+color  = red,
+explicit(''p_d,q,0,''x_max))$
+
+/* [wxMaxima: input   end   ] */
+
+
+
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima 23.05.1"$

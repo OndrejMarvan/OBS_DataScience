@@ -1,0 +1,152 @@
+---
+title: "Competition: A Model of Interaction Between Producers"
+author: ""
+date: "February 16, 2024"
+output: html_document
+---
+
+
+``` {r echo = FALSE, warning = FALSE, error=FALSE, message=FALSE  }
+
+Sys.setenv(RIM_MAXIMA_PATH = "C:/maxima-5.47.0/bin/maxima.bat")
+
+# 1. loading packages
+################ START ############################################
+###### Check, installation and loading of required packages #######
+requiredPackages = c( "flexdashboard","shiny", "rim" ) # list of required packages
+for(i in requiredPackages){if(!require(i,character.only = TRUE)) install.packages(i)}
+for(i in requiredPackages){if(!require(i,character.only = TRUE)) library(i,character.only = TRUE) } 
+
+library(rim)
+maxima.options(engine.format = "latex", 
+	       engine.label = TRUE,
+	       inline.format = "latex", 
+	       inline.label = FALSE)
+
+```
+
+
+
+
+<h3>Introduction</h3>
+
+First, we will clarify the key concepts used in this study: perfect competition, monopoly, and oligopoly. A market is perfectly competitive when both sellers and buyers believe their decisions have no impact on the market price. 
+
+A monopoly exists when a single producer is the sole supplier in a given industry (defined as the set of all firms producing the same product). For example, the British Post Office was historically the exclusive producer and supplier of British stamps. 
+
+Oligopoly, in contrast, is characterized by mutual interdependence, where each participant must consider the impact of their actions on competitors’ decisions. Airlines are a practical example.
+
+This paper examines competition between firms using a biological model of population interactions. Chapter 1 addresses the conditions under which monopoly or oligopoly emerges. Chapter 2 applies this analysis to competition between two Polish producers using relevant metrics.
+
+<h3>Mathematical Model Description</h3>
+
+To analyze firm competition, we use a biological model of interspecies interactions, known in literature as the "competing species system" [1]. The foundational system of equations for this model is:
+
+\[
+\dot{N}_1 = rN_1 \left( 1 - \frac{N_1}{K_1} - a\frac{N_2}{K_2} \right) \tag{1.1a}
+\]
+\[
+\dot{N}_2 = sN_2 \left( 1 - \frac{N_2}{K_2} - b\frac{N_1}{K_1} \right) \tag{1.1b}
+\]
+
+We assume all variables in this system are non-negative.
+
+<h4>Biological Interpretation</h4>
+
+Here, \(N_i(t)\) represents the population density of species \(i\) at time \(t\), \(r\) and \(s\) are net growth rates for species 1 and 2, and \(K_i\) is the environmental carrying capacity. Parameters \(a\) and \(b\) quantify external competition between species. The symbol \(\dot{N}_i\) denotes the time derivative of \(N_i\). Notably, the system of equations is symmetric with respect to indices \(i = 1, 2\), treating both species equally.
+
+<h4>Economic Interpretation</h4>
+
+In an economic context, “population” could refer to the network of sales points for a producer’s product. Parameters \(r\) and \(s\) represent growth potential, \(K_i\) signifies market demand, and \(a\), \(b\) remain competition coefficients. This raises the question: under what parameter conditions does one producer dominate the market as a monopolist? Alternatively, are there parameter configurations where an oligopoly forms (a stable equilibrium in the system)? Answering these questions is the main objective of this study.
+
+<h3>1.1 Equilibrium States</h3>
+
+To find equilibrium states of the system, solve the following equations:
+
+```{maxima}
+
+eq1: r*N1*(1 - (N1/K1) - a*(N2/K2)) = 0;
+eq2: s*N2*(1 - (N2/K2) - b*(N1/K1)) = 0;
+solve([eq1, eq2], [N1, N2]);
+
+```
+
+The results are:
+
+\[
+\{N_1=0, N_2=0\}, \{N_1=K_1, N_2=0\}, \{N_1=0, N_2=K_2\},
+\{N_1=\frac{(a-1)K_1}{ab-1}, N_2=\frac{(b-1)K_2}{ab-1}\}
+\]
+
+Four equilibrium states arise. Three describe scenarios where at least one producer has no market presence (sales network of zero), which are not relevant here. The focus will remain on the fourth equilibrium state:
+
+\[
+\left(N_1=\frac{(a-1)K_1}{ab-1}, N_2=\frac{(b-1)K_2}{ab-1}\right)
+\]
+
+**Observation:** A positive equilibrium exists only when both `a`, `b` are either less than or greater than 1.
+
+<h3>1.2 Stability of Equilibrium</h3>
+
+Analyzing the stability of equilibrium involves determining the real parts of eigenvalues of the Jacobian matrix. In Maxima:
+
+```{maxima}
+jacobian([r*N1*(1 - (N1/K1) - a*(N2/K2)), s*N2*(1 - (N2/K2) - b*(N1/K1))], [N1, N2]);
+ratsimp(%);
+```
+
+The Jacobian matrix \(J(N1, N2)\) is:
+
+\[
+\begin{bmatrix}
+\frac{-arK1N2 + 2rK2N1 - rK1K2}{K1K2} & \frac{-arN1}{K2} \\
+\frac{-bsN2}{K1} & \frac{-2sK1N2 + bsK2N1 - sK1K2}{K1K2}
+\end{bmatrix}\]
+
+
+Substituting \(N1, N2\) values and solving for: \(det(J - \lambda I) = 0 \) reveals that stability depends on the product \(ab\). If \(ab > 1\), the equilibrium is a saddle point (unstable). If \(ab < 1\) , it is a stable node.
+
+<h3>1.3 Conclusions</h3>
+
+The codes to find the solution based on the equality conditions is:
+
+
+```{maxima, include = TRUE, eval =  FALSE, warning = FALSE, echo = TRUE}
+kill(all);
+load(plotdf);
+plotdf([(r*N1*(1-(N1/K1)-a*(N2/K2))), (s*N2*(1-(N2/K2)-b*(N1/K1)))],
+[N1,N2],
+[parameters,"a=0.5,b=0.5,r=5,s=5,K1=1,K2=1,empty=1"],
+[sliders,"a=0:5,b=0:5,r=0:5,s=0:5,empty=0:5"],
+[trajectory_at,0.5,0.5],
+[tstep,2],
+[N1,0,2],
+[N2,0,2],
+[direction,forward],
+[nsteps,100]);
+```
+
+Phase diagrams generated in Maxima:
+<table style="border-collapse: collapse; width: 100%;" border="0">
+<tbody>
+<tr>
+<td style="width: 10%;">&nbsp;</td>
+<td style="width: 80%;">![](results_d_eq.jpg)</td>
+<td style="width: 10%;">&nbsp;</td>
+</tr>
+</tbody>
+</table>
+
+Source: https://mst.mimuw.edu.pl/wyklady/mbm/wyklad.pdf
+
+
+
+Phase diagrams of system (left) with sample solutions/time path (right) for the case where a21 < 1 < a12 (top), a12, a21 < 1 (middle) or a12, a21 > 1 (bottom). Stable node. \(a, b < 1\). Saddle point. \(a, b > 1\). 
+
+Competitive exclusion occurs when niches overlap excessively, leading to one species eliminating the other. Economically, this equates to market exit (bankruptcy) for one producer.
+
+The only scenario where both producers coexist is when \(a, b < 1\), reflecting mutual tolerance and forming an oligopoly.
+
+[1]
+
+

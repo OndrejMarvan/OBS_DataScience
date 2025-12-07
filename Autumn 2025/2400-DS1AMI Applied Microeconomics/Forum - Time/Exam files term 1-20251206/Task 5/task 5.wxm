@@ -1,0 +1,563 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 23.05.1 ] */
+/* [wxMaxima: input   start ] */
+kill(all)$                     /* Clears all previously defined variables and functions */
+load(draw)$                    /* For plotting */
+load(descriptive)$             /* For mean() and var() functions */
+
+/* Enter your individual numbers [0-9]*/
+N1: 5$
+N2: 5$
+N3: 5$
+N4: 5$
+N5: 5$
+/* Parameter N represents some base capital (e.g., M0). */
+N: ''(N1 + N2 + N3 + N4 + N5)*2$
+
+/* M0_1 for Edge Computing (Investor A), M0_2 for AI in Medicine (Investor B). */
+M0_1 : N$
+M0_2 : 2*N$
+
+/* ===================================================================
+ DEFINE LOTTERIES
+   ===================================================================
+   We have two lotteries:
+     - l_1 = Edge Computing
+     - l_2 = AI in Medicine
+   Each list entry corresponds to a possible payoff (outcome).
+   Make sure the repetitions match your assignment's probabilities.
+   ------------------------------------------------------------------ */
+
+l_1 : [
+  M0_1 + 100, /* High demand (prob = 1/2) */
+  M0_1 + 100, /* repeated to reflect prob=1/2 using 2 entries out of 4 */
+  M0_1 + 10,  /* Moderate demand (prob = 1/4) */
+  M0_1 + 5    /* Low demand (prob = 1/4) */
+]$
+
+l_2 : [
+  M0_2 + 400,  /* High effectiveness (prob = 1/4) */
+  M0_2 + 20,   /* Average effectiveness (prob = 1/2), repeated below */
+  M0_2 + 20,
+  M0_2 - 150   /* Project failure (prob = 1/4) */
+]$
+
+/*----------------------------------------------------------------
+    - Compute means and variances
+   - Risk-aversion parameters (R_A, R_B)
+    ------------------------------------------------------------------ */
+
+
+/* Expected values (Means) */
+EV_l1 : float(mean(l_1))$
+EV_l2 : float(mean(l_2))$
+
+/* Variances */
+Var_l1 : float(var(l_1))$
+Var_l2 : float(var(l_2))$
+
+/* Risk aversion parameters */
+R_A : 0.001$  /* Investor A (Edge Computing) */
+R_B : 0.006$  /* Investor B (AI in Medicine) */
+
+/*-------------------------------------------------
+   - Individual utilities
+   - Social welfare if they operate separately
+   ------------------------------------------------------------------ */
+
+/* Utilities if investing separately:
+   U_A = E(L1) - (1/2)*R_A*Var(L1)
+   U_B = E(L2) - (1/2)*R_B*Var(L2)
+*/
+
+U_A : float(EV_l1 - (R_A/2)*Var_l1)$
+U_B : float(EV_l2 - (R_B/2)*Var_l2)$
+
+/* Display results for reference */
+/* Social welfare = sum of individual utilities (approx.) */
+print("........")$
+print("U_A = ", (U_A) )$
+print("U_B =  ", (U_B) )$
+print("SW_separate = U_A + U_B =  ", ''(U_A + U_B) )$
+
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all)$                     /* Clears all previously defined variables and functions */
+load(draw)$                    /* For plotting */
+load(descriptive)$             /* For mean() and var() functions */
+
+/* Enter your individual numbers [0-9]*/
+N1: 5$
+N2: 5$
+N3: 5$
+N4: 5$
+N5: 5$
+/* Parameter N represents some base capital (e.g., M0). */
+N: ''(N1 + N2 + N3 + N4 + N5)*2$
+
+/* M0_1 for Edge Computing (Investor A), M0_2 for AI in Medicine (Investor B). */
+M0_1 : N$
+M0_2 : 2*N$
+
+/* ===================================================================
+ DEFINE LOTTERIES
+   ===================================================================
+   We have two lotteries:
+     - l_1 = Edge Computing
+     - l_2 = AI in Medicine
+   Each list entry corresponds to a possible payoff (outcome).
+   Make sure the repetitions match your assignment's probabilities.
+   ------------------------------------------------------------------ */
+
+l_1 : [
+  M0_1 + 100, /* High demand (prob = 1/2) */
+  M0_1 + 100, /* repeated to reflect prob=1/2 using 2 entries out of 4 */
+  M0_1 + 10,  /* Moderate demand (prob = 1/4) */
+  M0_1 + 5    /* Low demand (prob = 1/4) */
+]$
+
+l_2 : [
+  M0_2 + 400,  /* High effectiveness (prob = 1/4) */
+  M0_2 + 20,   /* Average effectiveness (prob = 1/2), repeated below */
+  M0_2 + 20,
+  M0_2 - 150   /* Project failure (prob = 1/4) */
+]$
+
+/*----------------------------------------------------------------
+    - Compute means and variances
+   - Risk-aversion parameters (R_A, R_B)
+    ------------------------------------------------------------------ */
+
+/* Expected values (Means) */
+EV_l1 : float(mean(l_1))$
+EV_l2 : float(mean(l_2))$
+
+/* Variances */
+Var_l1 : float(var(l_1))$
+Var_l2 : float(var(l_2))$
+
+/* Risk aversion parameters */
+R_A : 0.001$  /* Investor A (Edge Computing) */
+R_B : 0.006$  /* Investor B (AI in Medicine) */
+
+/* ===================================================================
+ JOINT VENTURE WITH 50-50 SPLIT
+   ===================================================================
+   If A and B share total payoff equally:
+     - A's payoff = 1/2 * (L1 + L2)
+     - B's payoff = 1/2 * (L1 + L2)
+   Here we first assume L1 and L2 are independent (ro=0).
+   ------------------------------------------------------------------ */
+
+/* For an independent sum, Var(1/2*(L1+L2)) = 1/4*(Var(L1) + Var(L2)).
+   We'll compute each investor’s utility. */
+U_A_JV_50_50 : float(
+  mean(0.5*l_1) + mean(0.5*l_2)
+  - (R_A/2)*(
+      var(0.5*l_1) + var(0.5*l_2)
+    )
+)$
+
+U_B_JV_50_50 : float(
+  mean(0.5*l_1) + mean(0.5*l_2)
+  - (R_B/2)*(
+      var(0.5*l_1) + var(0.5*l_2)
+    )
+)$
+
+/* Combined social welfare under JV with 50-50 split */
+SW_JV_50_50 : U_A_JV_50_50 + U_B_JV_50_50$
+
+print("JOINT VENTURE WITH 50-50 SPLIT")$
+print("U_A = ", (U_A_JV_50_50) )$
+print("U_B =  ", (U_B_JV_50_50) )$
+print("SW_separate = U_A + U_B =  ", ''(U_A_JV_50_50 +U_B_JV_50_50) )$
+
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all)$                     /* Clears all previously defined variables and functions */
+load(draw)$                    /* For plotting */
+load(descriptive)$             /* For mean() and var() functions */
+
+/* Enter your individual numbers [0-9]*/
+N1: 5$
+N2: 5$
+N3: 5$
+N4: 5$
+N5: 5$
+/* Parameter N represents some base capital (e.g., M0). */
+N: ''(N1 + N2 + N3 + N4 + N5)*2$
+
+/* M0_1 for Edge Computing (Investor A), M0_2 for AI in Medicine (Investor B). */
+M0_1 : N$
+M0_2 : 2*N$
+
+/* ===================================================================
+ DEFINE LOTTERIES
+   ===================================================================
+   We have two lotteries:
+     - l_1 = Edge Computing
+     - l_2 = AI in Medicine
+   Each list entry corresponds to a possible payoff (outcome).
+   Make sure the repetitions match your assignment's probabilities.
+   ------------------------------------------------------------------ */
+
+l_1 : [
+  M0_1 + 100, /* High demand (prob = 1/2) */
+  M0_1 + 100, /* repeated to reflect prob=1/2 using 2 entries out of 4 */
+  M0_1 + 10,  /* Moderate demand (prob = 1/4) */
+  M0_1 + 5    /* Low demand (prob = 1/4) */
+]$
+
+l_2 : [
+  M0_2 + 400,  /* High effectiveness (prob = 1/4) */
+  M0_2 + 20,   /* Average effectiveness (prob = 1/2), repeated below */
+  M0_2 + 20,
+  M0_2 - 150   /* Project failure (prob = 1/4) */
+]$
+
+/*----------------------------------------------------------------
+    - Compute means and variances
+   - Risk-aversion parameters (R_A, R_B)
+    ------------------------------------------------------------------ */
+
+/* Expected values (Means) */
+EV_l1 : float(mean(l_1))$
+EV_l2 : float(mean(l_2))$
+
+/* Variances */
+Var_l1 : float(var(l_1))$
+Var_l2 : float(var(l_2))$
+
+/* Risk aversion parameters */
+R_A : 0.001$  /* Investor A (Edge Computing) */
+R_B : 0.006$  /* Investor B (AI in Medicine) */
+
+/* ===================================================================
+   CORRELATION (ro) BETWEEN L1 AND L2
+   ===================================================================
+   Let ro be the correlation coefficient, ro in [-1, +1].
+   Cov(L1,L2) = ro * sqrt(Var(L1)*Var(L_2)).
+   For the 50-50 split:
+     payoff_A = payoff_B = 1/2*(L1+L2)
+   => Var(1/2*(L1+L2)) = ...
+   We'll define symbolic ro and create utility functions:
+   ------------------------------------------------------------------ */
+
+/* Symbolic ro for correlation */
+ro : 'ro$
+
+/* Utilities for A and B with correlation considered:
+   Var(0.5 * (L1 + L2))
+     = (0.5)^2*Var(L1) + (0.5)^2*Var(L2)
+       + 2*(0.5)*(0.5)*Cov(L1,L2)
+     = 0.25*Var(L1) + 0.25*Var(L2)
+       + 0.5 * (ro*sqrt(Var(L1)*Var(L2)))
+
+   Then multiplied by R_A/2, R_B/2 respectively.
+*/
+
+/* Investor A utility with correlation ro */
+U_A_JV_corr : mean(0.5*l_1) + mean(0.5*l_2)
+  - (R_A/2)*(
+       var(0.5*l_1) + var(0.5*l_2)
+       + 2*(0.25*sqrt(var(l_1))*sqrt(var(l_2))*ro)
+    )$
+
+/* Investor B utility with correlation ro */
+U_B_JV_corr : mean(0.5*l_1) + mean(0.5*l_2)
+  - (R_B/2)*(
+       var(0.5*l_1) + var(0.5*l_2)
+       + 2*(0.25*sqrt(var(l_1))*sqrt(var(l_2))*ro)
+    )$
+
+/* Example: Plot both utilities vs. ro in [-1,1] */
+draw2d(
+  xlabel = "Correlation (ro)",
+  ylabel = "Utility",
+  color  = red,
+  explicit(U_A_JV_corr, ro, -1, 1),
+  color  = blue,
+  explicit(U_B_JV_corr, ro, -1, 1)
+)$
+
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all)$                     /* Clears all previously defined variables and functions */
+load(draw)$                    /* For plotting */
+load(descriptive)$             /* For mean() and var() functions */
+
+
+/* Enter your individual numbers [0-9]*/
+N1: 5$
+N2: 5$
+N3: 5$
+N4: 5$
+N5: 5$
+/* Parameter N represents some base capital (e.g., M0). */
+N: ''(N1 + N2 + N3 + N4 + N5)*2$
+
+/* M0_1 for Edge Computing (Investor A), M0_2 for AI in Medicine (Investor B). */
+M0_1 : N$
+M0_2 : 2*N$
+
+/* ===================================================================
+ DEFINE LOTTERIES
+   ===================================================================
+   We have two lotteries:
+     - l_1 = Edge Computing
+     - l_2 = AI in Medicine
+   Each list entry corresponds to a possible payoff (outcome).
+   Make sure the repetitions match your assignment's probabilities.
+   ------------------------------------------------------------------ */
+
+l_1 : [
+  M0_1 + 100, /* High demand (prob = 1/2) */
+  M0_1 + 100, /* repeated to reflect prob=1/2 using 2 entries out of 4 */
+  M0_1 + 10,  /* Moderate demand (prob = 1/4) */
+  M0_1 + 5    /* Low demand (prob = 1/4) */
+]$
+
+l_2 : [
+  M0_2 + 400,  /* High effectiveness (prob = 1/4) */
+  M0_2 + 20,   /* Average effectiveness (prob = 1/2), repeated below */
+  M0_2 + 20,
+  M0_2 - 150   /* Project failure (prob = 1/4) */
+]$
+
+/*----------------------------------------------------------------
+    - Compute means and variances
+   - Risk-aversion parameters (R_A, R_B)
+    ------------------------------------------------------------------ */
+
+/* Expected values (Means) */
+EV_l1 : float(mean(l_1))$
+EV_l2 : float(mean(l_2))$
+
+/* Variances */
+Var_l1 : float(var(l_1))$
+Var_l2 : float(var(l_2))$
+
+/* Risk aversion parameters */
+R_A : 0.001$  /* Investor A (Edge Computing) */
+R_B : 0.006$  /* Investor B (AI in Medicine) */
+
+/* ===================================================================
+ OPTIMAL SHARE (alpha) TO MAXIMIZE SUM OF UTILITIES
+   ===================================================================
+   Instead of 50-50, let alpha be the share of total payoff for A,
+   and (1 - alpha) for B. We'll first assume L1 and L2 remain independent
+   in this section for simplicity. If you want to incorporate correlation,
+   you'd add Cov(L1,L2) into var(alpha*L1 + alpha*L2), etc.
+   ------------------------------------------------------------------ */
+
+/* Symbolic variable for alpha */
+%alpha : '%alpha$
+
+/* Payoffs under alpha split:
+   - A gets alpha*L1 + alpha*L2
+   - B gets (1 - alpha)*L1 + (1 - alpha)*L2
+   For independence, Var(alpha*L1 + alpha*L2) = alpha^2*(Var(L1) + Var(L2))
+*/
+
+/* Utility for A with alpha split */
+U_A_alpha : mean(%alpha*l_1) + mean(%alpha*l_2)
+  - (R_A/2) * ( var(%alpha*l_1) + var(%alpha*l_2) )$
+
+/* Utility for B with alpha split */
+U_B_alpha : mean((1 - %alpha)*l_1) + mean((1 - %alpha)*l_2)
+  - (R_B/2) * ( var((1 - %alpha)*l_1) + var((1 - %alpha)*l_2) )$
+
+/* Total social welfare under alpha split */
+U_social : U_A_alpha + U_B_alpha$
+
+/* Differentiate w.r.t. alpha and set = 0 to find optimum */
+eq_alpha : diff(U_social, %alpha) = 0$
+sol_alpha : solve(eq_alpha, [%alpha])$
+
+/* Extract alpha* from solution (if numeric) */
+alpha_star : rhs(sol_alpha[1])$
+
+/* Evaluate social welfare (and individuals) at alpha = alpha_star if desired */
+/* double single quotes '' to force evaluation after substitution */
+''U_social$''U_A_alpha$ ''U_B_alpha$
+
+%alpha : alpha_star$
+
+print("JOINT VENTURE WITH OPTIMAL SPLIT")$
+print("alfa = ", (''alpha_star ) )$
+print("U_A = ", (''U_A_alpha) )$
+print("U_B =  ", (''U_A_alpha) )$
+print("SW_Optimal share = U_A + U_B =  ", ''(U_social) )$
+
+
+kill(%alpha)$   
+/* Plot social welfare vs. alpha in [0,1] */
+draw2d(
+  xlabel = "alpha (Investor A share)",
+  ylabel = "Social Welfare",
+  explicit(U_social, %alpha, 0, 1)
+)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+/* ===================================================================
+  INITIAL SETUP
+   =================================================================== */
+
+kill(all)$                     /* Clears all previously defined variables and functions */
+load(draw)$                    /* For 2D and 3D plotting */
+load(descriptive)$             /* For mean() and var() functions */
+
+
+/* Enter your individual numbers [0-9]*/
+N1: 5$
+N2: 5$
+N3: 5$
+N4: 5$
+N5: 5$
+/* Parameter N represents some base capital (e.g., M0). */
+N: ''(N1 + N2 + N3 + N4 + N5)*2$
+
+/* M0_1 for Edge Computing (Investor A), M0_2 for AI in Medicine (Investor B). */
+M0_1 : N$
+M0_2 : 2*N$
+
+/* ===================================================================
+   DEFINE LOTTERIES
+   ===================================================================
+   - l_1 = Edge Computing
+   - l_2 = AI in Medicine
+   Each list entry corresponds to a possible payoff (outcome).
+   Make sure the repetitions match your probabilities:
+     * l_1 has 4 outcomes:
+         (1) M0_1 + 100 (prob = 1/2, so repeated twice)
+         (2) M0_1 + 10  (prob = 1/4)
+         (3) M0_1 + 5   (prob = 1/4)
+     * l_2 has 4 outcomes:
+         (1) M0_2 + 400 (prob = 1/4)
+         (2) M0_2 + 20  (prob = 1/2, so repeated twice)
+         (3) M0_2 - 150 (prob = 1/4)
+   ------------------------------------------------------------------ */
+
+l_1 : [
+  M0_1 + 100, /* High demand (prob = 1/2) */
+  M0_1 + 100, /* repeated to reflect prob=1/2 using 2 entries out of 4 */
+  M0_1 + 10,  /* Moderate demand (prob = 1/4) */
+  M0_1 + 5    /* Low demand (prob = 1/4) */
+]$
+
+l_2 : [
+  M0_2 + 400,  /* High effectiveness (prob = 1/4) */
+  M0_2 + 20,   /* Average effectiveness (prob = 1/2) */
+  M0_2 + 20,
+  M0_2 - 150   /* Project failure (prob = 1/4) */
+]$
+
+/* ===================================================================
+  MEANS, VARIANCES, RISK AVERSION
+   =================================================================== */
+
+/* Means */
+EV_l1 : float(mean(l_1))$
+EV_l2 : float(mean(l_2))$
+
+/* Variances */
+Var_l1 : float(var(l_1))$
+Var_l2 : float(var(l_2))$
+
+/* Risk aversion parameters */
+R_A : 0.001$  /* Investor A (Edge Computing) */
+R_B : 0.006$  /* Investor B (AI in Medicine) */
+
+/* ===================================================================
+   ALPHA SPLIT + CORRELATION
+   ===================================================================
+   We now define:
+     alpha => Investor A's share of (L1 + L2)
+     (1 - alpha) => Investor B's share
+   We also consider correlation ro between L1 and L2:
+     Cov(L1, L2) = ro * sqrt(Var(L1)*Var(L_2))
+
+   Then:
+     Payoff for A: alpha*(L1 + L2)
+     Payoff for B: (1 - alpha)*(L1 + L2)
+
+   => E[A's payoff] = alpha*(E[L1] + E[L2])
+      Var(A's payoff) = alpha^2 * [Var(L1) + Var(L2) + 2 * Cov(L1, L2)]
+
+   Similarly for B, with (1-alpha)^2 as the factor.
+   We'll define symbolic alpha and ro and set up the total social welfare:
+
+     U_A(alpha, ro) = alpha*(EV_l1 + EV_l2)
+                      - 1/2 * R_A * alpha^2*(Var_l1 + Var_l2 + 2*ro*sqrt(Var_l1*Var_l2))
+
+     U_B(alpha, ro) = (1 - alpha)*(EV_l1 + EV_l2)
+                      - 1/2 * R_B * (1 - alpha)^2*(Var_l1 + Var_l2 + 2*ro*sqrt(Var_l1*Var_l2))
+
+     U_social(alpha, ro) = U_A(alpha, ro) + U_B(alpha, ro)
+   ------------------------------------------------------------------ */
+
+/* Define symbolic variables alpha and ro for correlation */
+alpha : 'alpha$
+ro    : 'ro$
+
+/* Helper expression for Cov(L1,L2) */
+Cov_l1_l2 : ro*sqrt(Var_l1*Var_l2)$
+
+/* Utility for Investor A, depending on alpha and ro */
+U_A_ar : alpha*(EV_l1 + EV_l2)
+ - (R_A/2)* alpha^2 * ( Var_l1 + Var_l2 + 2*Cov_l1_l2 )$
+
+/* Utility for Investor B, depending on alpha and ro */
+U_B_ar : (1 - alpha)*(EV_l1 + EV_l2)
+ - (R_B/2)* (1 - alpha)^2 * ( Var_l1 + Var_l2 + 2*Cov_l1_l2 )$
+
+/* Social welfare: sum of utilities */
+U_social_ar : U_A_ar + U_B_ar$
+
+
+/* Evaluate the social welfare at alpha_star_indep for ro=0 (independence) */
+''U_social_ar$
+
+/* ===================================================================
+  3D PLOT: U_social vs. alpha in [0,1] and ro in [-1,1]
+   ===================================================================
+   Let's restore ro as a symbolic variable. We'll do a 3D plot to
+   visualize how social welfare changes with alpha and ro simultaneously.
+
+   We'll define ro : 'ro$ again, then do draw3d(...).
+   ------------------------------------------------------------------ */
+
+/* Revert ro to symbolic for the 3D plot */
+kill(ro)$
+kill(alpha)$
+
+/* Now we can do a 3D plot of U_social_ar wrt alpha and ro.
+   We'll use the Maxima function "explicit" for draw3d:
+     explicit(expr, x, x_min, x_max, y, y_min, y_max)
+*/
+draw3d(
+  xlabel = "alpha",
+  ylabel = "ro",
+  zlabel = "U_social(alpha, ro)",
+    contour_levels = 20,
+             contour        = both,
+             surface_hide   = true,
+  explicit(U_social_ar, alpha, 0, 1, ro, -1, 1)
+)$
+
+
+/* [wxMaxima: input   end   ] */
+
+
+
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima 23.05.1"$

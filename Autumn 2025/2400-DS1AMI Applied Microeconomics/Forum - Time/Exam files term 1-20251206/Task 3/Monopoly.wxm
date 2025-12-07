@@ -1,0 +1,147 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 23.05.1 ] */
+/* [wxMaxima: input   start ] */
+kill(all);
+load(draw);
+
+assume(p_d>0,q>0,q_star>0,s>0);
+/* Enter your individual numbers [0-9]*/
+N1: 0;
+N2: 0;
+N3: 0;
+N4: 0;
+N5: 0;
+/* Draw parametres min and max of x and y axes - You can adiust them */
+x_min: 0;
+x_max: 400;
+
+M: (N1 + N2 + N3 + N4 + N5 + 1 )/5;
+
+/********************/
+MC: 10;
+/* Demand function*/
+eq1: q =M*( ((N2 + N1 + 50)/5) * 50  -  2 * p_d) ;        
+solve([eq1],[p_d]);
+p_d: rhs(%[1]); /* Inverse demand function */
+/* Revenue MR*/
+R:ratsimp(''p_d*(''q)); /***/
+MR:diff(R, q,1);
+
+/* Equlibrium  */
+eq2:MR=MC; /***/
+solve([eq2],[q]);
+q_star:float(rhs(%[1]));
+q :float(''q_star);
+p_star:float(''p_d);
+
+
+kill(q);
+"*****Eq  CS PS ****";
+CS_M:float(integrate(p_d, q, 0, q_star)- integrate(p_star, q, 0, q_star));
+PS_M:float(integrate(p_star, q, 0, q_star)- integrate(MC, q, 0, q_star));
+SW_M:CS_M+PS_M;
+EX_M: 250*q_star - 0.5*q_star^2;
+"************************************************";
+
+print("........")$
+print("q monopoly = ", (q_star) )$
+print("p monopoly =  ", (p_star) )$
+
+print("CS for  monopoly = ", round(CS_M) )$
+print("Profit of monopoly = ", round(PS_M) )$
+print("SW for monopoly = profit + CS = ", round(SW_M))$
+print("EX ", round(EX_M))$
+
+draw2d(
+fill_color  = light-green,
+filled_func = p_star,
+explicit(p_d,q,0,q_star),
+filled_func = MC,
+fill_color  = light-red,
+explicit(round(p_star),q,0,q_star), 
+filled_func = false,
+grid= true, xlabel = "q", ylabel = "Price", line_width  = 2,
+xrange = [0,x_max],
+color  = red,key = "MC",explicit(MC,q,0,x_max),
+color  = blue,key = "D",explicit(p_d,q,0,x_max),
+color  = blue,key = "MR",explicit(MR,q,0,x_max));
+
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all);
+load(draw);
+
+assume(p_d>0,q>0,q_star>0,s>0);
+/* Enter your individual numbers [0-9]*/
+N1: 0;
+N2: 0;
+N3: 0;
+N4: 0;
+N5: 0;
+/* Draw parametres min and max of x and y axes - You can adiust them */
+x_min: -0.7;
+x_max: 10;
+
+M: (N1 + N2 + N3 + N4 +N5 + 2)/2;
+
+
+/********************/
+MC: (1 + t_s)*10;
+/* Demand function*/
+eq1: q = ((N2 + N1 + 50)/5) * 50  -  2 * p_d $        
+solve([eq1],[p_d])$
+p_d: rhs(%[1])$ /* Inverse demand function */
+/* Suplly function */
+/* Revenue MR*/
+R:ratsimp(''p_d*(''q)); /***/
+MR:diff(R, q,1);
+
+/* Equlibrium  */
+eq2:MR=MC; /***/
+solve([eq2],[q]);
+q_star:float(rhs(%[1]));
+q :float(''q_star);
+p_star:float(''p_d);
+
+"*****Eq  ****";
+p_star;
+q_star;
+"************************************************";
+kill(q);
+"*****Eq  CS PS ****";
+CS_M:float(integrate(p_d, q, 0, q_star)- integrate(p_star, q, 0, q_star));
+PS_M:float(integrate(p_star, q, 0, q_star)- integrate(MC, q, 0, q_star));
+T_S_M: ev('' t_s*''p_star*''q_star);
+EX_M: 10*q_star -  (q_star/50)^2$
+
+SW_M: CS_M + PS_M + T_S_M + EX_M;
+"************************************************";
+draw2d(
+grid= true,
+xlabel = "t_s",
+ylabel = "SW,EX",
+line_width  = 2,
+color  = grey,
+key = " T_S ",
+explicit(''T_S_M, t_s ,x_min,x_max),
+color  = red,
+key = " CS ",
+explicit(''CS_M, t_s,x_min,x_max),
+color  = light-green,
+key = " PS ",
+explicit(''PS_M, t_s,x_min,x_max),
+color  = light-blue,
+key = " SW ",
+explicit(''SW_M, t_s,x_min,x_max),
+color  = brown, 
+key = " EX ",
+explicit(''EX_M, t_s,x_min,x_max) )  ;
+
+/* [wxMaxima: input   end   ] */
+
+
+
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima 23.05.1"$

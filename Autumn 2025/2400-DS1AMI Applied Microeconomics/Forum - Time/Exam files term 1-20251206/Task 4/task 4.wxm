@@ -1,0 +1,342 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 23.05.1 ] */
+/* [wxMaxima: comment start ]
+a
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+/* Clear existing variables and load drawing package if needed */
+kill(all)$
+/* load(draw)$   <-- Uncomment if you want to plot functions later */
+/* Enter your individual numbers [0-9]*/
+N1: 5$
+N2: 5$
+N3: 5$
+N4: 5$
+N5: 5$
+
+/* PARAMETERS */
+C0 : 1000000$               /* Initial cost (spent at t=0) */
+maintenance_annual : 50000 + (N1+N2+N3+N4+N5)*1000$ /* Annual maintenance (t=1..10) */
+savings_annual : 250000$    /* Annual savings (t=1..10) */
+T : 10$                     /* Total years of system usage */
+r_d : 0.07$                 /* Discount rate (7%) */
+r_b : 0.09$                 /* Assume the loan interest rate is 9% */
+
+/* Entire investment is financed by a 3-year loan. 
+   Annual loan payment (annuity) for principal = C0, interest = r_b, term = 3 years */
+annual_payment : (r_b * C0) / (1 - (1 + r_b)^(-3))$
+
+/* NPV CALCULATION */
+NPV : 0$
+
+/* Outflow at t=0 (the company pays for the AI system).
+   Since it's financed by the loan, you can either:
+   1) Include +C0 as an inflow (loan) and -C0 as an outflow, netting 0 at t=0, 
+      and then subtract the loan repayments.
+   2) Or simply treat the cost as -C0 at t=0 plus the loan repayments. 
+
+   Below, we treat -C0 at t=0 as the project outflow and then also include 
+   the outflows for the loan repayments. */
+NPV : NPV - C0
+
+/* Add discounted net savings each year (savings - maintenance) from t=1..T */
++ ''sum( ((savings_annual - maintenance_annual) / (1 + r_d)^t), t, 1, T )
+
+/* Subtract discounted loan repayments for t=1..3 */
+- ''sum( (annual_payment / (1 + r_d)^t), t, 1, 3 )$
+
+print("NPV =", NPV)$
+
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+b
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+load(draw)$   
+/* Enter your individual numbers [0-9]*/
+N1: 5$
+N2: 5$
+N3: 5$
+N4: 5$
+N5: 5$
+/* PARAMETERS */
+investment : 1000000$               /* Initial cost of investent (spent at t = 0) */
+loan : investment$
+maintenance_annual : 50000 + (N1+N2+N3+N4+N5)*1000$ /* Annual maintenance (t=1..10) */
+savings_annual : 250000$    /* Annual savings (t=0..10) */
+T : 10$                     /* Total years of system usage */
+T_P : 3$                      /* Total years of loan payment */
+r_b : 0.09$                 /* Loan interest (9%) */
+r_d : 0.07$                /* Discount rate (7%) */
+/* Entire investment is financed by a T_P-year loan. 
+ 
+Annual loan payment (annuity) for principal = loan, interest = r_b, term = T_P */
+annual_payment : (r_b * loan) / (1 - (1 + r_b)^(-T_P))$
+
+/* NPV CALCULATION */
+/* flowas in time t =0 */
+/* Add discounted net savings each year (savings - maintenance) from t=1..T */
+/* Subtract discounted loan repayments for t=1..T_P */
+NPV : - investment + loan   +  sum( ((savings_annual - maintenance_annual) / (1 + r_d)^t), t, 0, T ) - sum( annual_payment /( (1-r_d)^t ) , t, 1, T_P );
+
+print("NPV =", ev(''NPV))$
+
+
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+c1 kody 
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+load(draw)$   
+/* Enter your individual numbers [0-9]*/
+N1: 5$
+N2: 5$
+N3: 5$
+N4: 5$
+N5: 5$
+/* PARAMETERS */
+investment : 1000000$               /* Initial cost of investent (spent at t = 0) */
+loan : investment$
+/* Annual maintenance (t=1..10) as a variable*/
+savings_annual : 250000$    /* Annual savings (t=0..10) */
+T : 10$                     /* Total years of system usage */
+T_P : 3$                      /* Total years of loan payment */
+r_b : 0.09$                 /* Loan interest (9%) */
+r_d : 0.07$                /* Discount rate (7%) */
+/* Entire investment is financed by a T_P-year loan. 
+ 
+Annual loan payment (annuity) for principal = loan, interest = r_b, term = T_P */
+annual_payment : (r_b * loan) / (1 - (1 + r_b)^(-T_P))$
+
+/* NPV CALCULATION */
+/* flowas in time t =0 */
+/* Add discounted net savings each year (savings - maintenance) from t=1..T */
+/* Subtract discounted loan repayments for t=1..T_P */
+NPV : - investment + loan   +  sum( ((savings_annual - maintenance_annual) / (1 + r_d)^t), t, 0, T ) - sum( annual_payment /( (1-r_d)^t ) , t, 1, T_P );
+
+print("NPV =", ev(''NPV))$
+
+draw2d(xlabel="maintenance_annual",  ylabel="NPV", key = "E_NPV_T", color  = green,  explicit(NPV, maintenance_annual,10000,150000))$  
+
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+ c2
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+load(draw)$   
+/* Enter your individual numbers [0-9]*/
+N1: 5$
+N2: 5$
+N3: 5$
+N4: 5$
+N5: 5$
+/* PARAMETERS */
+investment : 1000000$               /* Initial cost of investent (spent at t = 0) */
+loan : investment$
+maintenance_annual : 50000 + (N1+N2+N3+N4+N5)*1000$ /* Annual maintenance (t=1..10) */
+savings_annual : 250000$    /* Annual savings (t=0..10) */
+T : 10$                     /* Total years of system usage */
+T_P : 3$                      /* Total years of loan payment */
+/* Loan interest (variable) */
+/* Discount rate (variable) */
+/* Entire investment is financed by a T_P-year loan. 
+ 
+Annual loan payment (annuity) for principal = loan, interest = r_b, term = T_P */
+annual_payment : (r_b * loan) / (1 - (1 + r_b)^(-T_P))$
+
+/* NPV CALCULATION */
+/* flowas in time t =0 */
+/* Add discounted net savings each year (savings - maintenance) from t=1..T */
+/* Subtract discounted loan repayments for t=1..T_P */
+NPV : - investment + loan   +  sum( ((savings_annual - maintenance_annual) / (1 + r_d)^t), t, 0, T ) - sum( annual_payment /( (1-r_d)^t ) , t, 1, T_P );
+print("NPV =", ev(''NPV))$
+
+draw3d( xlabel=" r_b", ylabel=" r_d", zlabel="NPV", key = "NPV",  contour_levels ={ -10^6,0,10^5},
+             contour        = both, color  = green,  explicit(NPV,r_b,0.01,0.7,r_d,0.01,0.7))$  
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+c3
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+load(draw)$   
+/* load(draw)$   <-- Uncomment if you want to plot functions later */
+/* Enter your individual numbers [0-9]*/
+N1: 5$
+N2: 5$
+N3: 5$
+N4: 5$
+N5: 5$
+/* PARAMETERS */
+investment : 1000000$               /* Initial cost of investent (spent at t = 0) */
+loan : investment$
+maintenance_annual : 50000 + (N1+N2+N3+N4+N5)*1000$ /* Annual maintenance (t=1..10) */
+savings_annual : 250000$    /* Annual savings (t=0..10) */
+T : 10$                     /* Total years of system usage */
+T_P : 3$                      /* Total years of loan payment */
+ /* Loan interest (variable) */
+r_d : 0.07$                /* Discount rate (7%) */
+/* Entire investment is financed by a T_P-year loan. 
+ 
+Annual loan payment (annuity) for principal = loan, interest = r_b, term = T_P */
+annual_payment : (r_b * loan) / (1 - (1 + r_b)^(-T_P))$
+
+/* NPV CALCULATION */
+/* flowas in time t =0 */
+/* Add discounted net savings each year (savings - maintenance) from t=1..T */
+/* Subtract discounted loan repayments for t=1..T_P */
+NPV : - investment + loan   +  sum( ((savings_annual - maintenance_annual) / (1 + r_d)^t), t, 0, T ) - sum( annual_payment /( (1-r_d)^t ) , t, 1, T_P );
+
+print("NPV =", ev(''NPV))$
+
+draw2d( xlabel=" r_b", ylabel="NPV", key = "NPV",  color  = green,  explicit(NPV,r_b,0.01,0.6))$  
+
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: comment start ]
+c 4
+   [wxMaxima: comment end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+/* load(draw)$   <-- Uncomment if you want to plot functions later */
+load(draw)$   
+N1: 5$
+N2: 5$
+N3: 5$
+N4: 5$
+N5: 5$
+/* PARAMETERS */
+investment : 1000000$               /* Initial cost of investent (spent at t = 0) */
+loan : investment$
+maintenance_annual : 50000 + (N1+N2+N3+N4+N5)*1000$ /* Annual maintenance (t=1..10) */
+savings_annual : 250000$    /* Annual savings (t=0..10) */
+/* Total years of system usage - variable */
+T: 10 ; /* Total years of loan payment - variable */
+r_b : 0.09$                 /* Loan interest (9%) */
+r_d : 0.07$                /* Discount rate (7%) */
+/* Entire investment is financed by a T_P-year loan. 
+ 
+Annual loan payment (annuity) for principal = loan, interest = r_b, term = T_P */
+annual_payment : (r_b * loan) / (1 - (1 + r_b)^(-T_P))$
+
+/* NPV CALCULATION */
+/* flowas in time t =0 */
+/* Add discounted net savings each year (savings - maintenance) from t=1..T */
+/* Subtract discounted loan repayments for t=1..T_P */
+NPV : - investment + loan   +  ''sum( ((savings_annual - maintenance_annual) / (1 + r_d)^t), t, 0, T ) - ''sum( annual_payment /( (1-r_d)^t ) , t, 1, T_P );
+
+print("NPV =", ev(''NPV))$
+
+draw2d( xlabel="T", ylabel="T_P", zlabel="NPV", key = "NPV",  color  = green,  explicit(''NPV,T_P,3,20))$  
+
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+(%i15)	kill(all)$
+	load(draw)$   
+	/* Enter your individual numbers [0-9]*/
+	N1: 5$
+	N2: 5$
+	N3: 5$
+	N4: 5$
+	N5: 5$
+	/* PARAMETERS */
+	investment : 1000000$               /* Initial cost of investent (spent at t = 0) */
+	loan : investment$
+	maintenance_annual : 50000 + (N1+N2+N3+N4+N5)*1000$ /* Annual maintenance (t=1..10) */
+	savings_annual : 250000$    /* Annual savings (t=0..10) */
+	/* Total years of system usage - variable */
+	T_P: 3 ; /* Total years of loan payment - variable */
+	r_b : 0.09$                 /* Loan interest (9%) */
+	r_d : 0.07$                /* Discount rate (7%) */
+	/* Entire investment is financed by a T_P-year loan. 
+	 
+	Annual loan payment (annuity) for principal = loan, interest = r_b, term = T_P */
+	annual_payment : (r_b * loan) / (1 - (1 + r_b)^(-T_P))$
+	
+	/* NPV CALCULATION */
+	/* flowas in time t =0 */
+	/* Add discounted net savings each year (savings - maintenance) from t=1..T */
+	/* Subtract discounted loan repayments for t=1..T_P */
+	NPV : - investment + loan   +  ''sum( ((savings_annual - maintenance_annual) / (1 + r_d)^t), t, 0, T ) - ''sum( annual_payment /( (1-r_d)^t ) , t, 1, T_P );
+	
+	print("NPV =", ev(''NPV))$
+	
+	draw2d( xlabel="T", ylabel="T_P", zlabel="NPV", key = "NPV",  color  = green,  explicit(''NPV,T,3,20))$  
+	
+(%o13)	175000*(sum(1/1.07^t,t,0,T))-(90000.0*sum(1/0.9299999999999999^t,t,1,T_P))/(1-1/1.09^T_P)
+"NPV ="" "175000*(sum(1/1.07^t,t,0,T))-(90000.0*sum(1/0.9299999999999999^t,t,1,T_P))/(1-1/1.09^T_P)" "
+
+draw3d (explicit): non defined variable in term t
+
+ -- an error. To debug this try: debugmode(true);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+load(draw)$   
+load("fmin_cobyla")$  /* loading the optimization package */
+/* Enter your individual numbers [0-9]*/
+N1: 5$
+N2: 5$
+N3: 5$
+N4: 5$
+N5: 5$
+/* PARAMETERS */
+investment : 1000000$               /* Initial cost of investent (spent at t = 0) */
+loan : investment$
+maintenance_annual : 50000 + (N1+N2+N3+N4+N5)*1000$ /* Annual maintenance (t=1..10) */
+savings_annual : 250000$    /* Annual savings (t=0..10) */
+T : 10$                     /* Total years of system usage */
+T_P : 3$                      /* Total years of loan payment */
+r_b : 0.09$                 /* Loan interest (9%) */
+/* Discount rate calculated IRR */
+/* Entire investment is financed by a T_P-year loan. 
+ 
+Annual loan payment (annuity) for principal = loan, interest = r_b, term = T_P */
+annual_payment : (r_b * loan) / (1 - (1 + r_b)^(-T_P))$
+
+/* NPV CALCULATION */
+/* flowas in time t =0 */
+/* Add discounted net savings each year (savings - maintenance) from t=1..T */
+/* Subtract discounted loan repayments for t=1..T_P */
+NPV : - investment + loan   +  sum( ((savings_annual - maintenance_annual) / (1 + r_d)^t), t, 0, T ) - sum( annual_payment /( (1-r_d)^t ) , t, 1, T_P );
+
+draw2d(key = "NPV", xlabel="r_d",ylabel="NPV", explicit(NPV,r_d,-0.2,0.2));
+
+print("NPV =", ev(''NPV))$fmin_cobyla(abs(''NPV), [r_d], [0.000001], constraints = [r_d >=-0.2, r_d <= 0.2],iprint = 1);
+print( "for",%[1], "NPV = ", -round(%[2]) )$ 
+
+
+/* [wxMaxima: input   end   ] */
+
+
+
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima 23.05.1"$

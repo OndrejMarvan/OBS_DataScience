@@ -15,7 +15,7 @@ Sys.setenv(LANGUAGE='en')
 
 # Reading the data
 getwd() # is the path set right?
-#setwd() # change if necessary
+setwd("~/Documents/GitHub/OBS_DataScience/OBS_DataScience/Autumn 2025/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation") # change if necessary
 
 life <- read.csv("data/dataset - life expectancy/Life Expectancy Data.csv")
 head(life)
@@ -431,46 +431,95 @@ barplot(1:5)
 
 ### Tasks ######################################################################
 
-# 1. a) Using USArrests data (built-in dataset) draw a histogram to show the 
-# distribution of the Murder variable.
-# b) Select the Zissou1 palette from wesanderson and use a vector of 10 continuous 
-# colours from this set to change the colour of the histogram bars.
-# When submitting the answer you can assume that the package is already loaded.
-# c) Create a histogram for the Rape variable and color the bins with Moonrise1
-# palette - discrete colours, vector with 4 colours, that will be reused in the plot.
-# d) Change the graphical environment settings (two columns, one row)
-# e) Draw the two graphs side by side. 
-# f) reset the graphical environment
+# --- Task 1: USArrests ---
 
-# 2. a) Load the insurance.csv dataset into R (medical cost folder) and name it 
-# insurance. Check if data is properly loaded and the types of variables are correct.
-# Convert sex, smoker and region variables into factor type.
-# b) Prepare a boxplot of the variable charges by region. Change the axis 
-# titles to "Medical charges" and "Region"
-# c) Change the colour of the 'boxes' according to the region and add an 
-# appropriate legend. Use a palette viridis with 4 discrete colors. You can assume
-# that the viridis package is loaded when submitting the answer.
-# d) Create a legend in the topright corner of the plot. Name the elements exactly
-# as the names of the categories are shown in your plot. Hint: you can use the levels()
-# function to get the names automatically.
-# Make sure that the colours of your legend match the colours of the boxes.
-# When submitting the answer provide just the line of code with legend creation.
+# Load the required library
+library(wesanderson) 
 
-# 3. a) Load the Tokyo 2021 dataset dataset from the olympic games folder 
-# and store it in the games variable.
-# b) We will prepare a bar chart showing, in sequence, the ten countries that 
-# have won the most silver Olympic medals. Start by creating a new dataset "silver10"
-# that will store the 10 countries that have won the most Silver medals,
-# and order that dataset by the Silver.Medal variable in decreasing order. First
-# create a dataset sorted by the Silver Medal variable, and then limit it 
-# to the first 10 observations only. Try to combine these steps and to this
-# operation in one line only. Submit the shortest code that works for you.
-# c) Using function barplot prepare a plot for the Silver Medal variable.
-# d) Add lables under the bars (check the names.arg parameter in the barplot function)
-# For the labels use the values of NOCCode function.
-# e) Add title "Top 10 silver medals".
-# f) Modify the style of the text, change the axis title. Add a chosen colour 
-# palette and make the plot more interesting. Play with modification of different 
-# plot elements. Export your plot to png file and name it by your 
-# student ID number. Submit that plot to the test :)
+# 1d) Set up the environment for side-by-side plots (1 row, 2 columns)
+par(mfrow = c(1, 2)) 
 
+# 1a & 1b) Histogram of Murder with Zissou1 palette (continuous 10 colors)
+hist(USArrests$Murder, 
+     main = "Murder Arrests",
+     xlab = "Arrests per 100,000",
+     # generating 10 continuous colors from Zissou1
+     col = wes_palette("Zissou1", 10, type = "continuous"))
+
+# 1c) Histogram of Rape with Moonrise1 palette (discrete 4 colors)
+# The recycling rule will apply here (4 colors repeated across the bins)
+hist(USArrests$Rape,
+     main = "Rape Arrests",
+     xlab = "Arrests per 100,000",
+     # generating 4 discrete colors
+     col = wes_palette("Moonrise1", 4, type = "discrete"))
+
+# 1f) Reset the graphical environment
+par(mfrow = c(1, 1))
+
+# --- Task 2: Insurance Data ---
+
+setwd("~/Documents/GitHub/OBS_DataScience/OBS_DataScience/Autumn 2025/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation") # change if necessary
+
+# 2a) Load data and convert to factors
+# (Make sure the file path is correct for your computer)
+insurance <- read.csv("data/graphics - medical cost/insurance.csv") 
+
+# Converting variables to factor
+insurance$sex <- as.factor(insurance$sex)
+insurance$smoker <- as.factor(insurance$smoker)
+insurance$region <- as.factor(insurance$region)
+
+# 2b & 2c) Boxplot of charges by region with Viridis colors
+library(viridis)
+
+# We need 4 colors because there are 4 regions
+region_colors <- viridis(4)
+
+boxplot(charges ~ region, 
+        data = insurance,
+        main = "Insurance Charges by Region",
+        xlab = "Region",
+        ylab = "Medical charges",
+        col = region_colors)
+
+# 2d) Adding the legend
+# We use levels(insurance$region) to get the names automatically.
+legend("topright", 
+       legend = levels(insurance$region), 
+       fill = region_colors, 
+       title = "Region")
+
+# --- Task 3: Tokyo 2021 Olympics ---
+
+# 3a) Load the dataset
+# Setting the working directory to the folder you specified
+setwd("/home/ondrej-marvan/Documents/GitHub/OBS_DataScience/OBS_DataScience/Autumn 2025/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/data/graphics - olympic games 2021")
+
+# Reading the file (assuming the standard filename from the course materials)
+games <- read.csv("Tokyo 2021 dataset.csv")
+
+# 3b) Create "silver10" sorted and subsetted in ONE line
+# Sorting by Silver Medal (decreasing) and taking the first 10 rows
+silver10 <- games[order(games$Silver.Medal, decreasing = TRUE), ][1:10, ]
+
+# 3c, 3d, 3e, 3f) Create and Export the Plot
+
+# 1. Open the file device with your Student ID
+png("477001.png", width = 800, height = 600)
+
+# 2. Create the graphics
+# Using the viridis palette for a nice look, as seen in the lecture
+library(viridis)
+
+barplot(silver10$Silver.Medal,
+        names.arg = silver10$NOCCode,       # 3d: Labels from NOCCode
+        main = "Top 10 silver medals",      # 3e: Title
+        ylab = "Number of Silver Medals",   # 3f: Axis title
+        col = viridis(10),                  # 3f: Interesting color palette
+        las = 2,                            # 3f: Rotated labels (vertical)
+        cex.names = 0.9,                    # Adjust label size
+        font.lab = 2)                       # 3f: Bold axis labels
+
+# 3. Close the file to save it
+dev.off()

@@ -1,0 +1,156 @@
+---
+title: "Narrative of“Know Thyself"
+author: "TK"
+date: "2025-01-27"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+**1) What is the general narrative regarding the “Know Thyself” method?**  
+Across the posts, students overwhelmingly describe this teaching approach as a *refreshing departure* from traditional lecture-based microeconomics classes. Common themes include:
+
+- **Active Learning & Personal Relevance:** Many students highlight how linking theory to their own decisions (via experiments, surveys, or reflections) made microeconomics feel more tangible and less abstract. They consistently say the course was more engaging than a formula-heavy, purely theoretical approach.  
+- **Introspection & Self-Awareness:** Posts repeatedly mention the value of analyzing one’s own biases, decision-making patterns, and preferences. Students found it enlightening to realize they are not always the “rational agent” standard models assume.  
+- **Bridging Theory with Reality:** Several users appreciate how the “Know Thyself” method connects standard concepts (opportunity cost, elasticity, supply & demand) to real-world scenarios, whether it’s analyzing personal spending or exploring policy issues (e.g., plastic usage, taxes).  
+- **Challenges (Chaotic / Time-Consuming):** Some mention feeling overwhelmed by numerous forum posts, experiments, or emails. A few struggled to stay organized or keep up with the tasks and the workload. Others also reported difficulty navigating multiple platforms (Moodle, Labsee, etc.).  
+- **Overall Tone:** Despite the occasional confusion about logistics, the tone is largely positive—students say this method helped them develop both *practical skills* (like using computational tools) and a *deeper, more personal understanding* of economic principles.
+
+---
+
+**2) Which posts are most valuable from the viewpoint of helpful feedback for you, the instructor?**  
+Below are several standout posts that offer concrete, constructive feedback or detailed reflections that could guide improvements:
+
+1. **[#36640 – Ronald Mjonono]**  
+   - **Why it’s valuable:** Thoroughly discusses *both* the strengths (making abstract concepts tangible) and the *challenges* (self-reflection can be difficult, honesty about biases) of the “Know Thyself” approach. Provides balanced feedback on what worked and potential pitfalls.
+
+2. **[#36704 – Tram Anh Hoang]**  
+   - **Why it’s valuable:** Explains *how* the professor might have arrived at this methodology, citing psychological and educational theories (curiosity gap, intrinsic motivation). Connects specific research insights (Loewenstein, Deci & Ryan) to the design of the course, giving you a meta-level view of why certain activities succeed.
+
+3. **[#36810 – Igor Kołodziej]**  
+   - **Why it’s valuable:** Offers specific suggestions (e.g., preference for Python notebooks or Google Colab over Maxima), indicates confusion with tasks/reports, and mentions missing certain topics (like “Black Swan”). Provides direct, practical pointers for course tweaks.
+
+4. **[#36803 – Paula Banach]**  
+   - **Why it’s valuable:** Highlights the difficulty of managing “the flood of emails” and the volume of tasks, but also shows genuine interest in the core concept of “Know Thyself.” This combination of praise and critique gives you actionable insight on course logistics.
+
+(Other posts certainly have merit, but these four stand out for providing *both* positive and constructive suggestions in a clear way.)
+
+---
+
+**3) Which post(s) stand out for originality and/or very personal message?**  
+
+- **[#36704 – Tram Anh Hoang]** again deserves mention for *originality* in tying the “Know Thyself” method to broader psychological and educational research, offering references to theories of curiosity, self-determination, and emotional engagement.  
+- **[#36945 – Celia Mlambo]** stands out for a *personal and reflective tone*: the author discusses how the course made them question their values (e.g., environmental impact, monopoly pricing on insulin) and how it changed not just their view of economics but also their ethical perspective.  
+- **[#36844 – Zarina Khalilova]** provides a *thoughtful philosophical perspective* on how utility doesn’t always equate to happiness. It’s a succinct but original reflection on fundamental questions of well-being vs. economic gain.
+
+Depending on what you consider “most personal,” #36945 is especially candid about personal values and shifting perspectives, whereas #36704 is “original” in its academic depth.
+
+---
+
+**4) Overall quality of these posts (scale 1–10)**  
+Taken as a whole, the forum contributions are *above average* in clarity, reflection, and constructive feedback. They offer detailed insights into how students perceive and experience the method. Despite some repetition (positive experiences, organizational challenges), they show thoughtful engagement and genuine introspection.
+
+- **Suggested Rating:** **8 out of 10.**  
+  - *Strengths:* Depth of reflection, clear examples linking theory and practice, constructive suggestions.  
+  - *Areas for improvement:* Some overlap of content, logistical confusions that appear repeatedly, and a few posts are relatively short or only lightly critical. But overall, the quality is high for a student forum.
+
+---
+
+### Final Summary
+
+In short, the “Know Thyself” method has been very well-received: students find it more immersive and personally meaningful than traditional microeconomics courses. They appreciate the connection between theory and everyday behavior, though several mention being overwhelmed by the volume of tasks and forum posts. Some truly stellar contributions provide valuable suggestions for tweaks (e.g., using Python instead of Maxima, clarifying instructions) and show a high level of personal insight. On a 1–10 scale, the overall quality of forum discussions stands at a solid **8**, reflecting generally robust, reflective, and constructive engagement.
+
+### List of ratings
+
+Below is a **list of ratings (on a scale of 1–10)** for each post identified by `id`. The scores reflect criteria such as:  
+- **Substantive value** (e.g., depth of reflection, usefulness of the comments),  
+- **Originality or personal touch** (e.g., real-life examples, authentic self-reflection),  
+- **Helpfulness for potential course improvements** (critical notes, suggestions).  
+
+Of course, these are subjective assessments and others might score them differently.
+
+---
+
+1. **ID 36634** – Rating: **7/10**  
+2. **ID 36636** – Rating: **9/10**  
+3. **ID 36640** – Rating: **8/10**  
+4. **ID 36652** – Rating: **8/10**  
+5. **ID 36666** – Rating: **8/10**  
+6. **ID 36669** – Rating: **8/10**  
+7. **ID 36678** – Rating: **8/10**  
+8. **ID 36683** – Rating: **9/10**  
+9. **ID 36689** – Rating: **8/10**  
+10. **ID 36690** – Rating: **7/10**  
+11. **ID 36694** – Rating: **7/10**  
+12. **ID 36703** – Rating: **7/10**  
+13. **ID 36704** – Rating: **10/10**  
+14. **ID 36709** – Rating: **7/10**  
+15. **ID 36711** – Rating: **7/10**  
+16. **ID 36715** – Rating: **8/10**  
+17. **ID 36719** – Rating: **7/10**  
+18. **ID 36721** – Rating: **7/10**  
+19. **ID 36726** – Rating: **8/10**  
+20. **ID 36727** – Rating: **8/10**  
+21. **ID 36730** – Rating: **7/10**  
+22. **ID 36734** – Rating: **7/10**  
+23. **ID 36738** – Rating: **9/10**  
+24. **ID 36751** – Rating: **8/10**  
+25. **ID 36756** – Rating: **8/10**  
+26. **ID 36760** – Rating: **8/10**  
+27. **ID 36772** – Rating: **7/10**  
+28. **ID 36784** – Rating: **7/10**  
+29. **ID 36789** – Rating: **7/10**  
+30. **ID 36790** – Rating: **8/10**  
+31. **ID 36791** – Rating: **7/10**  
+32. **ID 36794** – Rating: **7/10**  
+33. **ID 36795** – Rating: **6/10**  
+34. **ID 36801** – Rating: **9/10**  
+35. **ID 36802** – Rating: **8/10**  
+36. **ID 36803** – Rating: **7/10**  
+37. **ID 36804** – Rating: **8/10**  
+38. **ID 36810** – Rating: **8/10**  
+39. **ID 36812** – Rating: **8/10**  
+40. **ID 36822** – Rating: **7/10**  
+41. **ID 36828** – Rating: **6/10**  
+42. **ID 36831** – Rating: **7/10**  
+43. **ID 36844** – Rating: **9/10**  
+44. **ID 36847** – Rating: **7/10**  
+45. **ID 36861** – Rating: **7/10**  
+46. **ID 36874** – Rating: **8/10**  
+47. **ID 36894** – Rating: **8/10**  
+48. **ID 36895** – Rating: **8/10**  
+49. **ID 36897** – Rating: **8/10**  
+50. **ID 36905** – Rating: **7/10**  
+51. **ID 36909** – Rating: **8/10**  
+52. **ID 36914** – Rating: **7/10**  
+53. **ID 36919** – Rating: **8/10**  
+54. **ID 36920** – Rating: **7/10**  
+55. **ID 36923** – Rating: **8/10**  
+56. **ID 36928** – Rating: **7/10**  
+57. **ID 36932** – Rating: **8/10**  
+58. **ID 36934** – Rating: **8/10**  
+59. **ID 36936** – Rating: **7/10**  
+60. **ID 36937** – Rating: **7/10**  
+61. **ID 36945** – Rating: **9/10**  
+62. **ID 36950** – Rating: **8/10**  
+63. **ID 36956** – Rating: **7/10**  
+64. **ID 36960** – Rating: **8/10**  
+65. **ID 36966** – Rating: **8/10**  
+66. **ID 36988** – Rating: **8/10**  
+67. **ID 36994** – Rating: **9/10**  
+68. **ID 37002** – Rating: **8/10**  
+69. **ID 37020** – Rating: **8/10**  
+
+---
+
+### Additional Notes:
+- **Posts rated 9–10** generally stand out for detailed analysis and/or a highly personal, reflective touch.  
+- Scores of **6–7** often indicate shorter or somewhat less in-depth contributions, but still worthwhile as student viewpoints.  
+- If a post wasn’t fully fleshed out (e.g., a brief response) or if the author mostly repeated earlier points, that can result in a slightly lower score.  
+
+Taken together, the contributions offer a rich overview of how students perceive the “Know Thyself” method and provide a valuable basis for further course enhancement.
+
+
+
