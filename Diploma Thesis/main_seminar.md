@@ -130,3 +130,8 @@ In terms of temperature variation, diurnal temperature variation—the differenc
 ![[Pasted image 20251124174334.png]]
 
 ![[Pasted image 20251124174346.png]]
+
+08.12.2025
+First run my own Winkler and Huglin index
+Then start with my basic analysis
+Once done, add topograhpy map, soil quality, etc. etc. 
