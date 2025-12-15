@@ -6,3 +6,6 @@
 German 
 https://usosweb.uw.edu.pl/kontroler.php?_action=katalog2/przedmioty/pokazPrzedmiot&prz_kod=3302-NDOK1-OG
 3302-NDOK1-OG # German for foreigners (in English) A1/ part 1
+
+
+![[Pasted image 20251215205900.png]]
