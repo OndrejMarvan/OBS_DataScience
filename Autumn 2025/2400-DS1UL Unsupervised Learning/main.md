@@ -80,6 +80,8 @@ submit via email - ideally notebook
 - Packages for MDS in R located on Moodle for analysis -> to make our life easier
 - 
 
+## 09 
+16.12.2025
 
 
 
