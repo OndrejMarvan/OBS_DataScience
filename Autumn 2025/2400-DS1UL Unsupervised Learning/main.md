@@ -83,5 +83,7 @@ submit via email - ideally notebook
 ## 09 
 16.12.2025
 
+Example projects for our projects added to Moodle (dimensional reduction)
+
 
 
