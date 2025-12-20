@@ -24,5 +24,31 @@ library(NbClust)    # For determining the optimal number of clusters
 # 1. Data Discrovery 
 
 Before diving into clustering, I need to decide what do I want to do with the data and as well to understand to them. The key idea is to compare historical year with the latest available year (meaning 2024). 
-```
 
+```
+## 1.1 Data Inventory: 1990s to 2024
+
+We are checking the availability of data for our key energy variables: Coal, Oil, Gas, Nuclear, and Renewables. We filter for entities with a "Code" to ensure we are looking at individual countries, not aggregated regions like "World" or "Europe".
+
+```{r data_inventory}
+# Load the raw data
+df_raw <- read.csv("per-capita-energy-stacked.csv")
+
+# Define our target years
+target_years <- c(1990, 1995, 2000, 2010, 2020, 2022, 2023, 2024)
+
+# Create a 'completeness' check
+# A row is only 'complete' for our project if it has the core energy columns
+inventory <- df_raw %>%
+  filter(!is.na(Code) & Code != "") %>%
+  filter(Year %in% target_years) %>%
+  group_by(Year) %>%
+  summarise(
+    Total_Countries = n(),
+    With_Coal = sum(!is.na(coal_per_capita__kwh) & coal_per_capita__kwh != ""),
+    With_Nuclear = sum(!is.na(nuclear_per_capita__kwh__equivalent) & nuclear_per_capita__kwh__equivalent != ""),
+    With_Solar = sum(!is.na(solar_per_capita__kwh__equivalent) & solar_per_capita__kwh__equivalent != "")
+  )
+
+print(inventory)
+```
