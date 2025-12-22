@@ -12,5 +12,6 @@
 > 
 > [!PDF|yellow] [[intro_ds_1.pdf#page=57&selection=0,0,20,64&color=yellow|intro_ds_1, p.57]]
 > > Unsupervised Learning Definition Unsupervised learning involves training models on unlabeled data — where the algorithm tries to find hidden structure or patterns without predefined outputs. The goal: discover structure, similarity, or relationships in data. Common algorithms: K-Means Clustering Hierarchical Clustering Principal Component Analysis (PCA) Association Rule Mining Used for: grouping, dimensionality reduction, pattern discovery.
-> 
-> 
+
+
+************
