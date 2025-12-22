@@ -19,4 +19,55 @@ learning patterns from data.
 Two main paradigms:
 1 Supervised Learning
 2 Unsupervised Learning
+
+Q1. Foundations of Data Science
+According to IBM’s view, what best describes Data Science?
+A) The study of human–computer interaction in social networks
+**B) Combining math/statistics, programming, advanced**
+**analytics/AI and domain expertise to extract insights**
+C) The process of collecting data for statistical testing
+
+Q2. Econometrics vs Data Science
+Which statement correctly contrasts the two fields?
+A) Econometrics focuses on prediction; data science focuses on causality
+**B) Econometrics prioritizes interpretation/validity; data**
+**science prioritizes prediction/scalability**
+C) Both fields ignore statistical assumptions
  
+Q3. Types of Learning
+In supervised learning, models are trained on:
+A) Unlabeled data with unknown outputs
+**B) Data with known input–output pairs**
+C) Randomly generated data without structure
+
+Q4. Structured vs unstructured data
+Which of the following are unstructured data?
+A) Relational database
+**B) Tweets**
+**C) Photos/images**
+
+Q5. Objective of ML
+Main objective of machine learning:
+A) Testing economic theories
+B) Automating data collection
+**C) Learning patterns from data to improve task performance**
+
+Q6. Data leakage
+What is data leakage?
+A) Loss of records during preprocessing
+**B) Using test-set information during training**
+C) Incorrect encoding of categorical variables
+
+Q7. What is NOT true about Data Science?
+Which of the following statements correctly define Data Science?
+A) It focuses solely on collecting raw data without analysis
+B) It excludes programming and statistics entirely
+C) It avoids using any computational tools
+**Note: In this question, none of the options are correct.**
+
+Question 1. Which of the following are unstructured data?
+1A) Photos/images
+2B) Tweets
+3C) Relational database
+The **correct answers are (a) and (b)**. Therefore, the following provided
+answers yield these point values:
