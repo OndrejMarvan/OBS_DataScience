@@ -14,4 +14,9 @@
 > > Unsupervised Learning Definition Unsupervised learning involves training models on unlabeled data — where the algorithm tries to find hidden structure or patterns without predefined outputs. The goal: discover structure, similarity, or relationships in data. Common algorithms: K-Means Clustering Hierarchical Clustering Principal Component Analysis (PCA) Association Rule Mining Used for: grouping, dimensionality reduction, pattern discovery.
 
 
-************
+Machine Learning is a subfield of Artificial Intelligence focused on
+learning patterns from data.
+Two main paradigms:
+1 Supervised Learning
+2 Unsupervised Learning
+ 
