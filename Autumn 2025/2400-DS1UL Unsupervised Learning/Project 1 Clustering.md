@@ -118,3 +118,85 @@ P1 - Energy mix clustering
 data source for energy mix
 https://ourworldindata.org/energy-mix
 https://ourworldindata.org/grapher/global-energy-substitution.csv?v=1&csvType=full&useColumnShortNames=true
+
+
+Please, remember the following. I need to do Clustering (classes 1-5) project and I will definitely need your help.
+
+  
+
+My idea is to cluster countries based on their energy mix, find attached file.
+
+  
+
+Further, check the study materials and do an output from it, I will store it offline just in case.
+
+Based on your project idea to cluster countries by their energy mix and the study materials provided, here is a comprehensive summary of the core clustering concepts and a structured plan for your project.
+
+### **1. Summary of Clustering Fundamentals**
+
+**Definition and Goal** Clustering is an **unsupervised machine learning** task that automatically divides data into groups of similar items. The primary aim is to generate high-quality clusters with **high intra-class similarity** (records in a cluster are very similar) and **low inter-class similarity** (records in different clusters are very different).
+
+**Common Algorithms**:
+
+- **K-means (Centroid-based):** Clusters are defined by a central point (mean). It iteratively assigns points to the nearest centroid.
+    
+- **K-medoids/PAM (Medoid-based):** Uses actual data points (medoids) as representatives rather than means. This is often more robust to noise and outliers.
+    
+- **Hierarchical Clustering:** Creates a tree-like structure (dendrogram) using either a bottom-up or top-down approach.
+    
+- **Density-based (e.g., DBSCAN):** Groups points based on their spatial density, which is useful for identifying clusters of arbitrary shapes.
+    
+
+**Distance Metrics** Similarity is typically expressed through a distance function, most commonly the **Euclidean distance**. Because variables can have different scales (e.g., coal vs. solar consumption), normalization or scaling is often required before clustering.
+
+---
+
+### **2. Evaluation and Quality Metrics**
+
+To determine if your clustering is effective, the materials suggest several metrics:
+
+- **Silhouette Index:** Measures how similar an object is to its own cluster compared to other clusters. A higher average silhouette width indicates better-defined clusters.
+    
+- **Inertia:** A "good" division is characterized by **low intra-cluster inertia** (homogeneity) and **high inter-cluster inertia** (diversity between groups).
+    
+- **GAP Statistic:** Compares the total within-cluster variation for different values of k against a null reference distribution to find the optimal number of clusters.
+    
+
+---
+
+### **3. Application to Forecasting**
+
+Clustering can be a powerful tool for predictive modeling. By grouping countries with similar predictive factor profiles (e.g., similar energy transition paths), you can develop aggregated forecasts for each cluster. If the bias from combining objects is smaller than the reduction in variance, clustering can lead to a **lower Mean Square Error (MSE)** than individual country forecasts.
+
+---
+
+### **4. Project Plan: Clustering Countries by Energy Mix**
+
+Using your file `per-capita-energy-stacked.csv`, you can follow this workflow:
+
+**Phase 1: Data Preparation**
+
+- **Filter Data:** Decide if you want to cluster based on a single year (e.g., 2024) to see the current global landscape or use historical trends.
+    
+- **Feature Selection:** Use the 8 energy source columns (coal, oil, gas, nuclear, hydro, wind, solar, and other renewables) as your input variables.
+    
+- **Normalization:** Since oil consumption might be significantly higher than solar in many countries, scale the data (e.g., z-score normalization) so each energy source contributes equally to the distance calculation.
+    
+
+**Phase 2: Determining Optimal Clusters (k)**
+
+- Run the **Elbow Method** (plotting total within-cluster sum of squares).
+    
+- Use the **Silhouette Plot** to verify which k provides the clearest separation.
+    
+
+**Phase 3: Execution and Visualization**
+
+- **Run K-means or PAM:** PAM may be better if your dataset has extreme outliers (countries with unique energy profiles like Iceland or Norway).
+    
+- **Visualize:** Use cluster plots or a world map colored by cluster ID to identify geographical patterns in energy consumption.
+    
+
+**Phase 4: Interpretation**
+
+- Analyze the centroids/medoids to label the groups (e.g., "Fossil Fuel Reliant," "Renewable Leaders," or "Nuclear-Heavy Mix").
