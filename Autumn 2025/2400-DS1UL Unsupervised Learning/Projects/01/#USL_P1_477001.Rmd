@@ -23,17 +23,24 @@ library(NbClust)    # For determining the optimal number of clusters
 
 # 1. Exploratory Data Analysis (EDA)
 
-Before applying unsupervised learning algorithms, we must open the "black box" and perform a rigorous inspection of the raw data. A "good" data scientist verifies the ranges, central tendencies, and extremes to detect potential errors or influential outliers.
+Before applying unsupervised learning algorithms, I must inspect the raw data. Possibly to delete outliers. 
 
 ```{r load data, include=TRUE}
 # Load the energy data
 energy_data <- read.csv("per-capita-energy-stacked.csv", stringsAsFactors = FALSE)
 
 # Basic structure overview
-head(energy_data)
+head(energy_data) # Entity 
 dim(energy_data) # 6585 rows, 11 columns
 str(energy_data) 
+
+colnames(energy_data)
 ```
+```{r drop code, include=TRUE}
+df_no_code <- energy_data[, names(energy_data) != "Code"]
+colnames(energy_data)
+```
+
 
 ```{r EDA, include=TRUE}
 # Check min and max values for years

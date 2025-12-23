@@ -55,7 +55,9 @@ varD = "variable with text 2nd version"
 
 varD
 
+varE <- "LoremIpsum"
 
+varE
 
 ### Basic information about functions ##########################################
 
