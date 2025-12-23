@@ -165,20 +165,32 @@ Based on the mixed results from the last correlation matrix, I decided not to mo
 Before running the final model, we must check if our choice of 5 clusters is supported by the data using the methods from **Class 04**.
 
 ```{r optimal_k_analysis}
-# 1. Prepare data for clustering: Scale ONLY the energy columns
-# We use the renamed columns from your previous step
-energy_for_clustering <- energy_research %>%
+# 1. RE-ESTABLISH DATA (Ensuring master_data is available)
+gdp_raw  <- read.csv("gdp-per-capita-worldbank.csv")
+co2_raw  <- read.csv("co2-emissions-per-capita.csv")
+pop_raw  <- read.csv("population-density.csv")
+
+master_data <- energy_clean_renamed %>%
+  left_join(gdp_raw %>% select(Entity, Code, Year, GDP = 4), by = c("Entity", "Code", "Year")) %>%
+  left_join(co2_raw %>% select(Entity, Code, Year, CO2 = 4), by = c("Entity", "Code", "Year")) %>%
+  left_join(pop_raw %>% select(Entity, Code, Year, Pop_Density = 4), by = c("Entity", "Code", "Year"))
+
+# 2. SELECT ENERGY COLUMNS FOR CLUSTERING
+# We cluster ONLY on energy mix to find "Energy Regimes"
+energy_only_scaled <- master_data %>%
   select(Coal, Oil, Gas, Nuclear, Hydropower, Wind, Solar, `Other renewables`) %>%
   scale()
 
-# 2. Elbow Method (Within-cluster sum of squares)
-fviz_nbclust(energy_for_clustering, kmeans, method = "wss") +
-  geom_vline(xintercept = 5, linetype = 2, color = "red") +
-  labs(title = "Elbow Method", subtitle = "Checking the 'bend' at k=5")
+# 3. ELBOW METHOD
 
-# 3. Silhouette Method (Cluster separation quality)
-fviz_nbclust(energy_for_clustering, kmeans, method = "silhouette") +
-  labs(title = "Silhouette Method", subtitle = "Higher is better")
+fviz_nbclust(energy_only_scaled, kmeans, method = "wss") +
+  geom_vline(xintercept = 5, linetype = 2, color = "red") +
+  labs(title = "Elbow Method: Energy Mix Clusters")
+
+# 4. SILHOUETTE METHOD
+
+fviz_nbclust(energy_only_scaled, kmeans, method = "silhouette") +
+  labs(title = "Silhouette Method: Energy Mix Clusters")
 ```
 
 *Interpretation:* While the Silhouette method suggests that the most distinct mathematical split is into two groups (likely representing the global energy-wealth gap), the Elbow method suggests an optimal k=5. I have chosen k=5 for this research because it provides a more granular taxonomy. This allows us to distinguish between different high-energy profiles (e.g., Fossil-heavy vs. Renewable-heavy), which is essential for our forecasting goals.
@@ -220,4 +232,95 @@ fviz_nbclust(clustering_data_scaled, kmeans, method = "silhouette") +
   labs(title = "Silhouette Method: Socio-Economic Energy Profiles")
 ```   
 *Interpretation:* The Elbow method still suggests k=5, while the Silhouette method again points to k=2. This reinforces my earlier decision to use k=5 for a more detailed taxonomy, even when considering socio-economic factors.
+
+# 5.0 Running K-Means and Visualization
+Code snippet
+
+```{r kmeans_final, include=TRUE}
+# Run the algorithm
+set.seed(123)
+km_res <- kmeans(clustering_data_scaled, centers = 5, nstart = 25)
+
+# Add results back to a data frame for plotting
+# Note: we filter master_data the same way as clustering_data_scaled
+final_results <- master_data %>%
+  drop_na(GDP, CO2, Pop_Density) %>%
+  mutate(Cluster = as.factor(km_res$cluster))
+
+# Plot Clusters based on Wealth (GDP) and Emissions (CO2)
+ggplot(final_results %>% filter(Year == 2022), 
+       aes(x = GDP, y = CO2, color = Cluster)) +
+  geom_point(aes(size = Solar), alpha = 0.6) +
+  scale_x_log10() + 
+  theme_minimal() +
+  labs(title = "Energy Regimes: Wealth vs. Pollution (2022)",
+       x = "GDP per capita (Wealth - Log Scale)",
+       y = "CO2 per capita (Pollution)",
+       size = "Solar Usage")
+```
+```{r kmeans_energy_only, include=TRUE}
+# Run the algorithm on our energy variables
+set.seed(123)
+km_res <- kmeans(energy_only_scaled, centers = 5, nstart = 25)
+
+# Add results back to our master table
+final_results <- master_data %>%
+  mutate(Cluster = as.factor(km_res$cluster))
+
+# View distribution
+table(final_results$Cluster)
+```
+
+# 6.0 Geographical Visualization (World Map)
+To see the global patterns, we join our results with world map coordinates.
+
+```{r world_map, include=TRUE}
+library(maps)
+world_coords <- map_data("world")
+
+# Fix common name mismatches for the map
+map_ready_data <- final_results %>%
+  filter(Year == 2022) %>% # Visualizing the most recent complete year
+  mutate(region = case_when(
+    Entity == "United States" ~ "USA",
+    Entity == "United Kingdom" ~ "UK",
+    TRUE ~ Entity
+  ))
+
+# Join results with map
+world_map_joined <- world_coords %>%
+  left_join(map_ready_data, by = "region")
+
+# Plot Global Map
+ggplot(world_map_joined, aes(x = long, y = lat, group = group, fill = Cluster)) +
+  geom_polygon(color = "white", size = 0.1) +
+  scale_fill_brewer(palette = "Set1", na.value = "grey90") +
+  theme_minimal() +
+  labs(title = "Global Energy Regimes (2022)",
+       fill = "Cluster Group") +
+  theme(axis.text = element_blank(), axis.title = element_blank(), panel.grid = element_blank())
+```
+# 7.0 Regional Focus: Europe and Asia
+We can "zoom in" on specific regions by restricting the longitude and latitude.
+
+```{r regional_maps, include=TRUE}
+# 7.1. Europe Focus
+ggplot(world_map_joined, aes(x = long, y = lat, group = group, fill = Cluster)) +
+  geom_polygon(color = "white", size = 0.2) +
+  coord_fixed(xlim = c(-25, 45), ylim = c(34, 71), ratio = 1.3) +
+  scale_fill_brewer(palette = "Set1", na.value = "grey90") +
+  theme_minimal() +
+  labs(title = "Energy Regimes: Europe Focus")
+
+# 7.2. Asia Focus
+ggplot(world_map_joined, aes(x = long, y = lat, group = group, fill = Cluster)) +
+  geom_polygon(color = "white", size = 0.2) +
+  coord_fixed(xlim = c(60, 150), ylim = c(-10, 55), ratio = 1.3) +
+  scale_fill_brewer(palette = "Set1", na.value = "grey90") +
+  theme_minimal() +
+  labs(title = "Energy Regimes: Asia Focus")
+```
+
+
+
 
