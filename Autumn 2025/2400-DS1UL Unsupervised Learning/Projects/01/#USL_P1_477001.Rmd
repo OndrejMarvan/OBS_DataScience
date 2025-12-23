@@ -7,7 +7,7 @@ date: "2025-12-20"
 Expected output is to do a choose athe most suitable clustering method, do the cluestering and then forecasting. 
 
 ```{r libraries, include=FALSE}
-# Install missing library on local machine
+# Install missing libraries on local machine
 # install.packages("NbClust")
 # Load other necessary and already installed libraries
 library(tidyverse)
@@ -32,19 +32,37 @@ energy_raw <- read.csv("per-capita-energy-stacked.csv", stringsAsFactors = FALSE
 energy_clean <- energy_raw %>%
   filter(Code != "" & !is.na(Code))
 
-# 2. Define the energy source columns
+# 2. Define the energy source columns and rename them for easier reference
 energy_cols <- c("coal_per_capita__kwh", "oil_per_capita__kwh", "gas_per_capita__kwh", 
                  "nuclear_per_capita__kwh__equivalent", "hydro_per_capita__kwh__equivalent", 
                  "wind_per_capita__kwh__equivalent", "solar_per_capita__kwh__equivalent", 
                  "other_renewables_per_capita__kwh__equivalent")
+energy_cols_renamed <- c(
+  "Coal", "Oil", "Gas", "Nuclear",
+  "Hydropower", "Wind", "Solar", "Other renewables"
+)
 
 # 3. Handle Missing Values: Replace NA with 0
 # Logic: If a source is missing for a country in 1970, consumption was likely zero.
 energy_clean <- energy_clean %>%
   mutate(across(all_of(energy_cols), ~replace_na(., 0)))
 
+# 4. Rename the columns for easier reference
+energy_clean_renamed <- energy_clean %>%
+  rename(
+    Coal = coal_per_capita__kwh,
+    Oil = oil_per_capita__kwh,
+    Gas = gas_per_capita__kwh,
+    Nuclear = nuclear_per_capita__kwh__equivalent,
+    Hydropower = hydro_per_capita__kwh__equivalent,
+    Wind = wind_per_capita__kwh__equivalent,
+    Solar = solar_per_capita__kwh__equivalent,
+    `Other renewables` = other_renewables_per_capita__kwh__equivalent
+  )
+
 dim(energy_raw) # 6585   11, includes whole continents and regions
-dim(energy_clean) # 5925 values/cells   11 columns (only countries)
+dim(energy_clean_renamed) # 5925 values/cells   11 columns (only countries)
+
 ```
 We got 5925 values in 11 columns. Data are more or less ready for EDA. 
 
@@ -54,9 +72,9 @@ We got 5925 values in 11 columns. Data are more or less ready for EDA.
 To justify clustering all years, we look at how the average global energy mix has evolved.
 
 ```{r EDA, include=TRUE}
-global_trend <- energy_clean %>%
+global_trend <- energy_clean_renamed %>%
   group_by(Year) %>%
-  summarise(across(all_of(energy_cols), mean)) %>%
+  summarise(across(all_of(energy_cols_renamed), mean)) %>%
   pivot_longer(-Year, names_to = "Source", values_to = "Usage")
 
 ggplot(global_trend, aes(x = Year, y = Usage, fill = Source)) +
@@ -66,7 +84,18 @@ ggplot(global_trend, aes(x = Year, y = Usage, fill = Source)) +
   labs(title = "Evolution of Global Average Energy Mix (1965-2024)",
        subtitle = "Average per capita consumption across all countries",
        y = "kWh per capita", x = "Year")
+
 ```
+*Interpretation:* The global energy mix has changed significantly over the decades, with fossil fuels dominating until recent years when renewables started to gain traction. Sure visible phase-out of coal and replacement by gas, nuclear and renewables. We face a slight downward trend in energy consumption per capita in the last decade, possibly due to efficiency improvements and slight deindustrialization in some regions (USA, Europe).
+
+General result to see how looks the total energy consumption per capita by source over time. Similar to the total Energy consumption by source visualized below and accessible here: https://ourworldindata.org/energy-mix. 
+
+```{r total energy consumption image}
+knitr::include_graphics("Energy consumption by source, World.png")
+
+# Link: https://ourworldindata.org/energy-mix
+```
+
 
 *Interpretation:* We see a massive growth in Fossil Fuels (Oil, Gas, Coal) until the early 2000s, followed by the visible "wedge" of Renewables (Wind, Solar) appearing in the last decade.
 
@@ -74,8 +103,8 @@ ggplot(global_trend, aes(x = Year, y = Usage, fill = Source)) +
 Energy consumption is highly unequal. We use boxplots to see the "spread" of each source.
 
 ```{R outliers, inlude=TRUE}
-energy_clean %>%
-  select(all_of(energy_cols)) %>%
+energy_clean_renamed %>%
+  select(all_of(energy_cols_renamed)) %>%
   pivot_longer(cols = everything(), names_to = "Source", values_to = "Value") %>%
   ggplot(aes(x = Source, y = Value, fill = Source)) +
   geom_boxplot() +
