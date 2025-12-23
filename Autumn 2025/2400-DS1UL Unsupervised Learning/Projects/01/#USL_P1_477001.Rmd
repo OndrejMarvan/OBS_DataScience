@@ -184,3 +184,40 @@ fviz_nbclust(energy_for_clustering, kmeans, method = "silhouette") +
 *Interpretation:* While the Silhouette method suggests that the most distinct mathematical split is into two groups (likely representing the global energy-wealth gap), the Elbow method suggests an optimal k=5. I have chosen k=5 for this research because it provides a more granular taxonomy. This allows us to distinguish between different high-energy profiles (e.g., Fossil-heavy vs. Renewable-heavy), which is essential for our forecasting goals.
 
 Well, lets involve our other metries (GDP, CO2, Population Density) and see if the optimal k changes.
+
+## 4.1 Checking if k Changes with Socio-Economic Metrics
+
+We will now merge the data and run the Elbow and Silhouette methods on the combined feature set (8 Energy sources + GDP + CO2 + Density).
+
+```{r research_k_check}
+# 1. RE-CREATE MASTER DATA (To fix the 'object not found' error)
+gdp_raw  <- read.csv("gdp-per-capita-worldbank.csv")
+co2_raw  <- read.csv("co2-emissions-per-capita.csv")
+pop_raw  <- read.csv("population-density.csv")
+
+master_data <- energy_clean_renamed %>%
+  left_join(gdp_raw %>% select(Entity, Code, Year, GDP = 4), by = c("Entity", "Code", "Year")) %>%
+  left_join(co2_raw %>% select(Entity, Code, Year, CO2 = 4), by = c("Entity", "Code", "Year")) %>%
+  left_join(pop_raw %>% select(Entity, Code, Year, Pop_Density = 4), by = c("Entity", "Code", "Year"))
+
+# 2. PREPARE DATA FOR CLUSTERING
+# We use drop_na() because clustering cannot handle missing values
+clustering_data_scaled <- master_data %>%
+  drop_na(GDP, CO2, Pop_Density) %>%
+  select(Coal, Oil, Gas, Nuclear, Hydropower, Wind, Solar, `Other renewables`, GDP, CO2, Pop_Density) %>%
+  scale()
+
+# 3. ELBOW METHOD
+# We look for the "bend" in the arm to justify k=5
+
+fviz_nbclust(clustering_data_scaled, kmeans, method = "wss") +
+  geom_vline(xintercept = 5, linetype = 2, color = "red") +
+  labs(title = "Elbow Method: Socio-Economic Energy Profiles")
+
+# 4. SILHOUETTE METHOD
+
+fviz_nbclust(clustering_data_scaled, kmeans, method = "silhouette") +
+  labs(title = "Silhouette Method: Socio-Economic Energy Profiles")
+```   
+*Interpretation:* The Elbow method still suggests k=5, while the Silhouette method again points to k=2. This reinforces my earlier decision to use k=5 for a more detailed taxonomy, even when considering socio-economic factors.
+
