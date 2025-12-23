@@ -13,7 +13,7 @@ Expected output is to do a choose athe most suitable clustering method, do the c
 
 ```{r libraries, include=FALSE}
 # Install missing library on local machine
-install.packages("NbClust")
+# install.packages("NbClust")
 # Load other necessary and already installed libraries
 library(tidyverse)
 library(cluster)     # For clustering algorithms
