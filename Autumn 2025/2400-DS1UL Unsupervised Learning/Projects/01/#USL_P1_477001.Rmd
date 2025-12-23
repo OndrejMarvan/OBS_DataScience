@@ -11,55 +11,77 @@ knitr::opts_chunk$set(echo = TRUE)
 # USL Project 1 
 Expected output is to do a choose athe most suitable clustering method, do the cluestering and then forecasting. 
 
-```{r setup, include=FALSE}
+```{r libraries, include=FALSE}
 # Install missing library on local machine
 install.packages("NbClust")
 # Load other necessary and already installed libraries
 library(tidyverse)
-library(cluster)    # For PAM and basic clustering
-library(factoextra) # For clustering visualizations
-library(NbClust)    # For determining the optimal number of clusters
+library(cluster)     # For clustering algorithms
+library(factoextra)  # For beautiful clustering plots
+library(corrplot)    # For correlation matrices
+library(NbClust)     # For optimal k calculation
 ```
 
-# 1. Exploratory Data Analysis (EDA)
+# 1. Introduction
+The goal of this project is to cluster countries based on their per-capita energy consumption mix. Unlike a static snapshot, we are using the full dataset (all years) to identify "Energy Regimes" that countries have passed through or are currently in.
 
-Before applying unsupervised learning algorithms, I must inspect the raw data. Possibly to delete outliers. 
+# 2. Data Preparation & Cleaning
+First, we load the data and remove regional aggregates. We only want individual countries (those with an ISO Code).
 
 ```{r load data, include=TRUE}
-# Load the energy data
-energy_data <- read.csv("per-capita-energy-stacked.csv", stringsAsFactors = FALSE)
+# Load the raw data
+energy_raw <- read.csv("per-capita-energy-stacked.csv", stringsAsFactors = FALSE)
 
-# Basic structure overview
-head(energy_data) # Entity 
-dim(energy_data) # 6585 rows, 11 columns
-str(energy_data) 
+# 1. Filter: Keep only countries (where Code is not empty)
+energy_clean <- energy_raw %>%
+  filter(Code != "" & !is.na(Code))
 
-colnames(energy_data)
+# 2. Define the energy source columns
+energy_cols <- c("coal_per_capita__kwh", "oil_per_capita__kwh", "gas_per_capita__kwh", 
+                 "nuclear_per_capita__kwh__equivalent", "hydro_per_capita__kwh__equivalent", 
+                 "wind_per_capita__kwh__equivalent", "solar_per_capita__kwh__equivalent", 
+                 "other_renewables_per_capita__kwh__equivalent")
+
+# 3. Handle Missing Values: Replace NA with 0
+# Logic: If a source is missing for a country in 1970, consumption was likely zero.
+energy_clean <- energy_clean %>%
+  mutate(across(all_of(energy_cols), ~replace_na(., 0)))
+
+dim(energy_clean)
 ```
-```{r drop code, include=TRUE}
-df_no_code <- energy_data[, names(energy_data) != "Code"]
-colnames(energy_data)
-```
 
+# 3. Massive Exploratory Data Analysis (EDA)
+## 3.1. Global Energy Development Over Time
+To justify clustering all years, we look at how the average global energy mix has evolved.
 
 ```{r EDA, include=TRUE}
-# Check min and max values for years
-min_year <- min(energy_data$Year, na.rm = TRUE)
-max_year <- max(energy_data$Year, na.rm = TRUE)
-cat("Year range:", min_year, "to", max_year, "\n")
-
-# Full year distribution
-table(energy_data$Year)
-
-# Years with data by country count
-year_counts <- energy_data %>%
+global_trend <- energy_clean %>%
   group_by(Year) %>%
-  summarise(n_countries = n_distinct(Entity), .groups = 'drop') %>%
-  arrange(desc(n_countries))
+  summarise(across(all_of(energy_cols), mean)) %>%
+  pivot_longer(-Year, names_to = "Source", values_to = "Usage")
 
-print(year_counts)
+ggplot(global_trend, aes(x = Year, y = Usage, fill = Source)) +
+  geom_area(alpha = 0.8) +
+  theme_minimal() +
+  scale_fill_brewer(palette = "Set3") +
+  labs(title = "Evolution of Global Average Energy Mix (1965-2024)",
+       subtitle = "Average per capita consumption across all countries",
+       y = "kWh per capita", x = "Year")
 ```
-Interpretation: 
-There are only 94 for the starting year 1969 and already 119 countries in 2024. 
 
+*Interpretation:* We see a massive growth in Fossil Fuels (Oil, Gas, Coal) until the early 2000s, followed by the visible "wedge" of Renewables (Wind, Solar) appearing in the last decade.
 
+## 3.2. Distribution and Outliers
+Energy consumption is highly unequal. We use boxplots to see the "spread" of each source.
+
+```{R outliers, inlude=TRUE}
+energy_clean %>%
+  select(all_of(energy_cols)) %>%
+  pivot_longer(cols = everything(), names_to = "Source", values_to = "Value") %>%
+  ggplot(aes(x = Source, y = Value, fill = Source)) +
+  geom_boxplot() +
+  coord_flip() +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  labs(title = "Distribution of Energy Sources", subtitle = "Notice the extreme outliers in Fossil Fuels")
+```
