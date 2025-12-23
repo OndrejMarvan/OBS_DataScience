@@ -180,3 +180,7 @@ fviz_nbclust(energy_for_clustering, kmeans, method = "wss") +
 fviz_nbclust(energy_for_clustering, kmeans, method = "silhouette") +
   labs(title = "Silhouette Method", subtitle = "Higher is better")
 ```
+
+*Interpretation:* While the Silhouette method suggests that the most distinct mathematical split is into two groups (likely representing the global energy-wealth gap), the Elbow method suggests an optimal k=5. I have chosen k=5 for this research because it provides a more granular taxonomy. This allows us to distinguish between different high-energy profiles (e.g., Fossil-heavy vs. Renewable-heavy), which is essential for our forecasting goals.
+
+Well, lets involve our other metries (GDP, CO2, Population Density) and see if the optimal k changes.
