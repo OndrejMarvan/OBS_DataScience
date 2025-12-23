@@ -111,5 +111,18 @@ energy_clean_renamed %>%
   coord_flip() +
   theme_minimal() +
   theme(legend.position = "none") +
-  labs(title = "Distribution of Energy Sources", subtitle = "Notice the extreme outliers in Fossil Fuels")
+  labs(title = "Distribution of Energy Sources", subtitle = "Extreme outliers in Fossil Fuels")
 ```
+
+## 3.3. Correlation Matrix
+We check if any energy sources are "linked." For example, do countries that use a lot of Gas also use a lot of Oil?
+
+Are fossil sources of energy correlated to each other? Are renewable sources correlated to each other? Indeed, at least a bit. 
+
+```{r correlation matrix, include=TRUE}
+cor_matrix <- cor(energy_clean_renamed[, energy_cols_renamed])
+corrplot(cor_matrix, method = "color", type = "upper", addCoef.col = "black", 
+         tl.col = "black", tl.srt = 45, number.cex = 0.7)
+```
+
+*Interpretation:* There are moderate positive correlations among fossil fuels (Coal, Oil, Gas) and among renewables (Wind, Solar, Other renewables). Nuclear and Hydropower show weaker correlations with other sources.
