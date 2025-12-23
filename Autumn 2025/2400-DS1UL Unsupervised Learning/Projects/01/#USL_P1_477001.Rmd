@@ -126,3 +126,57 @@ corrplot(cor_matrix, method = "color", type = "upper", addCoef.col = "black",
 ```
 
 *Interpretation:* There are moderate positive correlations among fossil fuels (Coal, Oil, Gas) and among renewables (Wind, Solar, Other renewables). Nuclear and Hydropower show weaker correlations with other sources.
+
+## 3.4 Further Correlation Analysis
+```{r further correlation analysis, include=TRUE}
+# 1. Load the extra research data
+gdp_data <- read.csv("gdp-per-capita-worldbank.csv", stringsAsFactors = FALSE)
+co2_data <- read.csv("co2-emissions-per-capita.csv", stringsAsFactors = FALSE)
+pop_data <- read.csv("population-density.csv", stringsAsFactors = FALSE)
+
+# 2. Join the data together using Entity, Code, and Year as the "link"
+# We use left_join so we keep all our energy records
+energy_research <- energy_clean_renamed %>%
+  left_join(gdp_data %>% select(Entity, Code, Year, GDP = 4), by = c("Entity", "Code", "Year")) %>%
+  left_join(co2_data %>% select(Entity, Code, Year, CO2 = 4), by = c("Entity", "Code", "Year")) %>%
+  left_join(pop_data %>% select(Entity, Code, Year, Pop_Density = 4), by = c("Entity", "Code", "Year"))
+
+# 3. Check Correlation
+# We select our energy types + the 3 new research metrics
+cor_vars <- c("Coal", "Oil", "Gas", "Nuclear", "Hydropower", "Wind", "Solar", 
+              "Other renewables", "GDP", "CO2", "Pop_Density")
+
+# We calculate the correlation, using 'complete.obs' to handle missing GDP/CO2 values
+research_cor <- cor(energy_research[, cor_vars], use = "complete.obs")
+
+# Visualize the correlation matrix
+library(corrplot)
+corrplot(research_cor, method = "circle", type = "upper", 
+         tl.col = "black", tl.srt = 45, addCoef.col = "black", number.cex = 0.7)
+```
+
+
+Data shows that wealth (GDP) is more strongly linked to fossil fuel consumption (Oil/Gas) than to renewables since I analyze data from 1965 and green transition started no earlier than Kyoto protocol establishment in 1998 and its further application that started in 2000s. This suggests that high income does not automatically lead to a green energy mix; rather, it leads to higher overall energy demand.
+
+Based on the mixed results from the last correlation matrix, I decided not to move forward with GDP, CO2, and Population Density, at least not in the initial phase of clustering. 
+
+# 4. Finding the Optimal Number of Clusters (k)
+
+Before running the final model, we must check if our choice of 5 clusters is supported by the data using the methods from **Class 04**.
+
+```{r optimal_k_analysis}
+# 1. Prepare data for clustering: Scale ONLY the energy columns
+# We use the renamed columns from your previous step
+energy_for_clustering <- energy_research %>%
+  select(Coal, Oil, Gas, Nuclear, Hydropower, Wind, Solar, `Other renewables`) %>%
+  scale()
+
+# 2. Elbow Method (Within-cluster sum of squares)
+fviz_nbclust(energy_for_clustering, kmeans, method = "wss") +
+  geom_vline(xintercept = 5, linetype = 2, color = "red") +
+  labs(title = "Elbow Method", subtitle = "Checking the 'bend' at k=5")
+
+# 3. Silhouette Method (Cluster separation quality)
+fviz_nbclust(energy_for_clustering, kmeans, method = "silhouette") +
+  labs(title = "Silhouette Method", subtitle = "Higher is better")
+```
