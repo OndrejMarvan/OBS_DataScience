@@ -3,11 +3,6 @@ title: '#USL_P1_477001'
 output: html_document
 date: "2025-12-20"
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
 # USL Project 1 
 Expected output is to do a choose athe most suitable clustering method, do the cluestering and then forecasting. 
 
@@ -24,6 +19,7 @@ library(NbClust)     # For optimal k calculation
 
 # 1. Introduction
 The goal of this project is to cluster countries based on their per-capita energy consumption mix. Unlike a static snapshot, we are using the full dataset (all years) to identify "Energy Regimes" that countries have passed through or are currently in.
+
 
 # 2. Data Preparation & Cleaning
 First, we load the data and remove regional aggregates. We only want individual countries (those with an ISO Code).
@@ -47,8 +43,11 @@ energy_cols <- c("coal_per_capita__kwh", "oil_per_capita__kwh", "gas_per_capita_
 energy_clean <- energy_clean %>%
   mutate(across(all_of(energy_cols), ~replace_na(., 0)))
 
-dim(energy_clean)
+dim(energy_raw) # 6585   11, includes whole continents and regions
+dim(energy_clean) # 5925 values/cells   11 columns (only countries)
 ```
+We got 5925 values in 11 columns. Data are more or less ready for EDA. 
+
 
 # 3. Massive Exploratory Data Analysis (EDA)
 ## 3.1. Global Energy Development Over Time
