@@ -73,3 +73,20 @@ Question 1. Which of the following are unstructured data?
 The **correct answers are (a) and (b)**. Therefore, the following provided
 answers yield these point values:
 
+
+## L03
+### Data collection methods
+**Quantitative methods:**
+- standardized surveys,
+- controlled experiments,
+- analysis of transactions and system logs,
+- KPI monitoring,
+- technical tests and measurements,
+- GPS data analysis.
+
+**Qualitative methods:**
+- in-depth interviews,
+- participant observation,
+- case studies,
+- content analysis (texts, media),
+- ethnographic and field research.
