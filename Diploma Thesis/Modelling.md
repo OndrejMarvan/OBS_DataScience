@@ -73,3 +73,73 @@ _(Go to the row for the Model, look at the column for the SSP, and click the lin
 _(Repeat for 2061-2080 when you are ready for the second chapter of your analysis)._
 
 **Total files to start:** 18 zip files (3 models x 2 scenarios x 3 variables). **Estimated Size:** ~5 GB. This is perfectly safe for your laptop.
+
+home/ondrej-marvan/Documents/General/Studies/Diploma Thesis/data
+├── 2021-2040
+│   ├── ACCESS-CM2
+│   │   ├── ssp245
+│   │   │   ├── wc2.1_2.5m_bioc_ACCESS-CM2_ssp245_2021-2040.tif
+│   │   │   ├── wc2.1_2.5m_prec_ACCESS-CM2_ssp245_2021-2040.tif
+│   │   │   ├── wc2.1_2.5m_tmax_ACCESS-CM2_ssp245_2021-2040.tif
+│   │   │   └── wc2.1_2.5m_tmin_ACCESS-CM2_ssp245_2021-2040.tif
+│   │   └── ssp585
+│   │       ├── wc2.1_2.5m_bioc_ACCESS-CM2_ssp585_2021-2040.tif
+│   │       ├── wc2.1_2.5m_prec_ACCESS-CM2_ssp585_2021-2040.tif
+│   │       ├── wc2.1_2.5m_tmax_ACCESS-CM2_ssp585_2021-2040.tif
+│   │       └── wc2.1_2.5m_tmin_ACCESS-CM2_ssp585_2021-2040.tif
+│   ├── EC-Earth3-Veg
+│   │   ├── ssp245
+│   │   │   ├── wc2.1_2.5m_bioc_EC-Earth3-Veg_ssp245_2021-2040.tif
+│   │   │   ├── wc2.1_2.5m_prec_EC-Earth3-Veg_ssp245_2021-2040.tif
+│   │   │   ├── wc2.1_2.5m_tmax_EC-Earth3-Veg_ssp245_2021-2040.tif
+│   │   │   └── wc2.1_2.5m_tmin_EC-Earth3-Veg_ssp245_2021-2040.tif
+│   │   └── ssp585
+│   │       ├── wc2.1_2.5m_bioc_EC-Earth3-Veg_ssp585_2021-2040.tif
+│   │       ├── wc2.1_2.5m_prec_EC-Earth3-Veg_ssp585_2021-2040.tif
+│   │       ├── wc2.1_2.5m_tmax_EC-Earth3-Veg_ssp585_2021-2040.tif
+│   │       └── wc2.1_2.5m_tmin_EC-Earth3-Veg_ssp585_2021-2040.tif
+│   └── MPI-ESM1-2-HR
+│       ├── ssp245
+│       │   ├── wc2.1_2.5m_bioc_MPI-ESM1-2-HR_ssp245_2021-2040.tif
+│       │   ├── wc2.1_2.5m_prec_MPI-ESM1-2-HR_ssp245_2021-2040.tif
+│       │   ├── wc2.1_2.5m_tmax_MPI-ESM1-2-HR_ssp245_2021-2040.tif
+│       │   └── wc2.1_2.5m_tmin_MPI-ESM1-2-HR_ssp245_2021-2040.tif
+│       └── ssp585
+│           ├── wc2.1_2.5m_bioc_MPI-ESM1-2-HR_ssp585_2021-2040.tif
+│           ├── wc2.1_2.5m_prec_MPI-ESM1-2-HR_ssp585_2021-2040.tif
+│           ├── wc2.1_2.5m_tmax_MPI-ESM1-2-HR_ssp585_2021-2040.tif
+│           └── wc2.1_2.5m_tmin_MPI-ESM1-2-HR_ssp585_2021-2040.tif
+└── 2041-2060
+    ├── ACCESS-CM2
+    │   ├── ssp245
+    │   │   ├── wc2.1_2.5m_bioc_ACCESS-CM2_ssp245_2041-2060.tif
+    │   │   ├── wc2.1_2.5m_prec_ACCESS-CM2_ssp245_2041-2060.tif
+    │   │   ├── wc2.1_2.5m_tmax_ACCESS-CM2_ssp245_2041-2060.tif
+    │   │   └── wc2.1_2.5m_tmin_ACCESS-CM2_ssp245_2041-2060.tif
+    │   └── ssp585
+    │       ├── wc2.1_2.5m_bioc_ACCESS-CM2_ssp585_2041-2060.tif
+    │       ├── wc2.1_2.5m_prec_ACCESS-CM2_ssp585_2041-2060.tif
+    │       ├── wc2.1_2.5m_tmax_ACCESS-CM2_ssp585_2041-2060.tif
+    │       └── wc2.1_2.5m_tmin_ACCESS-CM2_ssp585_2041-2060.tif
+    ├── EC-Earth3-Veg
+    │   ├── ssp245
+    │   │   ├── wc2.1_2.5m_bioc_EC-Earth3-Veg_ssp245_2041-2060.tif
+    │   │   ├── wc2.1_2.5m_prec_EC-Earth3-Veg_ssp126_2041-2060.tif
+    │   │   ├── wc2.1_2.5m_tmax_EC-Earth3-Veg_ssp126_2041-2060.tif
+    │   │   └── wc2.1_2.5m_tmin_EC-Earth3-Veg_ssp245_2041-2060.tif
+    │   └── ssp585
+    │       ├── wc2.1_2.5m_bioc_EC-Earth3-Veg_ssp585_2041-2060.tif
+    │       ├── wc2.1_2.5m_prec_EC-Earth3-Veg_ssp585_2041-2060.tif
+    │       ├── wc2.1_2.5m_tmax_EC-Earth3-Veg_ssp585_2041-2060.tif
+    │       └── wc2.1_2.5m_tmin_EC-Earth3-Veg_ssp585_2041-2060.tif
+    └── MPI-ESM1-2-HR
+        ├── ssp245
+        │   ├── wc2.1_2.5m_bioc_MPI-ESM1-2-HR_ssp245_2041-2060.tif
+        │   ├── wc2.1_2.5m_prec_MPI-ESM1-2-HR_ssp245_2041-2060.tif
+        │   ├── wc2.1_2.5m_tmax_MPI-ESM1-2-HR_ssp245_2041-2060.tif
+        │   └── wc2.1_2.5m_tmin_MPI-ESM1-2-HR_ssp245_2041-2060.tif
+        └── ssp585
+            ├── wc2.1_2.5m_bioc_MPI-ESM1-2-HR_ssp585_2041-2060.tif
+            ├── wc2.1_2.5m_prec_MPI-ESM1-2-HR_ssp585_2041-2060.tif
+            ├── wc2.1_2.5m_tmax_MPI-ESM1-2-HR_ssp585_2041-2060.tif
+            └── wc2.1_2.5m_tmin_MPI-ESM1-2-HR_ssp585_2041-2060.tif
