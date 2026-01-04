@@ -93,3 +93,4 @@ answers yield these point values:
 
 
 Tasks to be done: 
+End of the semester: https://elearning.wne.uw.edu.pl/mod/forum/view.php?id=116477
