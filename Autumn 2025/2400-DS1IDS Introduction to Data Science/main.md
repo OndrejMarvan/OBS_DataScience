@@ -90,3 +90,6 @@ answers yield these point values:
 - case studies,
 - content analysis (texts, media),
 - ethnographic and field research.
+
+
+Tasks to be done: 
