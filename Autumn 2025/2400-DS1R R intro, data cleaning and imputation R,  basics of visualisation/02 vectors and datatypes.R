@@ -211,7 +211,7 @@ w8 <- seq(from = 7, to = 90, by =3)
 w9 <- c('a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8', 'a9', 'a10')
 w10 <- c(T, F, F, T) # vector of logical values
 
-
+w7 # this goe crazy
 
 ### Operations on vectors  #####################################################
 
