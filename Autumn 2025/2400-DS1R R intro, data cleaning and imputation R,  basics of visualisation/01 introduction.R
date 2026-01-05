@@ -158,6 +158,9 @@ vectorWithReps4BIS
 help(rep)
 ?rep
 
+# Creating a vector and printing it
+c <- c(1,2,3,4,5,6,7,8,9,10)
+print(c)
 
 
 ### Tasks ######################################################################
@@ -179,3 +182,5 @@ help(rep)
 # get a numerical result instead of NA. TIP: look into the documentation. 
 
 a <- c(5,8,10, NA)
+# My code
+sum(a, na.rm = TRUE)
