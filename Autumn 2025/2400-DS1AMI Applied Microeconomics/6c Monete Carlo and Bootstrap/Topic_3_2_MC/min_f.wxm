@@ -1,0 +1,13 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 20.06.6 ] */
+/* [wxMaxima: input   start ] */
+kill(all);
+load("fmin_cobyla")$  /* loading the optimization package */
+fmin_cobyla(sin(18*x*log(x))/x, [x], [1.5], constraints = [x>=1, x<=2],iprint=1);
+
+/* [wxMaxima: input   end   ] */
+
+
+
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima 20.06.6"$
