@@ -5,8 +5,8 @@ for(i in requiredPackages){if(!require(i,character.only = TRUE)) install.package
 for(i in requiredPackages){if(!require(i,character.only = TRUE)) library(i,character.only = TRUE) } 
 
 #set the working directory
-#getwd()
-#setwd("/")
+getwd()
+setwd("/home/ondrej-marvan/Documents/GitHub/OBS_DataScience/OBS_DataScience/Autumn 2025/2400-DS1AMI Applied Microeconomics/6c Monete Carlo and Bootstrap/Data codes")
 
 
 sample_2024 <- read_csv("sample_2024.csv") # load the sample 
@@ -106,3 +106,4 @@ plot_colorByDensity = function(x1,x2,
 plot_colorByDensity(alfa_b,beta_b,xlab="a",ylab="b",
                     main = paste0("XY plot of bootstrapped estimators \n [mean_a =", round( mean(alfa_b),1), ", mean_b =", round( mean(beta_b),2), "]"))
 abline(h=mean(beta_b), v=mean(alfa_b), lwd=2)
+

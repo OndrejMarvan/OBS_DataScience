@@ -1,5 +1,5 @@
 ###### Bootstrap Contest Solution ######################################
-###### Student: [YOUR NAME]
+###### Student: 477001
 ###### Method: Remove outliers + Bootstrap with median
 ########################################################################
 
