@@ -135,3 +135,7 @@ In terms of temperature variation, diurnal temperature variation—the differenc
 First run my own Winkler and Huglin index
 Then start with my basic analysis
 Once done, add topograhpy map, soil quality, etc. etc. 
+
+## 12.01.2025 Seminar 
+**climate, soil, and topography**
+hwhile W and H indeces are taking into consideration only climate (tempereure) that makes them rather more linear.
