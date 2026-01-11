@@ -85,5 +85,14 @@ submit via email - ideally notebook
 
 Example projects for our projects added to Moodle (dimensional reduction)
 
+## Topic discussion (3.2.3)
+> [!PDF|yellow] [[Class 3.2.3 recommendations for e-commerce.pdf#page=2&selection=250,0,314,7&color=yellow|Class 3.2.3 recommendations for e-commerce, p.1143]]
+> > These studies argue that the recommendation decision is based not on the probability of a purchase, but rather on the sensitivity of probability of a purchase, as affected by the recommendation action. 
+> 
+> 
 
+> [!PDF|yellow] [[Class 3.2.3 recommendations for e-commerce.pdf#page=2&selection=826,0,890,6&color=yellow|Class 3.2.3 recommendations for e-commerce, p.1143]]
+> > This study considers that integrate both rough set theory and association rule as a new approach in terms of processing AHP ordinal scale data for developing a recommendation system on electronic commerce.
+> 
+> 
 
