@@ -17,4 +17,6 @@ Data source:
 1) In 2020, vines were grown on 3.2 million hectares in the EU, equivalent to about 45 % of the world’s total wine-growing areas.
 
 ## Images
-![[Pasted image 20251122225049.png]]![[Pasted image 20251122225318.png]]
+![[Pasted image 20251122225049.png]]
+
+https://www.worldclim.org/data/worldclim21.html
