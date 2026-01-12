@@ -140,6 +140,9 @@ Once done, add topograhpy map, soil quality, etc. etc.
 **climate, soil, and topography**
 While W and H indeces are taking into consideration only climate (tempereure) that makes them rather more linear.
 
+Calculates **Huglin Index** (heat sum + latitude correction)
+Calculates **Winkler Index** (Growing Degree Days)
+
 Business part - viticulture has high added value (higher than crop) and contributes to the tourism
 
 Suitability rating - not involving topography and soil quaility, only temp. and precipitation. 
