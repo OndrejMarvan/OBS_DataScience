@@ -146,3 +146,4 @@ Suitability rating - not involving topography and soil quaility, only temp. and 
 
 ![[Pasted image 20260112184334.png]]
 
+Combines into **weighted composite** (40% Huglin, 35% Winkler, 25% Precip)
