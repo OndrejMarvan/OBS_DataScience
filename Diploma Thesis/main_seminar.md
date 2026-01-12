@@ -138,4 +138,9 @@ Once done, add topograhpy map, soil quality, etc. etc.
 
 ## 12.01.2025 Seminar 
 **climate, soil, and topography**
-hwhile W and H indeces are taking into consideration only climate (tempereure) that makes them rather more linear.
+While W and H indeces are taking into consideration only climate (tempereure) that makes them rather more linear.
+
+Business part - viticulture has high added value (higher than crop) and contributes to the tourism
+
+Suitability rating - not involving topography and soil quaility, only temp. and precipitation. 
+
