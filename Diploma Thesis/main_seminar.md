@@ -144,3 +144,5 @@ Business part - viticulture has high added value (higher than crop) and contribu
 
 Suitability rating - not involving topography and soil quaility, only temp. and precipitation. 
 
+![[Pasted image 20260112184334.png]]
+
