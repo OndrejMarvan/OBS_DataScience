@@ -231,3 +231,6 @@ ECLAT works in a **vertical manner** (Depth-First Search), whereas Apriori works
 |**Main Limitation**|Slow/Multiple scans 47474747<br><br>+1|Memory for tree 48|Memory for tid-lists 49|
 
 **Would you like me to create a step-by-step numerical example of how the Apriori algorithm prunes candidates using a sample dataset?**
+
+Useful link to dataset - Harvard Dataverse 
+https://dataverse.harvard.edu/
