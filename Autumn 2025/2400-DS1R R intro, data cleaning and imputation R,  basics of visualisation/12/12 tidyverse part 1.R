@@ -20,7 +20,7 @@ library(dplyr) # data manipulation package -> the only one we need today
 # Read life expectancy data
 # You can use a standard function read.csv
 
-life <- read.csv("data/dataset - life expectancy/Life Expectancy Data.csv")
+life <- read.csv("~/Documents/GitHub/OBS_DataScience/OBS_DataScience/Autumn 2025/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/data/dataset - life expectancy/Life Expectancy Data.csv")
 head(life)
 class(life) # data.frame format
 
