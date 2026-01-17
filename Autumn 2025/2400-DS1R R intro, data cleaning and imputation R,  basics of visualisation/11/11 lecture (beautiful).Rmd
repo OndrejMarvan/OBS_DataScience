@@ -1,0 +1,396 @@
+---
+title: "Introduction to R Markdown"
+author: "dr Maria Kubara"
+date: "2025/2026"
+output: 
+  html_document:
+    toc: true
+    toc_float:
+      toc_collapsed: true
+    toc_depth: 5
+    number_sections: false
+    theme: readable
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction to R Markdown
+
+Why R Markdown? Basic functions - code and text. Application for reporting.
+
+# R Markdown
+
+R Markdown is a system for processing and formatting text. It uses plain text symbols for all the formatting (we will use symbols like \# \* - for specifying how specific parts of the document should look like). It is fully integrated with RStudio, allowing you to create reports, presentations, websites and dashboards for which all the necessary code and data processing are stored inside one document.
+
+## R Markdown document
+
+Markdown document has three main types of content:
+
+-   (optional) YAML header surrounded by --- symbols (storing general information about the document and its structure)
+-   code chunks surrounded by \`\`\` (mainly for R, but Python, SQL, Bash and C++ are possible extensions)
+-   plain text mixed with simple text formatting
+
+
+```{r, echo=FALSE, fig.cap="RMarkdown view", out.width = '80%'}
+knitr::include_graphics("graphics/plain view.png")
+```
+
+## Rmd files and output rendering
+
+R Markdown source files have extension `.Rmd` - these files can be edited in RStudio or any other text editor (like Notepad++). In order to generate the output file, like html document, you need to render the `.Rmd` file. In this action all the code chunks will be run, graphics will be generated and text formatting within RMarkdown will be translated to the output document.
+
+You can render RMarkdown in two ways:
+
+-   run the render command in the console:
+
+```{r, eval = FALSE}
+library(rmarkdown)
+render("my-first-Markdown.Rmd")
+```
+
+-   click on the "Knit" button in RStudio
+
+## Basics of R Markdown document organising
+
+Organizing document into sections can be done with \# symbol.
+
+**Markdown formatting:**
+
+    # Main section (Header 1)
+
+    ## Subsection (Header 2) 
+
+    ### Sub subsection (Header 3)
+
+    #### Header 4
+
+    ##### Header 5
+
+**Markdown output:**
+
+# Main section (Header 1)
+
+## Subsection (Header 2)
+
+### Sub subsection (Header 3)
+
+#### Header 4
+
+##### Header 5
+
+## Text formatting in R Markdown
+
+\*italics\* returns *italics*
+
+\*\*bold\*\* returns **bold**
+
+\~\~strikethrough\~\~ returns ~~strikethrough~~
+
+superscript\^\\2\^ returns superscript^2^ (symbol on the top)
+
+subscript\~\\2\~ returns subscript~2~ (symbol on the bottom)
+
+> If you don't want to format the text and just include a specific symbol in your document, you can always use the escape symbol -> \\ (single backslash)
+
+## Including tables
+
+You can include text tables in R Markdown. You need to create division into columns with the \| symbol.
+
+First you specify the column names, then in the next line you can modify the text alignment.
+
+**Markdown text:**
+
+    | Right | Left | Default | Center |
+    |-------:|:------|-----------|:---------:|
+    | 12 | 12 | 12 | 12 |
+    | 123 | 123 | 123 | 123 |
+    | 1 | 1 | 1 | 1 |
+
+**Markdown output:**
+
+| Right | Left | Default | Center |
+|------:|:-----|---------|:------:|
+|    12 | 12   | 12      |   12   |
+|   123 | 123  | 123     |  123   |
+|     1 | 1    | 1       |   1    |
+
+## Including lists
+
+**Markdown text for (unordered) bullet lists:**
+
+    * creates
+    * bullet
+    * list
+      * with 
+      * tab
+      * you can make
+    - subsections
+    - you can use
+    - dashes
+      - as well
+
+**Markdown output:**
+
+-   creates
+
+-   bullet
+
+-   list
+
+    -   with
+    -   tab
+    -   you can make
+
+-   subsections
+
+-   you can use
+
+-   dashes
+
+    -   as well
+
+**Markdown text for ordered lists:**
+
+    1. First element of ordered list
+        - its first subsection (tab with a dash)
+        - second subsection
+    2. Second element
+    3. Third element
+        a. with subsections
+        b. organised with 
+        c. letters
+
+**Markdown output:**
+
+1.  First element of ordered list
+
+    -   its first subsection (tab with a dash)
+    -   second subsection
+
+2.  Second element
+
+3.  Third element
+
+    a.  with subsections
+    b.  organised with
+    c.  letters
+
+## Including code and code-like elements inline
+
+You can include code-like formatting `inline` with \`this symbol\`. This is helpful for signifying code-related elements in your text report. You can think about examples like: the dataset names, mentioning the packages you are using, discussing specific variables, etc.
+
+For operational R code within text you need to use \` r code\` syntax (without space after the first dash).
+
+**Example (exchange \* for \` symbol to get the result):**
+
+This document was build under \*r getRversion()\* R version. And the iris dataset has \*r nrow(iris)\* rows.
+
+**Output:**
+
+This document was build under `r getRversion()` R version. And the iris dataset has `r nrow(iris)` rows.
+
+## Code chunks
+
+You can also use normal code chunks - written as
+
+\`\`\` {r}
+
+\`\`\`
+
+```{r}
+#example chunk
+
+# This document was build under this R version.
+getRversion()
+
+# Iris dataset has this many rows.
+nrow(iris)
+
+```
+
+Adding them in RStudio is simple -> just click on the *Insert a new code chunk* button or press *Ctrl+Alt+I* combination on Windows or *Command+Option+I* on Mac.
+
+```{r, echo=FALSE, fig.cap="Include code chunk", out.width = '80%'}
+knitr::include_graphics("graphics/Code chunk including.png")
+```
+
+
+While adding the chunk you can also specify in which language you want to code. Default option is R, but other languages are also supported. 
+
+```{r}
+head(iris)
+
+nrow(iris)
+```
+
+When editting the R Markdown document, you can run and evaluate the code. This way you can check if all code chucks are working properly and returning the results you intend them to do.
+
+```{r, echo=FALSE, fig.cap="Code output in RMarkdown", out.width = '80%'}
+knitr::include_graphics("graphics/running chunks in RStudio.png")
+```
+
+
+> Remember! When Knitting the R Markdown document, R is running all the chunks included inside (unless specified otherwise). Even if the execution will be failed in just one code chunk (because of an error or missing package) - the knitting will stop and the final document will not be generated. In that case you need to come back to the document, improve your code and start the knitting again. 
+
+Another painful situation may happen if your code (included in the report) runs for a very long time. This means that the knitting (which triggers all the code chunks to execute consecutively) will be extremely time-consuming as well. 
+
+The usual example is for creating machine learning reports, which include comparisons of many time-consuming models and big datasets. In this case it may be helpful to prerun the code in a script, save the results of the models to .RData files and then just load them into the memory while knitting the R Markdown, instead of creating them again in the report.
+
+For this to work elegantly you will need to do the following steps:
+
+* put all the codes necessary for creating your model(s) in the report
+
+* make the code chunks that include these codes inactive (so that they will not be executed during the knitting)
+
+* include "supporting chunks" which will load the necessary (model) objects from .RData files 
+
+* hide the "supporting chunks" so that they will not be visible in the output file (final report)
+
+In order to do these steps we need to know some additional options which control the code chunks.
+
+---
+
+## The most important code chunk modifications
+
+After inserting the code chunk in R Markdown it looks just like this:
+
+```{r}
+# simple code chunk
+nrow(iris)
+warning("This is a simple warning")
+```
+
+### Naming code chunks
+
+You can name your code chunks - just put the name after the language marker. This may be helpful for future identification of the failed code. R Markdown knitting will indicate the name of the code chunk which caused a possible error. May be helpful for debugging. 
+
+```{r named code chunk}
+# code chunk which includes a name
+nrow(iris)
+warning("This is a simple warning")
+```
+
+### Hide warnings
+
+We can add more options to the code chunks. For example - hiding the warnings. In order to do it you need to add the option after a comma in the code chunk header. The first option will be set right after the language mark or the name of the code chunk if you have added it. 
+
+```{r named code chunk2, warning=FALSE}
+# code chunk which hides the warning 
+# option: warning=FALSE
+nrow(iris)
+warning("This is a simple warning")
+```
+
+### Hide results
+
+You can also hide the computation results of your code chunk. In this way your code will appear in the document as one code block, instead of being fragmented by the computation results which pop up immediately after being generated.
+
+```{r named code chunk3, warning=FALSE, results=FALSE}
+# code chunk which hides the warning and the result
+# option: warning=FALSE, results=FALSE
+nrow(iris)
+warning("This is a simple warning")
+```
+
+### Hide the code
+
+Option echo=FALSE is useful when you want to create a plot in R and show it in your report, but for some reason you prefer to hide the code necessary to generate it. 
+
+```{r, echo=FALSE}
+plot(iris$Sepal.Length, iris$Sepal.Width)
+```
+
+### More options
+
+Additional common options for manipulating the code chunks are as follows [(source)](https://bookdown.org/animestina/bookdown-demo/week-2.html#common-code-chunks-options):
+
+* **name** - This allows you to name your code chunks, but is not necessary
+
+* **echo** - Whether to display the code chunk or just show the results. echo=FALSE will embed the code in the document, but the reader won’t be able to see it
+
+* **eval** - Whether to run the code in the code chunk. eval=FALSE will display the code but not run it
+
+* **warning** - Whether to display warning messages in the document
+
+* **message** - Whether to display code messages in the document
+
+* **results** - Whether and how to display the computation of the results
+
+---
+
+## Citing your sources and adding graphics
+
+### Graphics from external links
+
+You can add graphics from the internet, using external links. For this you need a function from `knitr package` (which will modify the document at the knitting phase). 
+
+```{r}
+# you may consider the echo option for this chunk, so that only the plot is shown
+knitr::include_graphics("https://imgs.xkcd.com/comics/machine_learning.png")
+```
+
+### Graphics from working directory
+
+You can also include images from your working directory. In order to do it you need to put the syntax `![alternative text for your image](source/of/the/file.png)`. THe path here can be absolute or relative to your working directory.
+
+![Picture from working directory](graphics/datascience.png)
+
+The same can be done with the `knitr` package
+
+```{r, eval=FALSE, fig.cap="This is my plot", out.width = '20%'}
+# additional options set here: eval=FALSE, fig.cap="This is my plot", out.width = '20%'
+knitr::include_graphics("graphics/datascience.png")
+```
+
+### Interactive links 
+
+You can also include **links**. In order to do it you need to put `[under which words the link will be active](www.theActualLinkToYourResource.com)`. For example [here](https://rmarkdown.rstudio.com/lesson-1.html) you can find the RStudio documentation for R Markdown.
+
+### Footnotes
+
+Citing other resources can be done in the **footnotes**. This can be helpful for citing literature or just providing additonal information about certain topic. Footnotes are created as follows: 
+
+* write the text for which the footnote will be added
+
+* add `[^1]` sign after your text like so[^1]
+
+* then at the very end of your R Markdown documnet add the content of your footnote in the following way: `[^1]: This was my first footnote`
+
+* add more footnotes if needed[^2]
+
+---
+
+## More resources
+
+> You can learn much more about R Markdown [here](https://bookdown.org/yihui/rmarkdown-cookbook/)
+
+
+You can explore the *visual markdown editor*
+
+```{r, echo=FALSE, fig.cap="Interactive editor", out.width = '80%'}
+knitr::include_graphics("graphics/text editor view.png")
+```
+
+---
+
+## Tasks
+
+1. Create your own R Markdown report with html output. Make sure it is organised in sections and it includes text formatting and external graphics. Tip: you can try to reproduce some elements from a Wikipedia page of your choice.
+
+2. Extend the report with some exemplary code. Use any dataset that is already loaded in R (iris, cars, etc.) and create a linear model. Show statistics of chosen variables and generate some plots. Make sure to play around with different chunk options. 
+
+3. Learn how to add a floating menu and a different theme to your final html report. Tip: Stack Overflow knows all the answers. Learn the possible options and experiment with it. 
+
+4. Add bibliography to your document. Make sure to include a link and a proper citation. 
+
+5. Experiment with the "visual markdown editor". See how it can help you with easier R Markdown editing. 
+
+6. Learn why "escape characters" are so important, especially when using plain text editing. 
+
+
+
+
+[^1]: My first footnote.
+[^2]: Following footnotes should have consecutive numbers.
