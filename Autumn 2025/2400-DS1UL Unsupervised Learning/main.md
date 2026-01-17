@@ -234,3 +234,6 @@ ECLAT works in a **vertical manner** (Depth-First Search), whereas Apriori works
 
 Useful link to dataset - Harvard Dataverse 
 https://dataverse.harvard.edu/
+
+Use in report: 
+![[Pasted image 20260113181202.png]]
