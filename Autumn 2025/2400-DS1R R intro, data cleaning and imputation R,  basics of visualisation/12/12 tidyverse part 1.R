@@ -33,7 +33,7 @@ life.readr <- read_csv("data/dataset - life expectancy/Life Expectancy Data.csv"
 # things that happen in the background. This can be a good or a bad thing :)
 # You can also make it "quieter" by using suppressMessages function
 
-life.readr <- suppressMessages(read_csv("data/dataset - life expectancy/Life Expectancy Data.csv"))
+life.readr <- suppressMessages(read_csv("~/Documents/GitHub/OBS_DataScience/OBS_DataScience/Autumn 2025/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/data/dataset - life expectancy/Life Expectancy Data.csv"))
 
 head(life.readr) # new way of printing data! 
 class(life.readr) # tibble class, which extends the possibilities of a data.frame
@@ -399,29 +399,46 @@ mean(life2 %>% .[["BMI"]], na.rm=T)
 
 # 1. Read the gapminder_full data to a tibble format (use readr package). Name 
 # the variable "gapminder". 
+library(readr)
+gapminder <- read_csv("~/Documents/GitHub/OBS_DataScience/OBS_DataScience/Autumn 2025/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/data/dataset - gapminder world/gapminder_full.csv") # Assuming the standard data folder structure
 
 # 2. Filter the dataset to get information on 1962 year only. 
 # Please use the pipeline operator. 
+gapminder %>% filter(year == 1962)
 
 # 3. Create a new variable population1000 which will store the population numbers 
 # in thousands. Use the mutate command and save the result to your dataset. 
 # TIP: Divide raw numbers by 1000. 
+gapminder <- gapminder %>% 
+  mutate(population1000 = pop / 1000)
 
 # 4. Prepare a summary table which will sore the median population count on 
 # each continent. Use one line of code with pipeline operators. 
 # TIP: use group_by, and then summarize(). 
+gapminder %>% 
+  group_by(continent) %>% 
+  summarize(median_pop = median(pop, na.rm = TRUE))
 
 # 5. In the full dataset prepare a variable maxCountry which will store the maximum 
 # gdp value obtained for a specific country in the whole researched period.
 # TIP: use group_by, and then mutate to do the calculations in groups. 
 # Remember to ungroup your data at the end and store the result in the dataframe.
+gapminder <- gapminder %>% 
+  group_by(country) %>% 
+  mutate(maxCountry = max(gdpPercap, na.rm = TRUE)) %>% 
+  ungroup()
 
 # 6. Using previously created variable show for each country in each year 
 # the gdp reached its maximum. 
 # TIP: you can use comparison between gdp_cap and maxCountry variable
+gapminder %>% 
+  filter(gdpPercap == maxCountry)
 
 # 7. Add a sorting step to the codes from the previous task. Arrange the filtered
 # data to see for which country the maximum gdp was in the furthest moment of time.
 # You will see which countries "developed backwards".
+gapminder %>% 
+  filter(gdpPercap == maxCountry) %>% 
+  arrange(year)
 
 
