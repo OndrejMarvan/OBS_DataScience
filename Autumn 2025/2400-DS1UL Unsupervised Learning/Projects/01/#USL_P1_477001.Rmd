@@ -159,6 +159,25 @@ pam_res <- pam(energy_scaled, k = 5)
 master_data$Cluster <- as.factor(pam_res$clustering) # Assign PAM cluster labels to the master_data dataframe and overwrite previous K-means labels.
 ```
 
+## 7.2. Hierarchical Dendrogram
+The dendrogram shows how countries group together based on energy mix similarity.
+```{r dendrogram, include=TRUE}
+# Take a sample from 2022 for readable dendrogram (full dataset too large)
+set.seed(123)
+data_2022 <- master_data %>% filter(Year == 2022)
+sample_rows <- sample(nrow(data_2022), 50) # 50 countries for readability
+energy_sample <- scale(data_2022[sample_rows, energy_cols])
+rownames(energy_sample) <- data_2022$Entity[sample_rows]
+
+# Hierarchical clustering
+hc <- hclust(dist(energy_sample), method = "ward.D2")
+
+# Plot dendrogram with 5 clusters marked
+plot(hc, cex = 0.6, hang = -1, main = "Dendrogram of Energy Regimes (2022 Sample)")
+rect.hclust(hc, k = 5, border = 2:6) # Draw boxes around 5 clusters
+```
+
+
 I used PAM (K-medoids) to ensure my clusters weren't skewed by extreme outliers. Unlike K-means, PAM uses actual 'representative' countries as centers, making my five energy regimes more realistic.
 
 * Cluster 1: Green Leaders – High wealth, high Solar/Wind adoption.
@@ -338,7 +357,7 @@ target_cluster <- cze_latest$Cluster
 cluster_solar_growth <- master_data %>%
   filter(Cluster == target_cluster & Year >= 2012) %>%
   group_by(Entity) %>%
-  arrange(Year) %>% # Ensure chronological order
+  arrange(Year) %>% # Ensures chronological order
   summarise(growth_rate = (last(Solar) - first(Solar)) / (last(Year) - first(Year))) %>%
   summarise(avg_cluster_growth = mean(growth_rate, na.rm = TRUE))
 
@@ -365,3 +384,5 @@ ggplot(forecast_data, aes(x = Year, y = Solar)) +
 ```
 
 *Conclusion:* "If the Czech Republic maintains the adoption speed typical of its cluster, it will reachover 1000 kWh per capita in solar energy by 2030. This provides a data-driven benchmark for national energy goals."
+
+# Adding on top of my project
