@@ -1,6 +1,6 @@
 ---
 title: "USL Project 1: Global Energy Mix Regimes"
-author: "Ondřej Marvan, 477001
+author: "Ondřej Marvan, 477001"
 date: "`r Sys.Date()`"
 output: html_document
 ---
@@ -70,7 +70,7 @@ gdp_data <- read.csv("gdp-per-capita-worldbank.csv")
 co2_data <- read.csv("co2-emissions-per-capita.csv")
 pop_data <- read.csv("population-density.csv")
 
-master_data <- energy_clean_renamed %>% # Application of left joins to merge datasets. 
+master_data <- energy_clean %>%
   left_join(gdp_data %>% select(Entity, Code, Year, GDP = 4), by = c("Entity", "Code", "Year")) %>%
   left_join(co2_data %>% select(Entity, Code, Year, CO2 = 4), by = c("Entity", "Code", "Year")) %>%
   left_join(pop_data %>% select(Entity, Code, Year, Pop_Density = 4), by = c("Entity", "Code", "Year"))
@@ -86,10 +86,10 @@ energy_colors <- c( # Custom color palette tailored to each energy source (at le
   Oil       = "#8B4513",
   Gas       = "#1F4E79",
   Nuclear   = "#73D06F",
-  Hydro     = "#1CA3EC",
+  Hydropower= "#1CA3EC",
   Wind      = "#A6CEE3",
   Solar     = "#FDB813",
-  Bioenergy = "#228B22",
+  `Other renewables` = "#228B22",
   Other     = "#BDBDBD"
 )
 
@@ -338,6 +338,7 @@ target_cluster <- cze_latest$Cluster
 cluster_solar_growth <- master_data %>%
   filter(Cluster == target_cluster & Year >= 2012) %>%
   group_by(Entity) %>%
+  arrange(Year) %>% # Ensure chronological order
   summarise(growth_rate = (last(Solar) - first(Solar)) / (last(Year) - first(Year))) %>%
   summarise(avg_cluster_growth = mean(growth_rate, na.rm = TRUE))
 
