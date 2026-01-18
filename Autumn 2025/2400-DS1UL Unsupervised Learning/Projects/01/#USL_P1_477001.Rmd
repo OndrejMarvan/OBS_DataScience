@@ -45,7 +45,7 @@ energy_raw <- read.csv("per-capita-energy-stacked.csv", stringsAsFactors = FALSE
 # Filter for countries, replace NAs, and EXCLUDE ICELAND (outlier that always steels its own cluster, 90% of its energy mix is from renewables - unrealistic for clustering and dissimilar to other countries, further small population merged with geothermal and hydro source of energy).
 energy_clean <- energy_raw %>%
   filter(Code != "" & !is.na(Code)) %>% # Keep only countries with ISO codes.
-  filter(Entity != "Iceland") %>%  # Key improvement: Removing extreme energy outlier - Iceland.
+  filter(Entity != "Iceland") %>%  # Key improvement: Removing extreme energy outlier (described above).
   mutate(across(4:11, ~replace_na(., 0))) %>% # Replace NAs with 0 for energy sources, mutates columns 4 to 11.
   rename(
     Coal = coal_per_capita__kwh, Oil = oil_per_capita__kwh, Gas = gas_per_capita__kwh,
