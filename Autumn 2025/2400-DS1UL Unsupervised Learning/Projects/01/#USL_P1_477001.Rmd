@@ -221,45 +221,16 @@ ggplot(map_joined, aes(x = long, y = lat, group = group, fill = Cluster)) +
 
 *Interpretation:* The global map reveals clear regional patterns in energy strategies. 
 
-Cluster 1: The "Energy Poor" (Developing World)
+*Cluster 1 (Red):* The Developing and Oil-Dependent World. I found that this is one of the largest groups, including India, Indonesia, most of Africa, Middle East, and South America. These countries are defined by either very low energy access or heavy dependence on petroleum exports. I interpret this as a mix of energy poverty and oil-based economies that lack diversified energy infrastructure.
 
-Definition: The largest cluster by number of countries. It is defined by very low consumption across all energy sources (Coal, Oil, Nuclear, etc.).
+*Cluster 2 (Blue):* The Coal-Dependent Transitional Economies. This small cluster contains South Africa and Kazakhstan. I distinguish this group because they rely heavily on coal to power their industries. They are in similar development stage with mining-based economies.
 
-Representative Countries: India, Nigeria, Indonesia, most of Africa and South America.
+*Cluster 3 (Green):* The Wealthy Diversified Economies. This is the most important finding of my analysis. I observed that USA, Canada, Europe, China, Japan, Australia, and Brazil all fall into same cluster. This shows that despite different energy sources, these nations share similar high consumption patterns and diversified energy mix. They have money and technology to use many fuel types together.
 
-Interpretation: These countries appear "Low Carbon" not because of policy, but because of lower industrialization and GDP. They represent the "Global Energy Gap."
+*Cluster 4 (Purple):* The Isolated Gas Economy. I found only Iran in this cluster. I interpret this as unique case - country with huge gas reserves but cut off from global markets by sanctions, creating different energy pattern.
+Cluster 5 (Orange): The Russian Energy Model. Only Russia belongs here. I define this cluster by massive fossil fuel exports combined with cold climate that needs enormous heating energy. It is outlier because of its size and role as world's major gas supplier.
 
-Cluster 2: The "Fossil Giants" (High-Consumption)
 
-Definition: Defined by extreme per-capita usage, specifically in Oil and Gas. These are wealthy nations where energy is cheap and consumption is massive.
-
-Representative Countries: USA, Canada, Saudi Arabia, Australia, Kuwait.
-
-Interpretation: This is the "dirty wealth" cluster. Despite having renewables, their fossil fuel baseload is so huge (often >60,000 kWh/person) that it dwarfs any green transition progress.
-
-Cluster 3: The "Coal Industrialists"
-
-Definition: Defined by a dominant share of Coal in the energy mix. These are the world's "factories."
-
-Representative Countries: China, South Africa, Kazakhstan, Poland.
-
-Interpretation: This cluster powers global manufacturing. Their path to decarbonization is the hardest because their infrastructure is physically built around coal burning.
-
-Cluster 4: The "Hydro-Power" Group
-
-Definition: A smaller, unique cluster defined by an exceptionally high share of Hydropower.
-
-Representative Countries: Norway, Brazil, New Zealand, Venezuela.
-
-Interpretation: These are the "Geographic Lucky" nations. They have low CO2 emissions largely because their geography provides abundant clean baseload power.
-
-Cluster 5: The "European Mixed" (Industrial Transition)
-
-Definition: A high-income cluster with a diverse mix: significant Nuclear, Gas, and Renewables (Wind/Solar), but moderate Coal.
-
-Representative Countries: Czech Republic, Germany, France, United Kingdom.
-
-Interpretation: This is the cluster identified in our case study. Despite Germany being "Green" and Czechia being "Nuclear," they group together because they are wealthy, industrialized, and have diversified grids. They have moved away from the extreme Coal of Cluster 3 and the extreme Oil of Cluster 2, sitting in a "Transitional" state.
 
 
 ```{r geographical_mapping, include=TRUE}
