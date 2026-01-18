@@ -1,8 +1,10 @@
 ---
-title: "USL Project 1: Global Energy Mix Regimes"
+title: 'USL Project 1: Global Energy Mix Regimes'
 author: "Ondřej Marvan, 477001"
 date: "`r Sys.Date()`"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 # USL Project 1 
 
@@ -227,11 +229,9 @@ ggplot(map_joined, aes(x = long, y = lat, group = group, fill = Cluster)) +
 
 *Cluster 3 (Green):* The Wealthy Diversified Economies. This is the most important finding of my analysis. I observed that USA, Canada, Europe, China, Japan, Australia, and Brazil all fall into same cluster. This shows that despite different energy sources, these nations share similar high consumption patterns and diversified energy mix. They have money and technology to use many fuel types together.
 
-*Cluster 4 (Purple):* The Isolated Gas Economy. I found only Iran in this cluster. I interpret this as unique case - country with huge gas reserves but cut off from global markets by sanctions, creating different energy pattern.
-Cluster 5 (Orange): The Russian Energy Model. Only Russia belongs here. I define this cluster by massive fossil fuel exports combined with cold climate that needs enormous heating energy. It is outlier because of its size and role as world's major gas supplier.
+*Cluster 4 (Purple):* The Isolated Gas Economy. There are Turkmenistan, Saudi Arabia and Oman in this cluster. I interpret this as unique case - country with huge gas reserves but cut off from global markets by sanctions (or regimes), creating different energy pattern.
 
-
-
+*Cluster 5 (Orange):* The Russian Energy Model (+ Slovakia and Slovenia). Only Russia belongs here. I define this cluster by massive fossil fuel exports combined with cold climate that needs enormous heating energy.
 
 ```{r geographical_mapping, include=TRUE}
 # Join results with world map coordinates
@@ -257,7 +257,7 @@ ggplot(map_joined, aes(x = long, y = lat, group = group, fill = Cluster)) +
   theme_minimal() +
   labs(title = "Energy Regimes: Europe Focus (2022)", fill = "Cluster")
 ```
-Western Europe shows a strong presence of 'Green Leaders' (Cluster 1), while Eastern Europe has more 'Nuclear & Diverse' (Cluster 4) countries like Czechia. The map highlights regional trends in energy strategies, reflecting economic and policy differences across Europe. Norhtern Africa and the Middle East are dominated by 'Fossil Giants' (Cluster 2), while Sub-Saharan Africa is largely 'Energy Poor' (Cluster 5).
+Western Europe shows a strong presence of 'Green Leaders' (Cluster 1), while Eastern Europe has more 'Nuclear & Diverse' (Cluster 5 and 1). The map highlights regional trends in energy strategies, reflecting economic and policy differences across Europe.
 
 ```{r geographical_mapping, include=TRUE}
 # Join results with world map coordinates
@@ -293,7 +293,7 @@ master_data %>%
 The data reveals an 'Energy Addition' paradox. While wealth (GDP) provides the capital for Solar investment, it is more strongly linked to high-volume Oil and Gas consumption. This suggests that as countries get richer, they tend to add renewables on top of fossil fuels rather than immediately replacing them. Our clustering successfully separates the few 'Green Leaders' who have decoupled GDP from CO2 from the 'Fossil Wealthy' who have not.
 
 # 10. Case Study: Czech Republic Progress & Cluster-Based Forecasting
-In this section, we apply the theory from Class 05: using cluster membership to develop an aggregated forecast that reduces variance and potentially lowers the Mean Square Error (MSE) compared to a single-country model.
+In this section, I apply the theory from USL class: using cluster membership to develop an aggregated forecast that reduces variance and potentially lowers the Mean Square Error (MSE) compared to a single-country model.
 
 ## 10.1. Energy Mix Evolution in Czechia (1990–2023)
 We first visualize the progress of Czechia's energy sources. This chart shows the "decoupling" process (or lack thereof) from fossil fuels.
@@ -317,7 +317,7 @@ ggplot(czechia_progress, aes(x = Year, y = Usage, fill = Source)) +
 *Interpretation:* Czechia shows a strong historical reliance on Coal and Nuclear. While Solar and Wind (at the top) are growing, they still represent a small "wedge" compared to the industrial baseload provided by traditional sources.
 
 ## 10.2. Forecasting Solar Transition via Cluster Logic
-Instead of just looking at Czechia's past, we use the "Aggregated Forecast" method. We identify Czechia's cluster and use the cluster's average growth rate to predict Czechia's 2030 solar capacity.
+Instead of just looking at Czechia's past, I use the "Aggregated Forecast" method where I identify Czechia's cluster and use the cluster's average growth rate to predict Czechia's 2030 solar capacity.
 
 ```{r czechia_forecasting, include=TRUE}
 # 1. Identify Czechia's current cluster (using the most recent year)
@@ -325,7 +325,7 @@ cze_latest <- master_data %>% filter(Entity == "Czechia" & Year == 2024)
 target_cluster <- cze_latest$Cluster
 
 # 2. Calculate average growth rate of Solar for the WHOLE cluster (2012-2022)
-# This reduces the variance of the forecast (Class 05 logic)
+# This reduces the variance of the forecast
 cluster_solar_growth <- master_data %>%
   filter(Cluster == target_cluster & Year >= 2012) %>%
   group_by(Entity) %>%
@@ -357,7 +357,7 @@ ggplot(forecast_data, aes(x = Year, y = Solar)) +
 
 *Conclusion:* "If the Czech Republic maintains the adoption speed typical of its cluster, it will reachover 1000 kWh per capita in solar energy by 2030. This provides a data-driven benchmark for national energy goals."
 
-# Last but not least:
+# Last but not least (additional update of the project):
 
 # 11. Improved Clustering: Single Year (2023)
 
@@ -426,7 +426,7 @@ fviz_cluster(pam_2023, data = energy_scaled_2023, geom = "point",
 *Interpretation:* By clustering only 2023, we get a clear picture of today's energy regimes. Each country appears exactly once, and the clusters represent current energy strategies - not a mix of past and present. This makes the results easier to interpret and more useful for policy discussions.
 
 ```{r map_2023, include=TRUE}
-# Prepare map data for 2023 clusters
+# Map for 2023 clusters
 map_ready_2023 <- data_2023 %>%
   mutate(region = case_when(
     Entity == "Czechia" ~ "Czech Republic",
