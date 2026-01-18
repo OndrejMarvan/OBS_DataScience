@@ -126,10 +126,10 @@ cor_vars <- c(energy_cols, "GDP", "CO2", "Pop_Density") # Vectors to be included
 res_cor <- cor(master_data[, cor_vars], use = "complete.obs") # Uses only rows where all variables have non-missing values.
 corrplot(res_cor, method = "color", type = "upper", addCoef.col = "black", number.cex = 0.7) # Creates correlation plot (heatmap).
 ```
-*Interpretation:* GDP correlates more strongly with Oil (0.71) than with Solar (0.26). This indicates that currently, wealth is a driver of total energy volume rather than just a green transition. This reflects the concept of "Energy Addition"—richer nations are adding renewables on top of, not instead of, fossil fuels. I need to remember I analyze data 1965-2024.
+*Interpretation:* GDP correlates more strongly with Oil (0.71) than with Solar (0.26). This indicates that currently, wealth is a driver of total energy volume rather than just a green transition. This reflects the concept of "Energy Addition"—richer nations are adding renewables on top of, not instead of, fossil fuels. Worth to remind that I analyze data 1965-2024.
 
 # 5. Determining Optimal Clusters (Quality)
-We evaluate the energy variables only to find the "Natural Taxonomies" of energy use.
+Evaluation of the energy variables only to find the "Natural Taxonomies" of energy use.
 
 ```{r optimal_clusters, include=TRUE}
 energy_scaled <- scale(master_data[, energy_cols])
@@ -174,7 +174,7 @@ rownames(energy_sample) <- data_2022$Entity[sample_rows]
 hc <- hclust(dist(energy_sample), method = "ward.D2")
 
 # Plot dendrogram with 5 clusters marked
-plot(hc, cex = 0.6, hang = -1, main = "Dendrogram of Energy Regimes (2022 Sample)")
+plot(hc, cex = 0.6, hang = -1, main = "Dendrogram of Energy Regimes (2022 Sample)"
 rect.hclust(hc, k = 5, border = 2:6) # Draw boxes around 5 clusters
 ```
 
