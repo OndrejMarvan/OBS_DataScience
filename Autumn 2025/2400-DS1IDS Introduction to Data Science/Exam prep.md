@@ -8,5 +8,6 @@ List of content
 1. Data science and its economic context - Ewa 
 2. Computer programming for data science - Ewa 
 3. Introduction to statistics and statistical hypothesis testing- Maciej 
+		![[Pasted image 20260118142104.png]]
 4. Introduction to econometrics
 5. Introduction to machine learning
