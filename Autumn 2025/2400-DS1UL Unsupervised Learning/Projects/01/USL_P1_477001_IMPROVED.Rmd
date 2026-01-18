@@ -163,27 +163,66 @@ corrplot(res_cor, method = "color", type = "upper", addCoef.col = "black", numbe
 
 ```{r correlation_over_time, include=TRUE}
 # Check if GDP-Energy correlations have evolved
+# Note: Early decades may have insufficient data, so we use a safe correlation function
+
+safe_cor <- function(x, y) {
+  # Returns NA if correlation can't be computed
+  result <- tryCatch(
+    cor(x, y, use = "complete.obs"),
+    error = function(e) NA_real_
+  )
+  # Also return NA if too few observations
+  complete_pairs <- sum(complete.cases(x, y))
+  if (complete_pairs < 10) return(NA_real_)
+  return(result)
+}
+
 cor_by_decade <- master_data %>%
   mutate(Decade = floor(Year / 10) * 10) %>%
-  filter(Decade >= 1970) %>%
+  filter(Decade >= 1980) %>%  # Start from 1980 (better GDP coverage)
   group_by(Decade) %>%
   summarise(
-    cor_gdp_oil = cor(GDP, Oil, use = "complete.obs"),
-    cor_gdp_solar = cor(GDP, Solar, use = "complete.obs"),
-    cor_gdp_wind = cor(GDP, Wind, use = "complete.obs"),
+    n_obs = n(),
+    complete_gdp = sum(!is.na(GDP)),
+    cor_gdp_oil = safe_cor(GDP, Oil),
+    cor_gdp_solar = safe_cor(GDP, Solar),
+    cor_gdp_wind = safe_cor(GDP, Wind),
     .groups = "drop"
-  )
+  ) %>%
+  filter(!is.na(cor_gdp_oil))  # Keep only decades with valid correlations
 
+# Show data availability
+cat("Data availability by decade:\n")
+print(cor_by_decade %>% select(Decade, n_obs, complete_gdp))
+
+# Plot correlations over time
 cor_by_decade %>%
+  select(Decade, cor_gdp_oil, cor_gdp_solar, cor_gdp_wind) %>%
   pivot_longer(-Decade, names_to = "Relationship", values_to = "Correlation") %>%
+  mutate(Relationship = case_when(
+    Relationship == "cor_gdp_oil" ~ "GDP-Oil",
+    Relationship == "cor_gdp_solar" ~ "GDP-Solar",
+    Relationship == "cor_gdp_wind" ~ "GDP-Wind"
+  )) %>%
   ggplot(aes(x = Decade, y = Correlation, color = Relationship)) +
   geom_line(linewidth = 1.2) +
   geom_point(size = 3) +
   theme_minimal() +
+  scale_x_continuous(breaks = seq(1980, 2020, 10)) +
   labs(title = "Evolution of GDP-Energy Correlations Over Time",
        subtitle = "Is the wealth-fossil fuel link weakening?",
-       y = "Correlation Coefficient")
+       y = "Correlation Coefficient",
+       x = "Decade")
 ```
+
+**Key fixes:**
+1. Created `safe_cor()` function that returns `NA` instead of throwing an error
+2. Added minimum threshold of 10 complete pairs
+3. Changed filter to start from **1980** (better GDP data coverage)
+4. Added data availability check to show what's being used
+5. Added `filter(!is.na(cor_gdp_oil))` to remove decades without valid correlations
+
+This should run without errors now.
 
 # 5. Determining Optimal Clusters (Quality)
 
@@ -417,15 +456,15 @@ profile_summary <- master_data %>%
 knitr::kable(profile_summary, caption = "Cluster Profiles: Socio-Economic and Energy Characteristics (2022)")
 ```
 
-The data reveals an 'Energy Addition' paradox. While wealth (GDP) provides the capital for Solar investment, it is more strongly linked to high-volume Oil and Gas consumption. This suggests that as countries get richer, they tend to add renewables on top of fossil fuels rather than immediately replacing them. Our clustering successfully separates different energy regime types based on their dominant sources and consumption levels.
+The data reveals an 'Energy Addition' paradox. While wealth (GDP) provides the capital for Solar investment, it is more strongly linked to high-volume Oil and Gas consumption. This suggests that as countries get richer, they tend to add renewables on top of fossil fuels rather than immediately replacing them. Clustering successfully separates different energy regime types based on their dominant sources and consumption levels.
 
 # 10. Case Study: Czech Republic Progress & Cluster-Based Forecasting
 
-In this section, we apply the theory from Class 05: using cluster membership to develop an aggregated forecast that reduces variance and potentially lowers the Mean Square Error (MSE) compared to a single-country model.
+In this section, I apply the theory from last clustering clas (forecasting): using cluster membership to develop an aggregated forecast that reduces variance and potentially lowers the Mean Square Error (MSE) compared to a single-country model.
 
 ## 10.1. Energy Mix Evolution in Czechia (1990–2023)
 
-We first visualize the progress of Czechia's energy sources. This chart shows the "decoupling" process (or lack thereof) from fossil fuels.
+Firsty, I visualize the progress of Czechia's energy sources. This chart shows the "decoupling" process (or lack thereof) from fossil fuels.
 
 ```{r czechia_energy_mix, include=TRUE}
 czechia_progress <- master_data %>%
