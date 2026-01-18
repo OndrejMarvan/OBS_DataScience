@@ -37,12 +37,12 @@ library(maps)        # For world map data
 The objective of this project is to identify "Energy Regimes" by clustering countries based on their per-capita energy mix. I also investigated how these clusters relate to economic wealth (GDP), environmental impact (CO2), and physical constraints (Population Density). CO2 emissions and population density data are from the same source as energy data, while GDP data is sourced from the World Bank. All added additional data to create a more robust clustering model. Further, I decided to focus on Czech Republic as a further expansion of the project to analyze its energy transition and forecast future solar capacity using cluster-based logic.
 
 # 2. Data Preparation & Cleaning
-First, I load the primary energy dataset and filter for individual countries, removing regional aggregates (Europe, Asia, etc.).
+First of all, I load the primary energy dataset and filter for individual countries, removing regional aggregates (Europe, Asia, etc.).
 
 ```{r data_loading, include=TRUE}
 energy_raw <- read.csv("per-capita-energy-stacked.csv", stringsAsFactors = FALSE)
 
-# Filter for countries, replace NAs, and EXCLUDE ICELAND (outlier that always steels its own cluster, 90% of its energy mix is from renewables - unrealistic for clustering and dissimilar to other countries, further small population merged with geothermal and hydro source of energy).
+# Filter for countries, replace NAs, and excluding ICELAND (outlier that always steels its own cluster, 90% of its energy mix is from renewables - unrealistic for clustering and dissimilar to other countries, further small population merged with geothermal and hydro source of energy).
 energy_clean <- energy_raw %>%
   filter(Code != "" & !is.na(Code)) %>% # Keep only countries with ISO codes.
   filter(Entity != "Iceland") %>%  # Key improvement: Removing extreme energy outlier (described above).
@@ -57,11 +57,11 @@ energy_clean <- energy_raw %>%
 # Define columns for clustering
 energy_cols <- c("Coal", "Oil", "Gas", "Nuclear", "Hydropower", "Wind", "Solar", "Other renewables") # Simplification of column names for later use, especially in charts. 
 
-summary(energy_clean) # Check data summary
+summary(energy_clean) # data summary
 dim(energy_raw) # raw data
 dim(energy_clean) # cleaned data
 ```
-We got 5865 values in 11 columns. Data are more or less ready for EDA. 
+We've got 5865 values in 11 columns. Data are more or less ready for EDA. 
 
 # 3. Merging Research Data (GDP, CO2, Density)
 Energy mix data looks good but quite boring to analyze them standalone, why not to add some socio-economic context? I downloaded GDP per capita, CO2 emissions per capita, and Population Density datasets from the same source as energy data (World in Data and World bank). I merged them into a single "master_data" dataframe for further analysis. 
@@ -71,7 +71,7 @@ gdp_data <- read.csv("gdp-per-capita-worldbank.csv")
 co2_data <- read.csv("co2-emissions-per-capita.csv")
 pop_data <- read.csv("population-density.csv")
 
-master_data <- energy_clean %>%
+master_data <- energy_clean %>% # left join
   left_join(gdp_data %>% select(Entity, Code, Year, GDP = 4), by = c("Entity", "Code", "Year")) %>%
   left_join(co2_data %>% select(Entity, Code, Year, CO2 = 4), by = c("Entity", "Code", "Year")) %>%
   left_join(pop_data %>% select(Entity, Code, Year, Pop_Density = 4), by = c("Entity", "Code", "Year"))
@@ -100,7 +100,7 @@ master_data %>%
   pivot_longer(-Year, names_to = "Source", values_to = "Usage") %>%
   ggplot(aes(x = Year, y = Usage, fill = Source)) + # Stacked Area Chart
   geom_area() +
-  scale_fill_manual(values = energy_colors) +   # 👈 ADD IT HERE
+  scale_fill_manual(values = energy_colors)
   theme_minimal() +
   labs(
     title = "Global Average Energy Mix Evolution (1965–2023)",
