@@ -237,3 +237,11 @@ https://dataverse.harvard.edu/
 
 Use in report: 
 ![[Pasted image 20260113181202.png]]
+
+Extra tasks:
+1: 
+Do not delete any countries. 
+Possible to paste and it will display the density of data. 
+
+2:
+
