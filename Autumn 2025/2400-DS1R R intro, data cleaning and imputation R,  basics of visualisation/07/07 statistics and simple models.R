@@ -22,7 +22,7 @@ var()Variance
 
 ### Basic statistics ###########################################################
 
-setwd("~/Documents/GitHub/OBS_DataScience/OBS_DataScience/Autumn 2025/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/Datasets")
+setwd("~/Documents/GitHub/OBS_DataScience/OBS_DataScience/Autumn 2025/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/data")
 water <- read.csv("graphics - water quality/water_potability.csv", sep = ",", dec=".")
 head(water) 
 
@@ -174,7 +174,7 @@ tapply(waterNoMiss$Hardness, waterNoMiss$kmeans, mean)
 ### Tasks ######################################################################
 
 # 1. a) Load the dataset "Life Expectancy Data.csv" into R and name it "life" 
-setwd("~/Documents/GitHub/OBS_DataScience/OBS_DataScience/Autumn 2025/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/Datasets/dataset - life expectancy")
+setwd("~/Documents/GitHub/OBS_DataScience/OBS_DataScience/Autumn 2025/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/data/dataset - life expectancy")
 life <- read.csv("Life Expectancy Data.csv")
 
 

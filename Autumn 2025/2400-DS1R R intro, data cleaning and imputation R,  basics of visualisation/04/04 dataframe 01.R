@@ -175,6 +175,7 @@ str(mySet1)
 # a) Show the 5th row of created dataframe. 
 mySet1[5, ]
 
+
 # b) Change the name of the second column of mySet1 dataframe to "column02"
 colnames(mySet1) # names of vectors are stored as column names
 # Use colnames() just as in the lesson example

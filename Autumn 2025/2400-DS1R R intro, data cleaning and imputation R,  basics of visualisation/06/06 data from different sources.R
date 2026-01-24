@@ -30,15 +30,14 @@ Sys.setenv(LANGUAGE='en')
 
 # checking the arguments of the function
 ?read.table
+setwd("~/Documents/GitHub/OBS_DataScience/OBS_DataScience/Autumn 2025/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/data")
+getwd()
 
-table1 <- read.table("~/Documents/GitHub/OBS_DataScience/OBS_DataScience/Autumn 2025/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/Datasets/notepadData.txt", 
-                      header = TRUE, sep = " ")
-
-table1
+table1 <- read.table("notepadData.txt", header = TRUE, sep = " ")
 
 # now we can use the data we have read
 summary(table1$price)
-
+summary(table1$price)
 
 
 # reading data with relative paths
@@ -46,14 +45,14 @@ summary(table1$price)
 # path to the data folder:  "C:/Users/maria/Desktop/RIntro/data"
 
 # setting the 'working directory' 
-setwd("~/Documents/GitHub/OBS_DataScience/OBS_DataScience/Autumn 2025/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/Datasets")
+setwd("~/Documents/GitHub/OBS_DataScience/OBS_DataScience/Autumn 2025/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/data")
 
 # checking the path to the working directory 
 getwd()
 
 
 # location can be stored with a text variable which stores the path to the folder
-locationWD <- c("~/Documents/GitHub/OBS_DataScience/OBS_DataScience/Autumn 2025/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation")
+locationWD <- c("~/Documents/GitHub/OBS_DataScience/OBS_DataScience/Autumn 2025/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/data")
 
 setwd(locationWD)
 
@@ -63,7 +62,7 @@ getwd() # we get the same result
 
 # now we can use the relative paths:
 
-table1a <- read.table("/Datasets/notepadData.txt", 
+table1a <- read.table("notepadData.txt", 
                       header = TRUE, sep = " ")
 
 table1a <- read.table("~/Documents/GitHub/OBS_DataScience/OBS_DataScience/Autumn 2025/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/Datasets/notepadData.txt", 
@@ -83,11 +82,11 @@ table1b
 ### Reading data of other types ################################################
 
 # reading the csv file with read.csv() function
-setwd("~/Documents/GitHub/OBS_DataScience/OBS_DataScience/Autumn 2025/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/Datasets")
+setwd("~/Documents/GitHub/OBS_DataScience/OBS_DataScience/Autumn 2025/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/data")
 
 getwd()
 
-water <- read.csv("/graphics - water quality/water_potability.csv", sep = ";", dec=".")
+water <- read.csv("graphics - water quality/water_potability.csv", sep = ";", dec=".")
 water <- read.table(file.choose(), header = TRUE, sep = ",", dec=".")
 
 # good practice! always glimpse at the data that you have just read
@@ -141,18 +140,18 @@ loanEXCEL3 # reading error: this object is no longer available in the memory
 ls() # listing all the objects loaded in the memory 
 
 # saving all loaded objects to the file (to use them in the next session)
-save(list = ls(all.names = TRUE), file= "~/Documents/GitHub/OBS_DataScience/OBS_DataScience/Autumn 2025/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/Datasets/all.rda")
+save(list = ls(all.names = TRUE), file= "~/Documents/GitHub/OBS_DataScience/OBS_DataScience/Autumn 2025/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/data/all.rda")
 
 rm(list = ls(all.names = TRUE)) # cleaning the whole memory
 
 loanEXCEL1 # lack of object
 
-load("~/Documents/GitHub/OBS_DataScience/OBS_DataScience/Autumn 2025/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/Datasets/all.rda")
+load("~/Documents/GitHub/OBS_DataScience/OBS_DataScience/Autumn 2025/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/data/all.rda")
 
 loanEXCEL1 # object read again 
 
 # saving single object to a file  
-save(loanEXCEL1, file = "~/home/ondrej-marvan/Documents/GitHub/OBS_DataScience/OBS_DataScience/Autumn 2025/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/Datasets/")
+save(loanEXCEL1, file = "~/home/ondrej-marvan/Documents/GitHub/OBS_DataScience/OBS_DataScience/Autumn 2025/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/data")
 
 rm(loanEXCEL1)
 
@@ -176,7 +175,7 @@ rm(list = ls(all.names = TRUE)) # cleaning the enviroment
 
 # Loading data and reviewing its overall structure
 
-alcohol <- read.csv("/home/ondrej-marvan/Documents/GitHub/OBS_DataScience/OBS_DataScience/Autumn 2025/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/Datasets/dataset - student alcohol consumption/student-alcohol.csv")
+alcohol <- read.csv("/home/ondrej-marvan/Documents/GitHub/OBS_DataScience/OBS_DataScience/Autumn 2025/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/data/dataset - student alcohol consumption/student-alcohol.csv")
 head(alcohol)
 str(alcohol)
 
@@ -365,7 +364,7 @@ alcohol$schoolsup <- factor(alcohol$schoolsup, levels = c("no", "yes"))
 
 binaryVariables <- c('famsup', 'paid', 'activities', 'nursery', 'higher', 'internet', 'romantic')
 
-# Levles overview:
+# Levels overview:
 
 lapply(alcohol[,binaryVariables], summary)
 
@@ -556,3 +555,4 @@ str(clients)
 # 8. Save results for future reference! Use an RData file with name "clientsInR".
 
 save(clients, file = "clientsInR.RData")
+

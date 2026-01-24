@@ -1,0 +1,224 @@
+---
+title: "USL Project 3: Movie Genre Association Rules"
+author: "Ondřej Marvan, 477001"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(tidyverse)
+library(arules)
+library(arulesViz)
+```
+
+# 1. Introduction
+
+I analyze MovieLens dataset to find which movie genres appear together using **association rule mining**.
+
+Main question: *Which genres are often combined in same movie?*
+
+**Dataset:** MovieLens (Harper & Konstan, 2015) - 9,742 movies with genre labels.
+
+https://grouplens.org/datasets/movielens/latest/
+
+**Note**: I am using subset instead of full dataset. Comparisson: 
+
+1. Small version: 100,000 ratings and 3,600 tag applications applied to 9,000 movies by 600 users. Last updated 9/2018
+
+2. Full: approximately 33,000,000 ratings and 2,000,000 tag applications applied to 86,000 movies by 330,975 users. Includes tag genome data with 14 million relevance scores across 1,100 tags. Last updated 9/2018.
+
+
+# 2. Load Data
+
+```{r}
+# Setwd
+setwd("~/Documents/GitHub/OBS_DataScience/OBS_DataScience/Autumn 2025/2400-DS1UL Unsupervised Learning/Projects/#USL_P3_477001/ml-latest-small/")
+getwd()
+
+# Load movies data
+movies <- read.csv("movies.csv", stringsAsFactors = FALSE)
+
+# Quick look
+head(movies, 10)
+cat("Total movies:", nrow(movies))
+```
+
+# 3. Explore Genres
+
+```{r}
+# Genres are separated by | symbol
+# Lets split them and count
+
+# Split genres into separate rows
+genres_long <- movies %>%
+  separate_rows(genres, sep = "\\|")   # split by pipe symbol
+
+# Count each genre
+genre_counts <- genres_long %>%
+  count(genres, sort = TRUE)
+
+genre_counts
+```
+
+```{r}
+# Plot genre frequency
+ggplot(genre_counts, aes(x = reorder(genres, n), y = n)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  coord_flip() +
+  labs(title = "Genre Frequency", x = "", y = "Number of Movies")
+```
+
+# 4. How Many Genres per Movie?
+
+```{r}
+# Count genres per movie
+movies$n_genres <- str_count(movies$genres, "\\|") + 1   # count | and add 1
+
+summary(movies$n_genres)
+
+# Histogram
+ggplot(movies, aes(x = n_genres)) +
+  geom_histogram(binwidth = 1, fill = "steelblue", color = "white") +
+  labs(title = "Number of Genres per Movie", x = "Genres", y = "Movies")
+```
+
+# 5. Create Transactions
+
+Each movie is one transaction. Genres are items in that transaction.
+
+```{r}
+# Remove movies with no genres
+movies_clean <- movies %>%
+  filter(genres != "(no genres listed)")
+
+cat("Movies with genres:", nrow(movies_clean), "\n")
+
+# Split genres into list
+genre_list <- strsplit(movies_clean$genres, "\\|")
+
+# Convert to transactions
+trans <- as(genre_list, "transactions")
+
+summary(trans)
+```
+
+```{r}
+# Item frequency plot
+itemFrequencyPlot(trans, topN = 15, type = "absolute", 
+                  main = "Genre Frequency in Transactions")
+```
+
+# 6. Apriori Algorithm
+
+```{r}
+# Run apriori
+rules <- apriori(trans, 
+                 parameter = list(supp = 0.01,   # 1% support
+                                  conf = 0.3,    # 30% confidence  
+                                  minlen = 2))
+
+cat("Rules found:", length(rules))
+```
+
+## Top Rules by Lift
+
+```{r}
+inspect(head(sort(rules, by = "lift"), 15))
+```
+
+## Top Rules by Confidence
+
+```{r}
+inspect(head(sort(rules, by = "confidence"), 15))
+```
+
+## Top Rules by Support
+
+```{r}
+inspect(head(sort(rules, by = "support"), 15))
+```
+
+# 7. ECLAT Algorithm
+
+```{r}
+# Find frequent itemsets
+itemsets <- eclat(trans, 
+                  parameter = list(supp = 0.01, minlen = 2))
+
+cat("Frequent itemsets:", length(itemsets))
+```
+
+```{r}
+# Top itemsets
+inspect(head(sort(itemsets, by = "support"), 15))
+```
+
+# 8. Visualizations
+
+```{r}
+# Scatter plot
+plot(rules, main = "Support vs Confidence")
+```
+
+```{r, fig.width=10, fig.height=8}
+# Network graph
+top_rules <- head(sort(rules, by = "lift"), 25)
+plot(top_rules, method = "graph", main = "Top 25 Rules")
+```
+
+```{r}
+# Grouped matrix
+plot(top_rules, method = "grouped", main = "Grouped Matrix")
+```
+
+# 9. Interesting Rules
+
+```{r}
+# Rules with high lift (strong association)
+strong_rules <- subset(rules, lift > 2)
+cat("Rules with lift > 2:", length(strong_rules), "\n\n")
+inspect(head(sort(strong_rules, by = "lift"), 10))
+```
+
+```{r}
+# What genres lead to Drama?
+drama_rules <- subset(rules, rhs %in% "Drama")
+cat("Rules leading to Drama:\n")
+inspect(head(sort(drama_rules, by = "confidence"), 5))
+```
+
+```{r}
+# What genres lead to Comedy?
+comedy_rules <- subset(rules, rhs %in% "Comedy")
+cat("Rules leading to Comedy:\n")
+inspect(head(sort(comedy_rules, by = "confidence"), 5))
+```
+
+# 10. Summary
+
+```{r}
+cat("=== SUMMARY ===\n")
+cat("Movies analyzed:", length(trans), "\n")
+cat("Genres:", length(itemLabels(trans)), "\n")
+cat("Rules found:", length(rules), "\n")
+cat("Avg lift:", round(mean(quality(rules)$lift), 2), "\n")
+cat("Rules with lift > 2:", length(strong_rules), "\n")
+```
+
+# 11. Conclusion
+
+**What I found:**
+
+1. Some genres often appear together (e.g., Action-Adventure, Comedy-Romance)
+2. Rules with high lift show real genre connections
+3. Drama is most common genre, so many rules lead to it
+
+**Interpretation examples:**
+
+- {Sci-Fi} → {Action} means sci-fi movies often have action
+- High confidence = rule is reliable
+- High lift = genres are realy connected, not just common
+
+**References:**
+Harper, F.M. & Konstan, J.A. (2015). The MovieLens Datasets. ACM TiiS.

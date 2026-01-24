@@ -131,6 +131,7 @@ set12[set12$IdClient == 5,]
 # creating a subset
 
 setBikeA <- set12[set12$Product == "Bike",] 
+setBikeA
 
 setBike <- subset(set12, Product == "Bike")
 setBike
@@ -315,8 +316,10 @@ data(Weather, package="mosaicData") # good for splitting text!!! and date
 
 # 1. Print values of CO2 uptake from the largest to the smallest.
 sort(CO2$uptake, decreasing = TRUE)
+sort(CO2$uptake, decreasing = TRUE)
 
 # 2. Show the rows of CO2 dataset, where the Type is set to Quebec and Treatment to chilled.
+head(CO2)
 CO2[CO2$Type == "Quebec" & CO2$Treatment == "chilled", ]
 
 # 3. Show the rows of CO2 dataset, where the uptake is higher than 40 and the 

@@ -366,11 +366,11 @@ text2 <- "Ipsum"
 
 # Use paste()
 help(paste)
-result_paste <- paste(text1, text2, sep = " ")
+result_paste <- paste(text1, text2, sep = " ") # combines strings into one
 result_paste
 
-# Use c()
-result_c <- c(text1, text2)
+# Use c() 
+result_c <- c(text1, text2) # collects items into a list (vector)
 result_c
 
 
@@ -411,9 +411,6 @@ vec3
 help(seq)
 vec4 <- seq(from = 3, by = 3, length.out = 100)
 vec4
-
-#probabl a mistake
-
 
 
 # 8. Using only one line of code create a vector "vec3" with following structure: 
@@ -457,56 +454,6 @@ num_int <- as.integer(num)
 num_int
 class(num_int)
 
-# 2. Create two variables with text. Check the documentation of paste() and try
-# to use it on created vectors. Compare the results of paste() function and c(). 
-# What are the differences? Why?
-
-t1 <- "Hello"
-t2 <- "World"
-
-result_paste <- paste(t1, t2, sep = " ")
-result_paste
-
-result <- c(t1, t2)
-result
-
-
-
-
-# 3. a) Convert vector vecDate <- c("09:12:12", "28:02:16", "31:05:22") to Date class. 
-# HINT: DONT CHANGE ANYTHING BY HAND in the original data. Make sure to utilise function parameters. 
-# b) Calculate number of days between these dates and today's date.
-# HINT: is there a function that will get the "today's date" automatically?
-vecDate_Date <- as.Date(vecDate, format = "%d:%m:%y")
-vecDate_Date
-
-# Part b: Calculate days difference
-today <- Sys.Date()
-days_diff <- today - vecDate_Date
-days_diff
-
-
-# 4. Create a vector "vec1" which will include numbers from 2 to 8 and from 17 to 30. 
-# Use the shortest code possible.
-
-# 5. Create a vector "vec2" with given structure: (2,  8, 14, 20, 26, 32). Use seq() function. 
-
-# 6. Create a vector with given structure: "2", "7", "a", "2", "7", "a", "2", "7", "a". TIP: rep()
-
-# 7. Create a vector of length 100, which will store consecutive numbers divisible by three. 
-
-# 8. Using only one line of code create a vector "vec3" with following structure:
-# HINT: work smartly - if something can be done with a function or with appropriate argument of
-# a fuction - use it, rather than typing it down manually.  
-# (1, 1, 3, 3, 5, 5, 7, 7, 9, 9, 1, 1, 3, 3, 5, 5, 7, 7, 9, 9, 1, 1, 3, 3, 5, 5, 7, 7, 9, 9). 
-
-# 9. Generate a vector "vec4" of 50 numbers with the usage of runif() function. What does
-# it do? Use generated numbers to create a vector of 50 random integer values from the 
-# range 0-20. 
-
-# 10. Print values from the 5th, 10th and 26th element of previously created vector (from task 9).
-
-# 11. Print values of every second element from the previously created vector, 
-# starting from the 5th element of the vector. TIP: seq(). 
-
-
+num_char <- as.character(num_int)
+num_char
+class(num_char)
