@@ -90,7 +90,8 @@ Each movie is one transaction. Genres are items in that transaction.
 ```{r}
 # Remove movies with no genres
 movies_clean <- movies %>%
-  filter(genres != "(no genres listed)")
+  filter(genres != "(no genres listed)") 
+
 
 cat("Movies with genres:", nrow(movies_clean), "\n")
 
