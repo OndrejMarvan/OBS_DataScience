@@ -21,6 +21,8 @@ List of content
 | **Core Strength**        | Explanation and policy relevance                  | Prediction and automation                         |
 | **Emerging Integration** | Causal ML, double machine learning, hybrid models | Incorporation of theory-based constraints         |
 
+
+
 2. Computer programming for data science - Ewa 
 3. Introduction to statistics and statistical hypothesis testing- Maciej 
 		![[Pasted image 20260118142104.png]]
