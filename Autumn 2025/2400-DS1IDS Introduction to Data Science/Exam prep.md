@@ -6,6 +6,21 @@
 
 List of content 
 1. Data science and its economic context - Ewa 
+### Econometrics vs Data Science — A Comparative Overview
+
+| **Dimension**            | **Econometrics**                                  | **Data Science / ML**                             |
+| ------------------------ | ------------------------------------------------- | ------------------------------------------------- |
+| **Primary Goal**         | Causal inference, parameter estimation            | Prediction, pattern recognition                   |
+| **Modeling Approach**    | Model-based (theory-driven)                       | Algorithmic / data-driven                         |
+| **Assumptions**          | Strong structural and statistical assumptions     | Minimal assumptions, flexible models              |
+| **Typical Methods**      | Regression, IV, GMM, panel models                 | Trees, random forests, neural networks, ensembles |
+| **Evaluation Criterion** | Consistency, unbiasedness, valid inference        | Out-of-sample predictive accuracy                 |
+| **Data Focus**           | Smaller, structured data sets                     | Large, high-dimensional, unstructured data        |
+| **Validation**           | Theoretical fit, hypothesis testing               | Cross-validation, regularization, tuning          |
+| **Output**               | Interpretability and causal effects               | Accuracy and scalability                          |
+| **Core Strength**        | Explanation and policy relevance                  | Prediction and automation                         |
+| **Emerging Integration** | Causal ML, double machine learning, hybrid models | Incorporation of theory-based constraints         |
+
 2. Computer programming for data science - Ewa 
 3. Introduction to statistics and statistical hypothesis testing- Maciej 
 		![[Pasted image 20260118142104.png]]
