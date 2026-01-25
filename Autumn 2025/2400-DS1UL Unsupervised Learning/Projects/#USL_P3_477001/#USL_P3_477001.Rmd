@@ -20,8 +20,7 @@ Main question: *Which genres are often combined in same movie?*
 
 **Dataset:** MovieLens (Harper & Konstan, 2015) - 9,742 movies with genre labels (subset only). Full dataset includes 9,000 movies with genre labels
 
-https://grouplens.org/datasets/movielens/latest/
-
+<https://grouplens.org/datasets/movielens/latest/>
 
 # 2. Load Data
 
@@ -216,15 +215,14 @@ cat("Rules with lift > 2:", length(strong_rules), "\n")
 
 **What I found:**
 
-1. Some genres often appear together (support, e.g., Comedy-Drama, Drama-Romance, Comedy-Romance, Drama-Thriller)
-2. Rules with high lift show real genre connections
-3. Drama is most common genre, so many rules lead to it
+1.  Some genres often appear together (support, e.g., Comedy-Drama, Drama-Romance, Comedy-Romance, Drama-Thriller)
+2.  Rules with high lift show real genre connections
+3.  Drama is most common genre, so many rules lead to it
 
 **Interpretation examples:**
 
-- {Sci-Fi} → {Action} means sci-fi movies often have action
-- High confidence = rule is reliable
-- High lift = genres are really connected, not just common
+-   {Sci-Fi} → {Action} means sci-fi movies often have action
+-   High confidence = rule is reliable
+-   High lift = genres are really connected, not just common
 
-**References:**
-Harper, F.M. & Konstan, J.A. (2015). The MovieLens Datasets. ACM TiiS.
+**References:** Harper, F.M. & Konstan, J.A. (2015). The MovieLens Datasets. ACM TiiS.
