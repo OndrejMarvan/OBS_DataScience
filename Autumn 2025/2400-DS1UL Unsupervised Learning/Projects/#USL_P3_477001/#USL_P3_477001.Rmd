@@ -7,9 +7,9 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
-library(tidyverse)
-library(arules)
-library(arulesViz)
+library(tidyverse) # for data manipulation and visualization
+library(arules) # for association rule mining 
+library(arulesViz) # for visualizing rules
 ```
 
 # 1. Introduction
@@ -18,15 +18,9 @@ I analyze MovieLens dataset to find which movie genres appear together using **a
 
 Main question: *Which genres are often combined in same movie?*
 
-**Dataset:** MovieLens (Harper & Konstan, 2015) - 9,742 movies with genre labels.
+**Dataset:** MovieLens (Harper & Konstan, 2015) - 9,742 movies with genre labels (subset only). Full dataset includes 9,000 movies with genre labels
 
 https://grouplens.org/datasets/movielens/latest/
-
-**Note**: I am using subset instead of full dataset. Comparisson: 
-
-1. Small version: 100,000 ratings and 3,600 tag applications applied to 9,000 movies by 600 users. Last updated 9/2018
-
-2. Full: approximately 33,000,000 ratings and 2,000,000 tag applications applied to 86,000 movies by 330,975 users. Includes tag genome data with 14 million relevance scores across 1,100 tags. Last updated 9/2018.
 
 
 # 2. Load Data
@@ -63,24 +57,34 @@ genre_counts
 
 ```{r}
 # Plot genre frequency
-ggplot(genre_counts, aes(x = reorder(genres, n), y = n)) +
-  geom_bar(stat = "identity", fill = "steelblue") +
-  coord_flip() +
-  labs(title = "Genre Frequency", x = "", y = "Number of Movies")
+ggplot(genre_counts, aes(x = reorder(genres, n), y = n)) + # Initialize plot & sort genres by count
+  geom_bar(stat = "identity", fill = "steelblue") + # Create bars with a specific color
+  coord_flip() + # Transpose axes for better readability of labels
+  labs( # Titles and axis labels
+    title = "Genre Frequency", 
+    x = "", 
+    y = "Number of Movies"
+  )
 ```
 
 # 4. How Many Genres per Movie?
 
 ```{r}
 # Count genres per movie
-movies$n_genres <- str_count(movies$genres, "\\|") + 1   # count | and add 1
+movies$n_genres <- str_count(movies$genres, "\\|") + 1 # Count delimiters and add 1 to get total items
 
-summary(movies$n_genres)
+summary(movies$n_genres)       
 
 # Histogram
-ggplot(movies, aes(x = n_genres)) +
-  geom_histogram(binwidth = 1, fill = "steelblue", color = "white") +
-  labs(title = "Number of Genres per Movie", x = "Genres", y = "Movies")
+ggplot(movies, aes(x = n_genres)) + # Map the new count column to the x-axis
+  geom_histogram(binwidth = 1,      # Set bar width to 1 (since counts are integers)
+                 fill = "steelblue",
+                 color = "white") +
+  labs( # Plot titles and axis descriptions
+    title = "Number of Genres per Movie", 
+    x = "Number of Genres", # Changed to clarify it's a count
+    y = "Frequency (Count of Movies)"
+  )
 ```
 
 # 5. Create Transactions
@@ -90,24 +94,25 @@ Each movie is one transaction. Genres are items in that transaction.
 ```{r}
 # Remove movies with no genres
 movies_clean <- movies %>%
-  filter(genres != "(no genres listed)") 
+  filter(genres != "(no genres listed)") # Drop rows
 
-
-cat("Movies with genres:", nrow(movies_clean), "\n")
+cat("Movies with genres:", nrow(movies_clean), "\n") # Movies remaining for analysis
 
 # Split genres into list
-genre_list <- strsplit(movies_clean$genres, "\\|")
+genre_list <- strsplit(movies_clean$genres, "\\|") # Break strings into individual genre vectors
 
 # Convert to transactions
-trans <- as(genre_list, "transactions")
+trans <- as(genre_list, "transactions") # Format list for the arules (association rules) package
 
-summary(trans)
+summary(trans) # Review density, most frequent items, and sizes
 ```
 
 ```{r}
 # Item frequency plot
-itemFrequencyPlot(trans, topN = 15, type = "absolute", 
-                  main = "Genre Frequency in Transactions")
+itemFrequencyPlot(trans, # The transaction object containing genre sets
+                  topN = 15, # 15 most frequent genres
+                  type = "absolute", # Show raw counts (use "relative" for proportions)
+                  main = "Genre Frequency in Transactions") # Set the main chart title
 ```
 
 # 6. Apriori Algorithm
@@ -211,7 +216,7 @@ cat("Rules with lift > 2:", length(strong_rules), "\n")
 
 **What I found:**
 
-1. Some genres often appear together (e.g., Action-Adventure, Comedy-Romance)
+1. Some genres often appear together (support, e.g., Comedy-Drama, Drama-Romance, Comedy-Romance, Drama-Thriller)
 2. Rules with high lift show real genre connections
 3. Drama is most common genre, so many rules lead to it
 
@@ -219,7 +224,7 @@ cat("Rules with lift > 2:", length(strong_rules), "\n")
 
 - {Sci-Fi} → {Action} means sci-fi movies often have action
 - High confidence = rule is reliable
-- High lift = genres are realy connected, not just common
+- High lift = genres are really connected, not just common
 
 **References:**
 Harper, F.M. & Konstan, J.A. (2015). The MovieLens Datasets. ACM TiiS.
