@@ -269,7 +269,8 @@ hist(USArrests$Assault,
 # insurance. Check if data is properly loaded and the types of variables are correct.
 # b) Convert sex variable into factor type.
 # c) Do the same to the smoker and region variables.
-insurance <- read.csv("~/Documents/GitHub/OBS_DataScience/OBS_DataScience/Autumn 2025/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/data/graphics - medical cost personal dataset/insurance.csv") # Adjust path if necessary
+getwd()
+insurance <- read.csv("data/graphics - medical cost/insurance.csv") # Adjust path if necessary
 head(insurance)
 str(insurance)
 
