@@ -22,6 +22,7 @@ head(life)
 
 # set with observations regarding Poland
 lifePL <- subset(life, Country == "Poland")
+
 head(lifePL)
 
 # overview of the whole dataset
@@ -32,6 +33,8 @@ View(lifePL)
 lifePLDE <- subset(life, Country == "Poland" | Country == "Germany")
 head(lifePLDE)
 
+
+LifePLDE <- subset(life, Country == "Poland" | Country == "Germany")
 View(lifePLDE)
 
 
@@ -254,7 +257,7 @@ hist(USArrests$Assault)
 hist(USArrests$Assault,labels=TRUE)
 
 # 1c
-hist(USArrests$Assault,main="USA assault distribution")
+hist(USArrests$Assault,main="USA assault distribution", labels=TRUE)
 
 # Or
 
