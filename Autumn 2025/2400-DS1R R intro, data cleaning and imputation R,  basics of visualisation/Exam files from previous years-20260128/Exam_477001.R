@@ -15,78 +15,74 @@ library(lubridate)
 ##### Data Load & Check data types 
 setwd("/home/ondrej-marvan/Documents/GitHub/OBS_DataScience/OBS_DataScience/Autumn 2025/2400-DS1R R intro, data cleaning and imputation R,  basics of visualisation/Exam files from previous years-20260128")
 getwd()
-df <- read.csv("galacticTravel.csv",
-               sep = ";",
-               dec = ",",
-               stringsAsFactors = FALSE)
+
 # Set seed
 id <- 477001
 set.seed(id)
 myData <- as.data.frame(data[sample(1:10000,500,replace=FALSE),])
 
-# Check structure
-str(df)
+# --- 1. Load Data (Start Fresh) ---
+# We reload the data to make sure we have a clean slate.
+df <- read.csv("galacticTravel.csv", 
+               sep = ";", 
+               dec = ",", 
+               stringsAsFactors = FALSE)
 
-# --- Task 2: Rename PromoTokens ---
-# Access column names vector directly
+# --- 2. Rename PromoTokens ---
+# We change the column name to what we need
 names(df)[names(df) == "PromoTokens"] <- "PromotionTokens"
 
-# --- Task 3: Separate Destination ---
-# We use strsplit to break the string by "_", then loop to extract parts
-dest_split <- strsplit(df$Destination, "_")
+# --- 3. Separate Destination ---
+# We use 'sub' to split the text. 
+# It's a basic R function that substitutes text based on a pattern.
+df$DestinationPlace <- sub("_.*", "", df$Destination)
+df$StationOrPlanet  <- sub(".*_", "", df$Destination)
 
-# Create new columns by extracting the 1st and 2nd elements of the split list
-df$DestinationPlace <- sapply(dest_split, `[`, 1)
-df$StationOrPlanet  <- sapply(dest_split, `[`, 2)
-
-# --- Task 4: Transform TravelDate ---
-# Base R date conversion
+# --- 4. Fix TravelDate ---
+# Convert text to Date format
 df$TravelDate <- as.Date(df$TravelDate, format = "%Y_%m_%d")
 
-# --- Task 5: Filter & Count Species ---
-# subset() creates the filter, table() counts frequencies
-high_promo_df <- subset(df, PromotionTokens >= 8)
-species_counts <- sort(table(high_promo_df$Species), decreasing = TRUE)
+# --- 5. Filter for High Promotion Users ---
+high_promo <- subset(df, PromotionTokens >= 8)
+print("Task 5 - Species count:")
+print(sort(table(high_promo$Species), decreasing = TRUE))
 
-print(species_counts)
-
-# --- Task 6: Create PricePerDay ---
-# Direct vector arithmetic
+# --- 6. Calculate Price Per Day ---
 df$PricePerDay <- df$Price / df$Duration
 
-# --- Task 7: Median Price to Venus (Luxury) ---
-# Filter using boolean indexing
-venus_luxury_prices <- df$Price[df$DestinationPlace == "Venus" & df$TravelClass == "Luxury"]
-print(median(venus_luxury_prices))
+# --- 7. Median Price to Venus (Luxury) ---
+venus_lux <- subset(df, DestinationPlace == "Venus" & TravelClass == "Luxury")
+print("Task 7 - Median Price (Venus, Luxury):")
+print(median(venus_lux$Price))
 
-# --- Task 8: Histogram of Price ---
-hist(df$Price, 
-     main = "Distribution of Travel Prices", 
-     xlab = "Price", 
-     col = "steelblue", 
-     border = "white")
+# --- 8. Histogram ---
+hist(df$Price, main="Price Distribution", col="lightblue", xlab="Price")
 
-# --- Task 9: Linear Model ---
-# This part is identical in Base R
+# --- 9. Linear Model ---
 model <- lm(Price ~ DestinationPlace + StationOrPlanet + TravelClass + Duration + PromotionTokens + Species, data = df)
+print("Task 9 - Model Summary:")
 summary(model)
 
-# --- Task 10: Group Summary Table ---
-# aggregate() is the Base R equivalent of group_by + summarise
+# --- 10. Summary Table ---
+# We calculate mean and max separately
 avg_price <- aggregate(Price ~ Species + TravelClass, data = df, FUN = mean)
 max_promo <- aggregate(PromotionTokens ~ Species + TravelClass, data = df, FUN = max)
 
-# Merge the two aggregations together
-summary_table <- merge(avg_price, max_promo, by = c("Species", "TravelClass"))
+# Rename the columns so they look nice
+names(avg_price)[3] <- "averagePrice"
+names(max_promo)[3] <- "maxPromoTokens"
 
-# Rename columns for clarity (optional but good practice)
-names(summary_table)[3:4] <- c("averagePrice", "maxPromoTokens")
+# Merge them together (R finds the matching columns automatically)
+summary_table <- merge(avg_price, max_promo)
+print("Task 10 - Group Summary:")
 print(head(summary_table))
 
-# --- Task 11: MySpeciesAverage (One Line Calculation) ---
-# ave() is a powerful Base R function for group-wise transformations
+# --- 11. MySpeciesAverage ---
+# THIS is the line that must run before you can print the result.
+# 'ave' calculates the mean Price for each Species group.
 df$MySpeciesAverage <- ave(df$Price, df$Species, FUN = mean)
 
-# Verify
-head(df[c("Species", "Price", "MySpeciesAverage")])
-
+# Now this print command will work because the column exists
+print("Task 11 - Check:")
+# We verify it worked by showing the Species, the Price, and the new Average
+print(head(df[c("Species", "Price", "MySpeciesAverage")]))
