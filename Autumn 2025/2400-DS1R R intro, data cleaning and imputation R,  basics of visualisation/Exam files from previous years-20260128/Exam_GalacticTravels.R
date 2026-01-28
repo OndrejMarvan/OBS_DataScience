@@ -15,7 +15,7 @@
 data <- read.csv("galacticTravel.csv", sep = ";", dec = ",")
 
 # Set your student ID and create subset (use your own ID!)
-id <- 123456  # YOUR ID HERE
+id <- 477001  # YOUR ID HERE
 set.seed(id)
 myData <- as.data.frame(data[sample(1:10000, 500, replace = FALSE), ])
 
