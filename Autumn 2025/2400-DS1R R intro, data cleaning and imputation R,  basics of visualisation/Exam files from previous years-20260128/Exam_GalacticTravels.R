@@ -59,6 +59,7 @@ myData$StationOrPlanet <- sapply(split_dest, function(x) x[2])
 
 # Check the result
 head(myData[, c("Destination", "DestinationPlace", "StationOrPlanet")])
+head(myData)
 
 # ============================================
 # TASK 4: Transform TravelDate to Date type
