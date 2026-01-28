@@ -19,6 +19,8 @@ id <- 477001  # YOUR ID HERE
 set.seed(id)
 myData <- as.data.frame(data[sample(1:10000, 500, replace = FALSE), ])
 
+names(myData)
+
 # ============================================
 # TASK 1: Check variable types with str()
 # ============================================
@@ -57,16 +59,19 @@ split_dest <- strsplit(as.character(myData$Destination), "_")
 myData$DestinationPlace <- sapply(split_dest, function(x) x[1])
 myData$StationOrPlanet <- sapply(split_dest, function(x) x[2])
 
-# Check the result
+names(myData)
+Check the result
 head(myData[, c("Destination", "DestinationPlace", "StationOrPlanet")])
 head(myData)
 
 # ============================================
 # TASK 4: Transform TravelDate to Date type
 # ============================================
+head(myData$TravelDate)
+str(myData$TravelDate)
 
 # Current format is "2024_05_08" - need to convert
-myData$TravelDate <- as.Date(myData$TravelDate, format = "%Y_%m_%d")
+myData$TravelDate <- as.Date(myData$TravelDate, format = "%D_%M_%Y")
 
 # Check if it worked
 class(myData$TravelDate)
