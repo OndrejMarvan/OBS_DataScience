@@ -1,0 +1,1363 @@
+---
+title: "Uncertainty Lab 2: Energy, Information & Order"
+output:
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+runtime: shiny
+---
+  
+```{r setup, include=FALSE}
+
+########### Run this part at the beginning ##
+########### Start ###########################
+requiredPackages <- c( "flexdashboard",  # layout
+                       "wesanderson",    # colors
+                       "shiny",          # shiny
+                       "readr",          # open data set
+                       "corrplot",
+                       "copula",
+                       "shinyWidgets")          
+for(i in requiredPackages){if(!require(i,character.only = TRUE)) install.packages(i)}
+for(i in requiredPackages){if(!require(i,character.only = TRUE)) library(i,character.only = TRUE) }
+
+########### End ########################
+
+
+# 2. loading packages - important to send to shiny server - inform shiny serve abut the used packages 
+
+
+library("flexdashboard")
+library("wesanderson")
+library("shiny")
+library("readr")
+library("corrplot")
+library("copula")
+library("shinyWidgets") 
+
+# provided density-scatter helper
+plot_colorByDensity <- function(x1, x2, xlim, ylim, xlab="", ylab="", main="") {
+  if(length(x1) < 2) {
+    plot(NA, xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab, main=main)
+    return(invisible(NULL))
+  }
+  df <- data.frame(x1=x1, x2=x2)
+  x  <- densCols(df$x1, df$x2, colramp=colorRampPalette(c("black","white")))
+  df$dens <- col2rgb(x)[1,] + 1L
+  cols <- colorRampPalette(c("#000099","#00FEFF","#45FE4F","#FCFF00","#FF9400","#FF3100"))(256)
+  df$col <- cols[df$dens]
+  plot(df$x2 ~ df$x1, data=df[order(df$dens),],
+       xlim=xlim, ylim=ylim, pch=20, col=df$col, cex=1.2,
+       xlab=xlab, ylab=ylab, main=main)
+}
+
+# palette 
+pal_col <- wes_palette(n = 10, type = "continuous", name = "Royal1")
+# Protocol Palettes
+zissou_pal <- wes_palette("Zissou1", 5)
+blue_rand <- zissou_pal[1] 
+red_maxw  <- zissou_pal[5] 
+pal_col <- wes_palette(n = 10,type = "continuous", name="Royal1")
+
+
+# Base Outcomes
+val_add <- c(-40, 5, 50); val_mult <- c(0.60, 1.05, 1.50)
+
+# Strategic Intelligence Function
+get_ev <- function(state, P, values) { sum(P[state, ] * values) }
+
+
+
+```
+
+
+
+
+Entropy 
+=======================================================================
+
+Inputs {.sidebar}
+-----------------------------------------------------------------------
+
+```{r}
+selectInput("grid_dim", "Grid size (d × d):",
+            choices = c("4"=4, "8"=8, "16"=16), selected = 8)
+
+sliderInput("N_draws", "Iterations (N):", min = 200, max = 20000, value = 3000, step = 200)
+sliderInput("rho", "Correlation (Gaussian copula ρ):", min = -0.95, max = 0.95, value = 0.0, step = 0.05)
+
+hr()
+h4("Beta parameters (like your animation: 0.6–1.4)")
+
+sliderInput("ax_base", "X: alpha", min = 0.6, max = 2, value = 1.0, step = 0.05)
+sliderInput("bx_base", "X: beta",  min = 0.6, max = 2, value = 1.0, step = 0.05)
+
+sliderInput("ay_base", "Y: alpha", min = 0.6, max = 2, value = 1.0, step = 0.05)
+sliderInput("by_base", "Y: beta",  min = 0.6, max = 2, value = 1.0, step = 0.05)
+
+sliderInput("beta_elast", "Elasticity (multiplier for concentration):", min = 0.5, max = 100, value = 10, step = 5)
+
+hr()
+checkboxInput("show_numbers", "Show cell probabilities (only for d ≤ 8)", value = TRUE)
+
+actionBttn(
+   inputId = "reload_simulation",
+   label = "Run simulation",
+   style = "minimal", 
+   color = "primary",
+   icon = icon("sync"),
+   size = "md"
+)
+
+
+
+```
+
+
+
+
+
+Column
+-----------------------------------------------------------------------
+
+### Intro
+
+<h3>Entropy as a picture: from a 3&times;3 board to a simulated grid</h3>
+<p>To explain entropy, we will use space - imagine the world as a board. Each square on the board is a possible &ldquo;state of nature&rdquo;. We do not say what the squares mean. We only assume that each square, a possible &ldquo;state of nature&rdquo;, has a probability of occurring.</p>
+<p></p>
+<p>Start with the simplest board: a <b>3&times;3 table</b>. That is <b>9 possible states</b>. If the probabilities are</p>
+<p>$$p_1, p_2, \dots, p_9,\qquad \sum_{s=1}^{9} p_s = 1,$$</p>
+<p>then Shannon&rsquo;s information entropy is</p>
+<p>$$H(p) = -\sum_{s=1}^{9} p_s \log_2(p_s)\quad \text{(bits)}.$$</p>
+<p>Entropy isn't "mystical." It's a measure of the uncertainty after you know the probability distribution. Does knowing this distribution give you any additional information about what might happen?</p>
+<hr />
+<h3>The three canonical 3&times;3 cases</h3>
+<p><b>Case A: perfect, maximum disorder.</b> Every square has the same probability:</p>
+<p>$$p_s=\frac{1}{9}\ \text{for all }s.$$</p>
+<p>Then</p>
+<p>$$H_{\max}=\log_2(9)\approx 3.17\ \text{bits}.$$</p>
+<p>$$ A = \begin{bmatrix} 1/9 &  1/9 & 1/9\\ 1/9 &  1/9 &  1/9\\ 1/9 &  1/9 &  1/9 \end{bmatrix} $$</p>
+<p>Interpretation: Knowing of this kind of distribution gives you no &ldquo;extra&rdquo; information. Every state of nature (square) has the same probability of happening.</p>
+<p><strong>Case B: One square becomes a &ldquo;favourite&rdquo; by nature.</strong> One state has a large probability mass; the rest share the remaining probability mass.&nbsp;</p>
+<div>One state has probability 1/2; the remaining 8 states have 1/16 each.</div>
+<p>$$ A = \begin{bmatrix} 1/16 ; 1/16 &  1/16\\ 1/16 &  1/2 &  1/16\\ 1/16 &  1/16 &  1/16 \end{bmatrix} $$</p>
+<div>$$H(B)=2.500$$&nbsp;$$IG_B = H_{\max}-H(B)=3.170-2.500=0.670$$</div>
+<div><span>Interpretation:</span> structure appears and entropy goes down. Information about this distribution is useful for us.</div>
+<p></p>
+<p><strong>Case C: certainty&nbsp;(entropy = 0)</strong>. One square has probability 1 and the rest 0. Then</p>
+<div>One state occurs with probability 1; all others have probability 0.&nbsp;</div>
+<p>$$ A = \begin{bmatrix} 1 &  0 &  0\\ 0 &  0 &  0\\ 0 &  0 &  0 \end{bmatrix} $$</p>
+<div>
+<div>$$H(C)=0$$</div>
+<div>$$IG_C = H_{\max}-H(C)=3.170$$</div>
+</div>
+<div>Interpretation: there is no uncertainty left; the state of nature is determined. With certainty, we know the state of nature will be.</div>
+<hr />
+<h3>Information gain: How much do we gain by knowledge of the distribution?</h3>
+<p>In this lab, we also use a simple difference:&nbsp;</p>
+<p>$$IG = H_{\max} - H(p).$$</p>
+<p>If the distribution is flat, then $H(p)\approx H_{\max}$ and $IG\approx 0$ (no structure). If probability mass concentrates into fewer squares, $H(p)$ falls and $IG$ rises (more structure).</p>
+<hr />
+<h3>Now we scale up: 4&times;4, 8&times;8, 16&times;16 boards</h3>
+<p>In the Shiny tab you choose a grid size:</p>
+<ul>
+<li>4&times;4 &rarr; 16 states</li>
+<li>8&times;8 &rarr; 64 states</li>
+<li>16&times;16 &rarr; 256 states</li>
+</ul>
+<p>This time the states are not given to you directly as probabilities. Instead, we <b>simulate observations</b> and then convert them into a probability table.</p>
+<p>Each simulation produces many points $(X,Y)$ with values between 0 and 1, then we rescale them to 0&ndash;100.</p>
+<p>Next we &ldquo;throw&rdquo; the points onto the board:</p>
+<ul>
+<li>Divide the 0&ndash;100 range on the X axis into $d$ equal bins.</li>
+<li>Divide the 0&ndash;100 range on the Y axis into $d$ equal bins.</li>
+<li>Count how many simulated points fall into each cell.</li>
+</ul>
+<p>If a cell $(i,j)$ contains $n_{ij}$ points and the total is $N$, then the estimated probability of that state is</p>
+<p>$$\hat p_{ij} = \frac{n_{ij}}{N},\qquad \sum_{i=1}^{d}\sum_{j=1}^{d}\hat p_{ij}=1.$$</p>
+<p>And now we compute entropy exactly like before, just with more states:</p>
+<p>$$H(\hat p)= -\sum_{i=1}^{d}\sum_{j=1}^{d} \hat p_{ij}\log_2(\hat p_{ij}).$$</p>
+<p>The maximum entropy for a $d\times d$ grid is</p>
+<p>$$H_{\max}=\log_2(d^2).$$</p>
+<hr />
+<h3>Where do the simulated points come from?</h3>
+<p>We generate $(X,Y)$ in a way that lets you control two intuitive &ldquo;shape forces&rdquo;:</p>
+<p><b>1) Correlation (&rho;):</b> controls whether $X$ and $Y$ tend to move together. When $|\rho|$ is large, the cloud becomes diagonal and occupies fewer cells &rarr; entropy tends to fall.</p>
+<p><b>2) Concentration / elasticity (&beta; parameters):</b> controls how spread out the marginal distributions are. In this lab we use Beta distributions for $X$ and $Y$ because they are flexible on the interval $[0,1]$:</p>
+<p>$$X\sim \text{Beta}(\alpha_x,\beta_x),\qquad Y\sim \text{Beta}(\alpha_y,\beta_y).$$</p>
+<p>Then we apply an <b>elasticity multiplier</b> that scales the parameters up or down. Large multiplier &rarr; more concentration (more &ldquo;focus&rdquo;), so fewer cells get meaningful probability &rarr; entropy tends to fall.</p>
+<p>Correlation and concentration are different mechanisms, but they can produce the same result: a grid where probability mass is not evenly spread.</p>
+<hr />
+<h3>How to read the plots</h3>
+<p><b>Histogram X</b> and <b>Histogram Y</b>: show the marginal distributions of $X$ and $Y$ (how &ldquo;focused&rdquo; each variable is on its own).</p>
+<p><b>Scatterplot (colored by density)</b>: shows the joint cloud. Dense regions are highlighted. Correlation should be visible as a diagonal structure.</p>
+<p><b>3D density plot</b>: a geometric picture of the joint density&mdash;where the distribution &ldquo;stands up&rdquo; and where it is flat.</p>
+<p><b>Grid heatmap (d&times;d tiles)</b>: this is the key entropy object. It is the discrete probability table $\hat p_{ij}$. You can literally see entropy: flat heatmap &rarr; high entropy, concentrated heatmap &rarr; low entropy.</p>
+<hr />
+<h3>Your task (what you should conclude)</h3>
+<p>Use the 3&times;3 intuition as your anchor, then test it in the simulation:</p>
+<ul>
+<li>When probabilities across cells become more similar, does $H(\hat p)$ approach $H_{\max}$?</li>
+<li>When the mass becomes concentrated into a few cells (by stronger correlation or stronger concentration), does $H(\hat p)$ fall?</li>
+<li>Does your own &ldquo;felt uncertainty&rdquo; match what entropy shows?</li>
+</ul>
+<p>And then: critique it. Does this simulation help you understand entropy as &ldquo;structure vs. flatness&rdquo;? Where does it oversimplify? What is missing if we wanted to model real uncertainty rather than a clean simulated world?</p>
+
+
+```{r}
+# --- Helper functions (server-side) ---
+
+
+
+# Palette (you said you will code it; keeping it explicit)
+pal_col <- wes_palette(n = 10, type = "continuous", name = "Royal1")
+
+# Shannon entropy in bits
+H_bits <- function(p_vec) {
+  p <- p_vec[p_vec > 0]
+  -sum(p * log2(p))
+}
+
+# Bin (x,y) in [0,100] into d×d grid, rows=y, cols=x
+bin_to_grid <- function(x100, y100, d) {
+  br <- seq(0, 100, length.out = d + 1)
+  ix <- pmin(findInterval(x100, br, rightmost.closed = TRUE), d)
+  iy <- pmin(findInterval(y100, br, rightmost.closed = TRUE), d)
+  idx <- (iy - 1) * d + ix
+  matrix(tabulate(idx, nbins = d*d), nrow = d, ncol = d, byrow = TRUE)
+}
+
+# Density-colored scatter (your function)
+plot_colorByDensity <- function(x1, x2, xlim, ylim, xlab="", ylab="", main="") {
+  if(length(x1) < 2) {
+    plot(NA, xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab, main=main)
+    return(invisible(NULL))
+  }
+  df <- data.frame(x1=x1, x2=x2)
+  x  <- densCols(df$x1, df$x2, colramp=colorRampPalette(c("black","white")))
+  df$dens <- col2rgb(x)[1,] + 1L
+  cols <- colorRampPalette(c("#000099","#00FEFF","#45FE4F","#FCFF00","#FF9400","#FF3100"))(256)
+  df$col <- cols[df$dens]
+  plot(df$x2 ~ df$x1, data=df[order(df$dens),],
+       xlim=xlim, ylim=ylim, pch=20, col=df$col, cex=1.1,
+       xlab=xlab, ylab=ylab, main=main)
+}
+
+# Draw from Gaussian copula + Beta marginals (mvdc), return list with density grid too
+gen_beta_mvdc <- function(N, rho, ax, bx, ay, by, grid_n = 35) {
+  cop <- copula::normalCopula(param = rho, dim = 2)
+  mv  <- copula::mvdc(cop,
+                      margins = c("beta", "beta"),
+                      paramMargins = list(list(ax, bx), list(ay, by)))
+  XY <- copula::rMvdc(N, mv)
+
+  gx <- seq(0.001, 0.999, length.out = grid_n)
+  gy <- seq(0.001, 0.999, length.out = grid_n)
+  grid <- as.matrix(expand.grid(gx, gy))
+  z <- matrix(copula::dMvdc(grid, mv), nrow = length(gx), ncol = length(gy), byrow = FALSE)
+
+  list(x = XY[,1], y = XY[,2], gx=gx, gy=gy, z=z)
+}
+
+```
+
+
+
+
+Column {.tabset}
+-----------------------------------------------------------------------
+
+### Scatter + intuition
+
+```{r beta_analysis_2x2, echo=FALSE}
+renderPlot({
+  req(input$reload_simulation) 
+ 
+
+  d   <- as.integer(input$grid_dim)
+  N   <- as.integer(input$N_draws)
+  rho <- input$rho
+
+  # beta params with elasticity multiplier
+  e  <- input$beta_elast
+  ax <- input$ax_base * e
+  bx <- input$bx_base * e
+  ay <- input$ay_base * e
+  by <- input$by_base * e
+
+  dat <- gen_beta_mvdc(N, rho, ax, bx, ay, by, grid_n = 35)
+  x <- dat$x; y <- dat$y
+
+  # scale to 0–100 for scatter + grid logic
+  x100 <- 100 * x
+  y100 <- 100 * y
+
+  # grid probabilities (not necessary for this panel, but ok to keep)
+  counts <- bin_to_grid(x100, y100, d)
+  P <- counts / sum(counts)
+
+  # 2×2 layout
+  op <- par(mfrow=c(2,2), oma=c(0,0,3,0), mar=c(3,3,3,1))
+  on.exit(par(op), add=TRUE)
+
+  # (a) Histogram X
+  hist(x, breaks=30, col=pal_col[3], border="white",
+       main=sprintf("X ~ Beta(%.2f, %.2f)", ax, bx),
+       xlab="X (0–1)", ylab="")
+
+  # (b) Scatter colored by density (your function) — FIX: use 0–100 data
+  plot_colorByDensity(x1=x100, x2=y100,
+                      xlim=c(0,100), ylim=c(0,100),
+                      xlab="X (0–100)", ylab="Y (0–100)",
+                      main="Scatter (color by density)")
+
+ # (c) 3D density (persp) — FIX: robust colors (works even if z is constant)
+  zc <- dat$z
+  zc[!is.finite(zc)] <- 0
+
+  nr <- nrow(zc); nc <- ncol(zc)
+  zfacet <- zc[-1, -1]  # facets (nr-1)*(nc-1)
+
+  if (diff(range(zc)) < 1e-12) {
+    col_vec <- rep(pal_col[ceiling(length(pal_col)/2)], (nr-1)*(nc-1))
+  } else {
+    br <- seq(min(zc), max(zc), length.out = length(pal_col) + 1)
+    col_vec <- pal_col[cut(as.vector(zfacet), breaks = br, include.lowest = TRUE)]
+  }
+
+  persp(dat$gx, dat$gy, zc,
+        ticktype="simple", theta=35, phi=25,
+        col=col_vec, border=NA,
+        xlab="X", ylab="Y", zlab="density",
+        main="Copula density (3D)")
+
+  # (d) Histogram Y
+  hist(y, breaks=30, col=pal_col[8], border="white",
+       main=sprintf("Y ~ Beta(%.2f, %.2f)", ay, by),
+       xlab="Y (0–1)", ylab="")
+
+  mtext(sprintf("ρ=%.2f | N=%d | beta elasticity=%.1f | d=%d", rho, N, e, d),
+        outer=TRUE, cex=0.95)
+})
+```
+
+### Grid heatmap + entropy
+
+```{r grid_entropy_tiles, echo=FALSE}
+
+renderPlot({
+  req(input$reload_simulation) 
+
+  d   <- as.integer(input$grid_dim)
+  N   <- as.integer(input$N_draws)
+  rho <- input$rho
+
+  e  <- input$beta_elast
+  ax <- input$ax_base * e
+  bx <- input$bx_base * e
+  ay <- input$ay_base * e
+  by <- input$by_base * e
+
+  dat <- gen_beta_mvdc(N, rho, ax, bx, ay, by, grid_n = 25)
+  x100 <- 100 * dat$x
+  y100 <- 100 * dat$y
+
+  counts <- bin_to_grid(x100, y100, d)
+  P <- counts / sum(counts)
+
+  H    <- H_bits(as.vector(P))
+  Hmax <- log2(d*d)
+  IG   <- Hmax - H
+
+  # ---- TRUE d×d tiles ----
+  par(mar=c(4,4,3,1), pty="s")
+
+  edges <- seq(0, 100, length.out = d + 1)
+  mids  <- (edges[-1] + edges[-(d+1)]) / 2
+
+  ncol_pal <- length(pal_col)
+
+  if (diff(range(P)) < 1e-12) {
+    col_idx <- matrix(ceiling(ncol_pal/2), nrow = d, ncol = d)
+  } else {
+    brks <- seq(min(P), max(P), length.out = ncol_pal + 1)
+    col_idx <- matrix(
+      cut(as.vector(P), breaks = brks, include.lowest = TRUE, labels = FALSE),
+      nrow = d, ncol = d, byrow = FALSE
+    )
+  }
+
+  plot(NA, xlim=c(0,100), ylim=c(0,100),
+       xlab="X (0–100)", ylab="Y (0–100)",
+       main = sprintf("Grid %dx%d | H=%.3f bits | Hmax=%.3f | IG=%.3f", d, d, H, Hmax, IG),
+       xaxt="n", yaxt="n", bty="n")
+  axis(1); axis(2); box()
+
+  for (iy in 1:d) for (ix in 1:d) {
+    rect(edges[ix], edges[iy], edges[ix+1], edges[iy+1],
+         col = pal_col[col_idx[iy, ix]],
+         border = "white", lwd = 2)
+  }
+
+  if (isTRUE(input$show_numbers) && d <= 8) {
+    for (iy in 1:d) for (ix in 1:d) {
+      text(mids[ix], mids[iy], sprintf("%.2f", P[iy, ix]), cex=0.9)
+    }
+  }
+})
+```
+
+### Numbers (entropy + summary)
+
+```{r}
+renderPrint({
+    req(input$reload_simulation) 
+
+  d   <- as.integer(input$grid_dim)
+  N   <- as.integer(input$N_draws)
+  rho <- input$rho
+
+  e  <- input$beta_elast
+  ax <- input$ax_base * e
+  bx <- input$bx_base * e
+  ay <- input$ay_base * e
+  by <- input$by_base * e
+
+  dat <- gen_beta_mvdc(N, rho, ax, bx, ay, by, grid_n = 15)
+
+  x100 <- 100 * dat$x
+  y100 <- 100 * dat$y
+
+  counts <- bin_to_grid(x100, y100, d)
+  P <- counts / sum(counts)
+
+  H    <- H_bits(as.vector(P))
+  Hmax <- log2(d * d)
+  IG   <- Hmax - H
+
+  nonzero <- sum(P > 0)
+  pmax <- max(P)
+  pmin <- min(P[P > 0])
+
+  cat("Entropy lab (grid as 'states of nature')\n")
+  cat("--------------------------------------\n")
+  cat(sprintf("Grid: %dx%d (states = %d)\n", d, d, d*d))
+  cat(sprintf("N draws: %d\n", N))
+  cat(sprintf("Copula correlation rho: %.2f\n", rho))
+  cat(sprintf("Elasticity multiplier: %.1f\n", e))
+  cat(sprintf("Beta X: alpha=%.2f, beta=%.2f\n", ax, bx))
+  cat(sprintf("Beta Y: alpha=%.2f, beta=%.2f\n", ay, by))
+  cat("\n")
+  cat(sprintf("Hmax = log2(%d) = %.3f bits\n", d*d, Hmax))
+  cat(sprintf("H(P) = %.3f bits\n", H))
+  cat(sprintf("IG  = Hmax - H(P) = %.3f bits\n", IG))
+  cat("\n")
+  cat(sprintf("Non-empty cells: %d / %d\n", nonzero, d*d))
+  cat(sprintf("Max cell prob: %.3f | Min nonzero cell prob: %.5f\n", pmax, pmin))
+})
+```
+
+
+
+
+Markov chain
+=======================================================================
+
+Inputs {.sidebar}
+-----------------------------------------------------------------------
+
+```{r markov_inputs_all, echo=FALSE}
+
+sliderInput("T_markov", "T (number of periods):", min = 10, max = 300, value = 60, step = 10)
+sliderInput("N_paths", "Number of simulated paths:", min = 20, max = 500, value = 150, step = 10)
+
+sliderInput("alpha_dir", "Random matrix concentration (Dirichlet alpha):",
+            min = 0.2, max = 5, value = 1, step = 0.1)
+
+selectInput("start_state", "Start state:",
+            choices = c("R (recession)"="R", "S (stabilization)"="S", "B (boom)"="B"),
+            selected = "S")
+actionBttn(
+   inputId = "reload_markov",
+   label = "Run simulation",
+   style = "minimal", 
+   color = "primary",
+   icon = icon("sync"),
+   size = "md"
+)
+
+```
+
+
+
+
+Column
+-----------------------------------------------------------------------
+
+### Intro
+<h3>From a “probability table” to a Markov chain</h3>
+
+<p>
+In the first entropy tab we treated a grid as a set of <i>states of nature</i> and computed Shannon entropy from the empirical probabilities in the cells.
+Now we do something similar, but in time: instead of a static table, we use a <b>transition matrix</b> that describes how the system moves between states from one period to the next.
+</p>
+
+<p>
+We work with three macro-states:
+<b>R</b> = recession, <b>S</b> = stabilization, <b>B</b> = boom.
+A (time-homogeneous) Markov chain is defined by a matrix
+$$
+P=\{P_{ij}\}_{i,j\in\{R,S,B\}},
+\qquad
+P_{ij}=\Pr(S_{t+1}=j\mid S_t=i).
+$$
+Each row of <b>P</b> is a probability vector, so it must satisfy
+$$
+P_{ij}\ge 0,
+\qquad
+\sum_{j} P_{ij}=1 \ \text{for every } i.
+$$
+</p>
+
+<h3>The key idea: same long-run frequencies, different predictability</h3>
+
+<p>
+Two Markov chains may have the same long-run (stationary) distribution
+$$
+\pi = (\pi_R,\pi_S,\pi_B),
+\qquad
+\pi=\pi P,
+\qquad
+\sum_i \pi_i=1,
+$$
+and still be very different in how predictable tomorrow is when you know today.
+That predictability is exactly what we measure using <b>conditional entropy</b> and <b>mutual information</b>.
+</p>
+
+<h3>Entropy in a Markov chain</h3>
+
+<p>
+For a Markov chain, the uncertainty about tomorrow given today is:
+$$
+H(S_{t+1}\mid S_t)
+=
+-\sum_i \pi_i \sum_j P_{ij}\log_2(P_{ij}).
+$$
+Interpretation: <b>“How much uncertainty remains about tomorrow if I know today?”</b>
+</p>
+
+<p>
+We also compute mutual information:
+$$
+I(S_t;S_{t+1})
+=
+H(S_{t+1}) - H(S_{t+1}\mid S_t).
+$$
+Interpretation: <b>“How many bits of predictability I gain about tomorrow from knowing today?”</b>
+If the stationary distribution is close to uniform, then
+$$
+H(S_{t+1}) \approx \log_2(3)\approx 1.585 \text{ bits},
+$$
+and lower conditional entropy means higher informational gain.
+</p>
+
+<h3>Five transition matrices in this tab</h3>
+
+<p>
+We compare five environments:
+</p>
+
+<p><b>(1) Market H (Chaos / no memory)</b></p>
+$$
+P_H=
+\begin{bmatrix}
+1/3 & 1/3 & 1/3\\
+1/3 & 1/3 & 1/3\\
+1/3 & 1/3 & 1/3
+\end{bmatrix}
+$$
+<p>
+Knowing today gives no help for tomorrow: conditional entropy is maximal and
+$$
+I(S_t;S_{t+1})=0.
+$$
+Buying a “forecast” in pure chaos is paying for noise.
+</p>
+
+<p><b>(2) Market M (Medium viscosity)</b></p>
+$$
+P_M=
+\begin{bmatrix}
+0.6 & 0.2 & 0.2\\
+0.2 & 0.6 & 0.2\\
+0.2 & 0.2 & 0.6
+\end{bmatrix}
+$$
+<p>
+There is some “stickiness”: today is a weak signal about tomorrow.
+Entropy decreases, information gain becomes positive but modest.
+</p>
+
+<p><b>(3) Market L (High viscosity)</b></p>
+$$
+P_L=
+\begin{bmatrix}
+0.9 & 0.05 & 0.05\\
+0.05 & 0.9 & 0.05\\
+0.05 & 0.05 & 0.9
+\end{bmatrix}
+$$
+<p>
+Strong memory: today strongly predicts tomorrow.
+Conditional entropy is low and informational gain is high.
+This is “buying order in time”.
+</p>
+
+<p><b>(4) Market A (Anti-viscous / systematic flipping)</b></p>
+$$
+P_A=
+\begin{bmatrix}
+0.05 & 0.475 & 0.475\\
+0.475 & 0.05 & 0.475\\
+0.475 & 0.475 & 0.05
+\end{bmatrix}
+$$
+<p>
+This is not chaos. It is structured instability.
+The system tends to <i>leave</i> its current state.
+Knowing today still has predictive value, but the “rule” is repulsion rather than persistence.
+</p>
+
+<p><b>(5) Market R (Random matrix)</b></p>
+<p>
+We also generate a random transition matrix each time you click reload (or change parameters).
+It is always a valid Markov matrix (nonnegative rows summing to 1), but its predictability varies.
+This is the “unknown physics” benchmark.
+</p>
+
+<h3>What the simulation shows</h3>
+
+<p><b>A. One realisation (one path)</b></p>
+<p>
+For each matrix we simulate a single trajectory:
+$$
+S_0 \to S_1 \to \dots \to S_T.
+$$
+Even if two matrices share the same long-run distribution, a single path can look radically different:
+chaos looks noisy, viscosity looks “stuck”, anti-viscosity looks like systematic flipping.
+</p>
+
+<p><b>B. A cloud of realisations</b></p>
+<p>
+A single path can be misleading. So we simulate many independent paths and plot the share of trajectories in each state over time.
+This visualises how quickly the chain “forgets” the initial condition and approaches its stationary behaviour.
+</p>
+
+<p><b>C. Entropy & information summary (the “entropy cards”)</b></p>
+<p>
+For each matrix we compute:
+</p>
+<ul>
+  <li>the stationary distribution $$\pi$$</li>
+  <li>conditional entropy $$H(S_{t+1}\mid S_t)$$</li>
+  <li>mutual information $$I(S_t;S_{t+1})$$</li>
+</ul>
+
+<p>
+This is the bridge to your main narrative: <b>information value is not about average outcomes</b>.
+It is about <b>structure in time</b>—how many bits of predictability you can extract from today to make tomorrow less surprising.
+</p>
+
+```{r markov_helpers, echo=FALSE}
+states <- c("R","S","B")   # recession, stabilization, boom
+
+# --- fixed matrices (H, M, L, A) ---
+P_H <- matrix(1/3, 3, 3)
+
+P_M <- matrix(c(0.6,0.2,0.2,
+                0.2,0.6,0.2,
+                0.2,0.2,0.6), 3,3, byrow=TRUE)
+
+P_L <- matrix(c(0.9,0.05,0.05,
+                0.05,0.9,0.05,
+                0.05,0.05,0.9), 3,3, byrow=TRUE)
+
+P_A <- matrix(c(0.05,0.475,0.475,
+                0.475,0.05,0.475,
+                0.475,0.475,0.05), 3,3, byrow=TRUE)
+
+# --- random transition matrix (each row sums to 1) ---
+random_transition_matrix <- function(K=3, alpha=1) {
+  M <- matrix(0, K, K)
+  for(i in 1:K){
+    g <- rgamma(K, shape = alpha, rate = 1)
+    M[i,] <- g / sum(g)
+  }
+  M
+}
+
+# --- stationary distribution pi (eigenvector of t(P)) ---
+stationary_pi <- function(P) {
+  ev <- eigen(t(P))
+  idx <- which.min(Mod(ev$values - 1))
+  v <- Re(ev$vectors[, idx])
+  v <- pmax(v, 0)
+  if(sum(v) == 0) v <- rep(1, length(v))
+  v / sum(v)
+}
+
+# --- entropies in bits ---
+H_marg_bits <- function(pi) {
+  eps <- 1e-15
+  -sum(pi * log2(pmax(pi, eps)))
+}
+
+H_cond_bits <- function(P, pi) {
+  eps <- 1e-15
+  -sum( pi * rowSums(P * log2(pmax(P, eps))) )
+}
+
+I_mutual_bits <- function(P, pi) {
+  H_marg_bits(pi) - H_cond_bits(P, pi)
+}
+
+# --- simulate one path ---
+simulate_path <- function(P, T, s0) {
+  K <- nrow(P)
+  path <- integer(T+1)
+  path[1] <- s0
+  for(t in 1:T) path[t+1] <- sample.int(K, 1, prob = P[path[t], ])
+  path
+}
+
+# --- simulate many paths: share of states over time (K x (T+1)) ---
+simulate_cloud <- function(P, T, s0, N) {
+  K <- nrow(P)
+  counts <- matrix(0, K, T+1)
+  for(n in 1:N){
+    path <- simulate_path(P, T, s0)
+    for(t in 1:(T+1)) counts[path[t], t] <- counts[path[t], t] + 1
+  }
+  counts / N
+}
+
+# --- pretty matrix as centered monospace <pre> (your stable solution) ---
+mat_to_pre <- function(M, digits=3, title="") {
+  fmt <- function(x) formatC(x, format="f", digits=digits, width=6)
+  lines <- apply(M, 1, function(r) paste(fmt(r), collapse="  "))
+  body <- paste(lines, collapse="\n")
+  paste0(
+    if(nchar(title)>0) paste0("<p><b>", title, "</b></p>") else "",
+    "<pre style=\"text-align:center; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace; font-size: 15px; line-height: 1.25; margin: 8px 0;\">",
+    body,
+    "</pre>"
+  )
+}
+
+# --- fixed colors per matrix type ---
+cols_type <- c(
+  H = "#2E86AB",  # chaos
+  M = "#F6AE2D",  # medium viscosity
+  L = "#2A9D8F",  # high viscosity
+  A = "#E76F51",  # anti-viscous
+  R = "#6C757D"   # random
+)
+```
+
+
+
+Column {.tabset}
+-----------------------------------------------------------------------
+
+### One realisation (one path)
+```{r markov_single_paths_5, echo=FALSE}
+renderPlot(
+  {req(input$reload_markov) 
+  #set.seed(as.integer(input$seed_markov))
+  Tt <- as.integer(input$T_markov)
+  s0 <- match(input$start_state, states)
+
+  P_R <- random_transition_matrix(3, alpha = input$alpha_dir)
+
+  mats <- list(H=P_H, M=P_M, L=P_L, A=P_A, R=P_R)
+  names_full <- c(
+    H="H: Chaos",
+    M="M: Medium viscosity",
+    L="L: High viscosity",
+    A="A: Anti-viscous",
+    R="R: Random"
+  )
+
+  paths <- lapply(mats, function(P) simulate_path(P, Tt, s0))
+  tt <- 0:Tt
+
+  par(mfrow=c(5,1), mar=c(3,4,2,1))
+  for(nm in names(mats)) {
+    path <- paths[[nm]]
+    plot(tt, path, type="s", col=cols_type[nm], lwd=3,
+         xlab="t", ylab="", yaxt="n",
+         main=names_full[nm])
+    axis(2, at=1:3, labels=states)
+    grid()
+  }
+})
+
+```
+
+### A cloud of realisations
+
+
+```{r markov_cloud, echo=FALSE}
+
+renderPlot({req(input$reload_markov) 
+  #set.seed(as.integer(input$seed_markov))
+  Tt <- as.integer(input$T_markov)
+  Nn <- as.integer(input$N_paths)
+  s0 <- match(input$start_state, states)
+
+  P_R <- random_transition_matrix(3, alpha = input$alpha_dir)
+  mats <- list(H=P_H, M=P_M, L=P_L, A=P_A, R=P_R)
+
+  tt <- 0:Tt
+  par(mfrow=c(3,2), mar=c(4,4,2,1))  # 5 panels + empty
+  for(nm in names(mats)) {
+    share <- simulate_cloud(mats[[nm]], Tt, s0, Nn)
+    matplot(tt, t(share), type="l", lwd=2, lty=1,
+            xlab="t", ylab="share",
+            main=paste0("Cloud: ", nm, " (", Nn, " paths)"))
+    legend("topright", legend=states, lty=1, lwd=2, bty="n", cex=0.8)
+    grid()
+  }
+  plot.new()
+})
+```
+
+### entropy cards
+
+```{r markov_cards_ui, echo=FALSE}
+output$markov_cards <- renderUI({req(input$reload_markov) 
+  #set.seed(as.integer(input$seed_markov))
+  P_R <- random_transition_matrix(3, alpha = input$alpha_dir)
+
+  mats <- list(H=P_H, M=P_M, L=P_L, A=P_A, R=P_R)
+
+  titles <- c(
+    H = "Market H: CHAOS (no memory)",
+    M = "Market M: MEDIUM VISCOSITY (weak memory)",
+    L = "Market L: HIGH VISCOSITY (strong memory)",
+    A = "Market A: ANTI-VISCOSITY (systematic flipping)",
+    R = "Market R: RANDOM transition matrix"
+  )
+
+  block <- ""
+  for(nm in names(mats)) {
+    P  <- mats[[nm]]
+    pi <- stationary_pi(P)
+    Hc <- H_cond_bits(P, pi)
+    I  <- I_mutual_bits(P, pi)
+
+    block <- paste0(block,
+      "<div style='margin-bottom:18px;'>",
+      "<h4 style='margin:6px 0; color:", cols_type[nm], ";'>", titles[nm], "</h4>",
+      mat_to_pre(P, digits=3, title="P (3×3)"),
+      "<pre style=\"text-align:center; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 14px; line-height: 1.2; margin: 6px 0;\">",
+      "pi = (", paste(formatC(pi, digits=3, format='f'), collapse=', '), ")\n",
+      "H(S_{t+1}|S_t) = ", formatC(Hc, digits=3, format='f'), " bits\n",
+      "I(S_t;S_{t+1}) = ", formatC(I,  digits=3, format='f'), " bits",
+      "</pre>",
+      "</div>"
+    )
+  }
+  HTML(block)
+})
+```
+
+```{r, echo=FALSE}
+uiOutput("markov_cards")
+```
+
+
+
+
+Experimental design
+=======================================================================
+
+Inputs {.sidebar}
+-----------------------------------------------------------------------
+
+```{r}
+sliderInput("n_sims", "Simulations (N):", min = 150, max = 300, value = 150, step = 10)
+sliderInput("n_rounds", "Rounds:", min = 30, max = 70, value = 50)
+
+hr()
+h4("Information Costs (Energy)")
+sliderInput("fixed_cost", "Additive Cost (Points):", 
+            min = 0, max = 2, value = 0.5, step = 0.1)
+
+sliderInput("perc_cost", "Multiplicative Cost (%):", 
+            min = 0, max = 2, value = 0.5, step = 0.1, post = "%")
+
+hr()
+selectInput("shock_type", "Systemic Shock:",
+            choices = list("None" = "none", 
+                           "Market Swap (M <-> L)" = "swap",
+                           "Viscosity Collapse (L -> Chaos)" = "crash"))
+
+sliderInput("shock_round", "Shock Event Round:", min = 15, max = 45, value = 25)
+
+sliderInput("bankrupt_thresh", "Bankruptcy Threshold:", 
+            min = 30, max = 90, value = 45, step = 5)
+
+actionBttn(
+   inputId = "reload_exp",
+   label = "Run simulation",
+   style = "minimal", 
+   color = "primary",
+   icon = icon("sync"),
+   size = "md"
+)
+
+```
+
+Column
+-----------------------------------------------------------------------
+
+### Intro
+  
+<h3>Experimental Concept: Information as a Resource</h3>
+<p>This simulation explores a laboratory experiment design. Its goal is to investigate how participants manage resources under Keynesian uncertainty. Because we connect information entropy and thermodynamics with economics, we use Monte Carlo (MC) simulations to approximate potential outcomes, as no established theory of this kind exists yet.</p>
+<p>We shift away from classical utility maximisation. We treat the participant as an Information Engine. To produce "work" (capital growth), the engine must dissipate "Energy" (capital) to reduce the Conditional Entropy of its environment.</p>
+<ul>
+<li><strong>Keynesian Uncertainty</strong>: Unlike measurable risk, the participant operates in a world where the rules themselves can change (Systemic Shock), requiring constant model updating.</li>
+<li><strong>Escaping Disorder</strong>: Choosing ordered markets is a strategy to minimise surprise. For an information engine, chaos is "cognitive pain" because it offers no patterns for profit extraction.</li>
+</ul>
+<p>The goal is to propose a simple but "informatic" design that connects Keynesian uncertainty with the "energy &rarr; information &rarr; order (Maxwell/Shannon)" intuition. In practice, we want to test whether people are willing to incur a cost ("energy," measured in points or money) to reduce uncertainty and act more effectively in the world.</p>
+<h3>The Two Experimental Setups</h3>
+<p>The experiment takes place in two distinct setups: the Additive World and the Multiplicative World.</p>
+<ul>
+<li><strong>An Additive World</strong> is a system where changes occur through simple addition and subtraction. Every gain or loss is a constant, fixed value, regardless of your total balance. It is like a scorecard where you add or subtract points one by one.</li>
+<li><strong>A Multiplicative World</strong> is a system where changes are proportional to what you already have. Instead of fixed amounts, you gain or lose a percentage of your total wealth. This creates a compounding effect where a loss makes future growth significantly harder because your base capital has shrunk.</li>
+</ul>
+<h3>Experimental Protocol: The Decision Environment</h3>
+<p>The experiment consists of an individual decision-making task spanning 50 rounds. In each round, the participant must choose to invest in one of 4 independent "markets" (processes): Market H (High Entropy), Market M (Medium), Market L (Low Entropy) and Market A (Anti-viscous - Systematic Flipping).</p>
+<p>Each market generates one of three possible states independently of the others: Recession, Stabilization, or Boom. Crucially, all four markets share the same unconditional distribution of states, resulting in the same long-term Expected Value (EV). Their only difference lies in their temporal order&mdash;ranging from "chaotic" (no memory) to "viscous/sticky" (strong memory) and anti-viscous.</p>
+<h3>The Role of Information and Energy</h3>
+<p>Before choosing a market in any given round $t$, the participant has the option to buy a <b>Transition Forecast</b>. This forecast is a probability vector representing the distribution of the next state, conditioned on the market's current state (the specific row of the underlying transition matrix).</p>
+<p>This information is purely instrumental; its purpose is to help the participant select the most favourable market for that round. However, obtaining this information requires spending "energy" (a cost in points or percentage). This creates a trade-off: spending energy to lower uncertainty in hopes of more effective action.</p>
+<h3>Experimental Design and Hidden Dynamics</h3>
+<ul>
+<li><b>Independent Evolution:</b> To prevent "parking" (staying in a high-payout state without risk), every market evolves in every round according to its own "internal clock," regardless of whether the participant selected it.</li>
+<li><b>Systemic Shock:</b> At Round 25, a hidden systemic shock occurs, altering the transition matrix parameters. Participants are not informed of this change, testing their ability to detect a shift in the environment's "physics."</li>
+<li><b>Payout Logic:</b> After the market selection at round $t$, the state is realized, and the payout is calculated based on the chosen world (Additive points or Multiplicative percentages).</li>
+</ul>
+<h3>Working Hypotheses</h3>
+<p>We propose that participant behaviour will not be a naive reaction to the last outcome, but will instead be driven by the informational structure of the environment:</p>
+<ol>
+<li>Participants will purchase information more frequently for markets where the information has high predictive value (Low Entropy).</li>
+<li>Market selection will be explainable through measures of temporal order, such as <b>Conditional Entropy</b> $H(S_{t+1} | S_t)$ and <b>Mutual Information</b> $I(S_{t+1}; S_t)$, rather than simple heuristics.</li>
+</ol>
+<h3>Market Mechanics: Transition Matrices and Entropy</h3>
+<p>Each market is modeled as a 3-state Markov chain consisting of <strong>Recession</strong>, <strong>Stability</strong> , and <strong>Boom</strong>. While all markets share the same stationary distribution $\pi = (1/3, 1/3, 1/3)$, they differ in their "memory" or temporal order. We measure this order using Conditional Entropy, which quantifies the uncertainty remaining about the next state when the current state is known:</p>
+<p>$$H(S_{t+1} | S_t) = - \sum_{i} \pi_i \sum_{j} P_{ij} \log_2 P_{ij}$$</p>
+<ul>
+<li><b>Market H (High Entropy - Chaotic):</b> Every state has an equal 1/3 probability of transitioning to any other state. $$P_H = \begin{bmatrix} 1/3 &  1/3 &  1/3 \\ 1/3 &  1/3 &  1/3 \\ 1/3 &  1/3 &  1/3 \end{bmatrix}$$ Entropy: $H(H) = \log_2(3) \approx 1.585$ bits. <i>Interpretation:</i> This is the maximum possible uncertainty. Knowing today's state provides zero information about tomorrow.</li>
+<li><b>Market M (Medium Viscosity):</b> This market has a moderate tendency to stay in its current state ($P=0.6$). $$P_M = \begin{bmatrix} 0.6 &  0.2 & 0.2 \\ 0.2 &  0.6 &  0.2 \\ 0.2 &  0.2 &  0.6 \end{bmatrix}$$ Entropy: $H(M) \approx 1.371$ bits. <i>Interpretation:</i> Predictability is slightly higher. The "noise" is reduced, and the current state acts as a weak signal for the future.</li>
+<li><b>Market L (Low Entropy - High Viscosity):</b> This market is highly ordered and "sticky" ($P=0.9$). $$P_L = \begin{bmatrix} 0.9 &  0.05 &  0.05 \\ 0.05 &  0.9 &  0.05 \\ 0.05 &  0.05 &  0.9 \end{bmatrix}$$ Entropy: $H(L) \approx 0.569$ bits. <i>Interpretation:</i> This market is the most predictable. The current state is a powerful informational tool, providing a significant edge to anyone who monitors it.</li>
+<li><b>Market A (Anti-viscous - Systematic Flipping):</b> $H(A) \approx 1.236$ bits. A "repelling" order where the system almost certainly flips to a different state ($P_{stay} = 0.05$). $$P_A = \begin{bmatrix} 0.05 &  0.475 &  0.475 \\ 0.475 &  0.05 &  0.475 \\ 0.475 &  0.475 &  0.05 \end{bmatrix}$$. This is structured instability. If today is a "Boom" information tells the engine that tomorrow will almost certainly be "Recession" or "Stability."</li>
+</ul>
+<h3>Investment Setups and Costs</h3>
+<p>Information is instrumental but costly. In both worlds, participants can pay "energy" to receive a forecast (the specific row of the transition matrix for a market's current state).</p>
+<ul>
+<li><strong>The Additive World (Linear Friction)</strong>: Payoffs are fixed: <strong>Recession R = -40</strong> points, <strong>Stability S = +5</strong> points, <strong>Boom B = +50</strong> points. The cost for each independent forecast is fixed at 0.5 points. $$W_{t+1} = W_t + \Delta W - C_{fixed}$$ <i>Interpretation:</i> This represents linear friction. Wealth does not make information processing easier or harder; it is a "cheap tool" for the rich.</li>
+<li><strong>The Multiplicative World (Metabolic Tax)</strong>: Payoffs are proportional to total capital: <strong>Recession R = -40%</strong>, <strong>Stability = +5%</strong>, <strong>Boom</strong> <strong>B = +5%</strong>. The cost for information is a fixed percentage of current total capital. $$W_{t+1} = W_t \cdot (1 - C_{\%}) \cdot R_{t+1}$$ <i>Interpretation:</i> This mirrors a biological "metabolic tax." The larger the system grows, the more absolute energy it must spend to maintain internal order and process information.</li>
+</ul>
+<h3>The Systemic Shock (Round 25)</h3>
+<p>At Round 25, the underlying "rules of physics" change. This tests how the agent adapts to Keynesian uncertainty when their internal model becomes obsolete. There are two primary possibilities for this shock:</p>
+<ul>
+<li><b>Market Swap (M $\leftrightarrow$ L):</b> Market M and L trade characteristics. The previously stable Market L becomes moderately chaotic, while Market M becomes highly predictable. $$P_{M(new)} = \begin{bmatrix} 0.9 &  0.05 &  0.05 \\ 0.05 &  0.9 &  0.05 \\ 0.05 &  0.05 &  0.9 \end{bmatrix} \quad P_{L(new)} = \begin{bmatrix} 0.6 &  0.2 &  0.2 \\ 0.2 &  0.6 &  0.2 \\ 0.2 &  0.2 &  0.6 \end{bmatrix}$$</li>
+<li><b>Viscosity Collapse (L $\rightarrow$ Chaos):</b> Market L completely loses its structure and collapses into a state of maximum entropy, identical to Market H. $$P_{L(collapsed)} = \begin{bmatrix} 1/3 &  1/3 &  1/3 \\ 1/3 &  1/3 &  1/3 \\ 1/3 &  1/3 &  1/3 \end{bmatrix}$$</li>
+</ul>
+<h3>Strategic Behavior: Maxwell&rsquo;s Demon vs. Random Baseline</h3>
+<p>The simulation compares two fundamental ways of interacting with the environment. Each represents a different approach to the energy-information-order tradeoff.</p>
+<ul>
+<li><strong>Maxwell&rsquo;s Demon (The Informed Agent)</strong>: This strategy treats information as a filter. The process follows a strict protocol:
+<ol>
+<li>Information Acquisition: The agent spends energy to buy a forecast for the markets with the highest "informational ROI" (typically Market L).</li>
+<li>EV Calculation: Using the provided transition row $P_{ij}$, the agent calculates the Expected Value for each potential choice: $$EV_{market} = \sum_{j \in \{R, S, B\}} P_{ij} \cdot Payoff_j$$</li>
+<li>Selection: The agent selects the market with $\max(EV)$. Crucially, if the forecast for Market L predicts a high probability of recession ($EV_L &gt; 2$), the agent "flees" to Market H, where the baseline $EV$ remains a constant 2.0.</li>
+</ol>
+</li>
+<li><strong>Random Choices (The Passive Baseline)</strong>: This agent ignores the informational structure of the world.
+<ol>
+<li>No Energy Dissipation: The agent never spends capital on forecasts, thus "saving" energy but remaining in a state of maximum uncertainty.</li>
+<li>Uniform Selection: Choices are made with a uniform probability ($p=1/3$) across H, M, and L.</li>
+<li>Outcome: This agent is fully exposed to Volatility Drag. In the multiplicative world, the lack of an informational "shield" often leads to wealth decay, regardless of the positive arithmetic average.</li>
+</ol>
+</li>
+</ul>
+<h3>The Learning Process: Internalising the Matrix</h3>
+<p>Participants are not expected to remain static. The experiment tracks the <b>Learning Curve</b>, which represents the transition from external information to internal models:</p>
+<p>Initially, participants are in a state of high entropy regarding the "physics" of the rynki. They are expected to buy forecasts frequently to reduce immediate uncertainty. Over time, however, as they observe the "stickiness" of Market L, they build an internal representation of the transition matrix.</p>
+<p>In informational terms, Learning is the process of accumulating internal bits of order. A successful participant will eventually reduce their "External Energy" consumption (buying fewer forecasts) as their "Internal Information" becomes sufficient to predict the system with lower Surprisal.</p>
+<h3>III. Defining Irrationality: Informational Failures</h3>
+<p>In this informatic design, "irrationality" is not just a bad guess; it is a measurable failure in the management of informational energy. We identify three types of irrational behavior:</p>
+<ul>
+<li><b>Thermodynamic Waste:</b> Purchasing information for Market H (Chaos). Since Market H has maximum entropy ($H \approx 1.585$ bits), a forecast provides zero information gain. Spending capital here is a pure dissipation of energy with no possible return.</li>
+<li><b>Signal Neglect:</b> Buying a forecast but failing to act on it. If a participant pays for a forecast that predicts a Recession in Market L but stays in that market anyway, they have paid the "metabolic cost" without performing the "work" of order-building.</li>
+<li><b>Post-Shock Persistence (The Keynesian Trap):</b> Continuing to trust the "Low Entropy" label of Market L after the systemic shock has occurred. This is a failure to update priors&mdash;the participant continues to burn energy on a model of the world that no longer exists.</li>
+</ul>
+<h3>The Participant as an "Information Engine" and the Entropy Problem</h3>
+<p>In this model, we move beyond the traditional view of humans as simple "utility maximizers." Instead, we treat the participant as a physical system processing information&mdash;an Information Engine. To produce "work" (which in this context is capital growth), the engine must dissipate "Energy" (spending capital on forecasts) to reduce the Conditional Entropy $$H(S_{t+1} | S_t)$$ of its environment.</p>
+<ul>
+<li><strong>Paying for Order:</strong> Every point or percentage spent on a forecast is energy "burned" to lower uncertainty. The participant is literally buying a reduction in the disorder of their future.</li>
+<li><strong>Entropy as Resistance:</strong> In a chaotic environment like Market H, entropy is at its maximum. Here, the participant's "engine" spins in a vacuum&mdash;it consumes energy (costs) but cannot perform work (generate profit) because the information gained provides no predictive power.</li>
+<li><strong>Shock as a Phase Transition:</strong> The Systemic Shock is a moment where the agent's internal informational structure evaporates. Their "priors" (beliefs) suddenly become useless. This is a phase transition from order to disorder, testing the <i>resilience</i> of the participant&rsquo;s strategy: can they stop "burning resources" on a model of the world that no longer exists?</li>
+</ul>
+<h3>Do Humans "Flee" from Disorder?</h3>
+<p>This is a fundamental psychological question. In literature, such as the Ellsberg Paradox, this is known as Ambiguity Aversion. It suggests that our choices are driven by a primal need for structure.</p>
+<ul>
+<li><strong>Keynesian Uncertainty vs. Risk:</strong> Humans do not just fear risk (where probabilities are known); they fear pure disorder&mdash;situations where the rules themselves are hidden or non-existent.</li>
+<li><strong>The Free Energy Principle (Friston):</strong> We can hypothesise that the human brain naturally strives to minimise "surprisal" (unexpected outcomes).&nbsp;Buying a forecast is a physical attempt to buy predictability and avoid the cognitive "pain" of chaos.</li>
+<li>Conclusion: Participants "flee" to the viscous Market L not just for the profit, but to reduce the informational "temperature" of their environment. Choosing Market L is a move toward a low-entropy state.</li>
+</ul>
+<h3>Volatility Drag: The Mathematical Trap of Variance</h3>
+<p>The "Volatility Drag" is the heart of the difference between the Additive and Multiplicative worlds. It is a mathematical reality:</p>
+<p>$$G \approx E[R] - \frac{\sigma^2}{2}$$</p>
+<p>Where:</p>
+<p>$G$ is the growth exponent (geometric mean), $E[R]$ is the arithmetic mean, and $\sigma^2$ is the variance (volatility).</p>
+<ul>
+<li>T<strong>he Asymmetry of Losses:</strong> If you lose 50% of your capital, you need a 100% gain just to return to zero. Volatility literally "eats" capital in a multiplicative system.</li>
+<li><strong>The Phenomenon:</strong> Even if a market averages +1.3% per round, huge fluctuations (e.g., +50% followed by -40%) will eventually drive your real wealth toward zero. The arithmetic average is a "dangerous illusion" in this context.</li>
+<li><strong>The Role of Maxwell's Demon:</strong> In this experiment, information acts as a shield to cut the variance. By paying 0.5%, the participant buys the removal of the "tail" of losses (Recessions). This drastically raises the geometric mean of growth, even if the cost of information slightly lowers the arithmetic average.&nbsp;</li>
+</ul>
+<h3>The Ergodicity Gap: Additive vs. Multiplicative</h3>
+<p>The "Ergodicity Gap" explains the fundamental shift in how we perceive choices: <i>"In the Additive World (points), volatility is your neighbor. In the Multiplicative World (percentages), volatility is your executioner. Information is the only way to stay the executioner's hand."</i></p>
+<p>In a multiplicative system, even with positive average returns, excessive volatility leads to bankruptcy. The Maxwell Agent uses information to enable exponential growth by strategically avoiding the states that cause wealth decay.</p>
+<h3>Systemic Shock and The "Red Line Rule"</h3>
+<p>The Red Line represents a phase transition in the "physics" of the experiment. When a shock occurs (e.g., Market L collapses into Chaos), the agent's internal model becomes a liability rather than an asset.</p>
+<ul>
+<li>Measuring Resilience: We observe how quickly an agent can stop "burning energy" on a strategy that no longer matches reality. This measures their adaptability to Keynesian uncertainty.</li>
+<li>The Monte Carlo "Cloud" (N-Runs): By visualising many paths at once, we see the difference between the average (Bold Line) and the fate of the individual (The Cloud). In the multiplicative world, the "Cloud of Uncertainty" often shows that while the average looks positive, most individual paths lead to ruin&mdash;a hallmark of a non-ergodic system.</li>
+</ul>
+<h3>Summary of the Informational Edge</h3>
+<ul>
+<li>Why Maxwell wins more in %: In the multiplicative world, avoiding a -10% recession is worth far more than in the point-based world because it preserves the base for future growth.</li>
+<li>The Cloud of Uncertainty: A wider cloud represents lower ergodicity. If the bold line (average) rises but most thin lines (individuals) fall, the system is non-ergodic&mdash;what is "good for the group" is deadly for the individual.</li>
+<li>The Role of the Shock: If the Maxwell (Red) line collapses toward the Random (Blue) line after the shock, it proves the cost of information has exceeded its predictive benefit.</li>
+</ul>
+
+
+Column {.tabset}
+-----------------------------------------------------------------------
+
+### Comparative Simulation
+
+
+```{r}
+renderPlot({ req(input$reload_exp) 
+  N <- input$n_sims
+  n <- input$n_rounds
+  c_add <- input$fixed_cost
+  c_mult <- input$perc_cost / 100
+  shock_r <- input$shock_round
+  #val_add <- c(-40, 5, 50); val_mult <- c(0.60, 1.05, 1.50)
+  # Environment Setup
+  P_H <- matrix(1/3, 3, 3)
+  P_M <- matrix(c(0.6, 0.2, 0.2,
+                  0.2, 0.6, 0.2,
+                  0.2, 0.2, 0.6), 3, 3, byrow = TRUE)
+  P_L_base <- matrix(c(0.9, 0.05, 0.05,
+                       0.05, 0.9, 0.05,
+                       0.05, 0.05, 0.9), 3, 3, byrow = TRUE)
+  P_A <- matrix(c(0.05, 0.475, 0.475,
+                  0.475, 0.05, 0.475,
+                  0.475, 0.475, 0.05), 3, 3, byrow = TRUE)
+  
+  all_rand_add <- all_maxw_add <- matrix(NA, N, n + 1)
+  all_rand_mult <- all_maxw_mult <- matrix(NA, N, n + 1)
+  
+  for(i in 1:N) {
+    m_states <- matrix(NA, n + 1, 4); m_states[1, ] <- c(2, 2, 2, 2)
+    w_ra <- w_ma <- w_rm <- w_mm <- numeric(n + 1)
+    w_ra[1] <- w_ma[1] <- w_rm[1] <- w_mm[1] <- 100
+    
+    for(t in 1:n) {
+      # 1. Transitions & Shock
+      cP_M <- P_M
+      cP_L <- P_L_base
+      if(t >= shock_r) {
+        if(input$shock_type == "swap")  { cP_M <- P_L_base; cP_L <- P_M }
+        if(input$shock_type == "crash") { cP_L <- P_H }
+      }
+      
+      m_states[t + 1, 1] <- sample(1:3, 1, prob = P_H[m_states[t, 1], ])
+      m_states[t + 1, 2] <- sample(1:3, 1, prob = cP_M[m_states[t, 2], ])
+      m_states[t + 1, 3] <- sample(1:3, 1, prob = cP_L[m_states[t, 3], ])
+      m_states[t + 1, 4] <- sample(1:3, 1, prob = P_A[m_states[t, 4], ])
+      
+      # 2. Maxwell Selection Logic (4 Markets)
+      evs_a <- c(
+        2,
+        get_ev(m_states[t, 2], cP_M, val_add),
+        get_ev(m_states[t, 3], cP_L, val_add),
+        get_ev(m_states[t, 4], P_A,  val_add)
+      )
+      
+      evs_m <- c(
+        mean(val_mult),
+        get_ev(m_states[t, 2], cP_M, val_mult),
+        get_ev(m_states[t, 3], cP_L, val_mult),
+        get_ev(m_states[t, 4], P_A,  val_mult)
+      )
+      
+      c_ma_idx <- which.max(evs_a)
+      c_mm_idx <- which.max(evs_m)
+      c_r_idx  <- sample(1:4, 1)
+      
+      # 3. Wealth Updates
+      w_ra[t + 1] <- w_ra[t] + val_add[m_states[t + 1, c_r_idx]]
+      w_ma[t + 1] <- w_ma[t] + val_add[m_states[t + 1, c_ma_idx]] - (2 * c_add)
+      
+      w_rm[t + 1] <- w_rm[t] * val_mult[m_states[t + 1, c_r_idx]]
+      w_mm[t + 1] <- (w_mm[t] * (1 - c_mult * 2)) * val_mult[m_states[t + 1, c_mm_idx]]
+    }
+    
+    all_rand_add[i, ]  <- w_ra
+    all_maxw_add[i, ]  <- w_ma
+    all_rand_mult[i, ] <- w_rm
+    all_maxw_mult[i, ] <- w_mm
+  }
+  
+  # --- Visualization ---
+  par(mfrow = c(1, 2), mar = c(4, 4, 3, 1), family = "sans", bg = "white")
+  
+  # =========================
+  # Additive Plot
+  # =========================
+  y_lim_a <- range(c(all_rand_add, all_maxw_add), na.rm = TRUE)
+  plot(0:n, colMeans(all_maxw_add, na.rm = TRUE),
+       type = "n", ylim = y_lim_a,
+       main = "Additive: Fixed Point Costs",
+       xlab = "Round", ylab = "Wealth (Points)", las = 1)
+  
+  rect(shock_r, y_lim_a[1] - 1000, n, y_lim_a[2] + 1000,
+       col = rgb(0.1, 0.1, 0.1, 0.05), border = NA)
+  
+  # IQR bands (25%–75%)
+  q_rand_add <- apply(all_rand_add, 2, quantile, probs = c(0.25, 0.75), na.rm = TRUE)
+  q_maxw_add <- apply(all_maxw_add, 2, quantile, probs = c(0.25, 0.75), na.rm = TRUE)
+  
+  polygon(c(0:n, n:0), c(q_rand_add[1, ], rev(q_rand_add[2, ])),
+          col = adjustcolor(blue_rand, 0.08), border = NA)
+  polygon(c(0:n, n:0), c(q_maxw_add[1, ], rev(q_maxw_add[2, ])),
+          col = adjustcolor(red_maxw, 0.08), border = NA)
+  
+  # Individual paths
+  for(i in 1:N) {
+    lines(0:n, all_rand_add[i, ], col = adjustcolor(blue_rand, 0.10))
+    lines(0:n, all_maxw_add[i, ], col = adjustcolor(red_maxw, 0.10))
+  }
+  
+  # Means
+  lines(0:n, colMeans(all_rand_add, na.rm = TRUE), col = blue_rand, lwd = 4, lty = 1)
+  lines(0:n, colMeans(all_maxw_add, na.rm = TRUE), col = red_maxw,  lwd = 4, lty = 1)
+  
+  # Medians
+  med_rand_add <- apply(all_rand_add, 2, median, na.rm = TRUE)
+  med_maxw_add <- apply(all_maxw_add, 2, median, na.rm = TRUE)
+  lines(0:n, med_rand_add, col = blue_rand, lwd = 3, lty = 3)
+  lines(0:n, med_maxw_add, col = red_maxw,  lwd = 3, lty = 3)
+  
+  abline(v = shock_r, col = "red", lty = 2, lwd = 2)
+  
+  legend("topleft",
+         legend = c("Random (mean)", "Maxwell (mean)", "Random (median)", "Maxwell (median)"),
+         col    = c(blue_rand, red_maxw, blue_rand, red_maxw),
+         lwd    = c(4, 4, 3, 3),
+         lty    = c(1, 1, 3, 3),
+         bty    = "n")
+  
+  # =========================
+  # Multiplicative Plot
+  # =========================
+  y_lim_m <- range(c(all_rand_mult, all_maxw_mult), na.rm = TRUE)
+  plot(0:n, colMeans(all_maxw_mult, na.rm = TRUE),
+       type = "n", ylim = y_lim_m, log = "y",
+       main = "Multiplicative: Percentage Energy",
+       xlab = "Round", ylab = "Wealth (Log Scale)", las = 1)
+  
+  rect(shock_r, 0.0001, n, 1e12,
+       col = rgb(0.1, 0.1, 0.1, 0.05), border = NA)
+  
+  # IQR bands (25%–75%) — protect against zeros for log scale
+  eps <- 1e-12
+  q_rand_mult <- apply(all_rand_mult, 2, quantile, probs = c(0.25, 0.75), na.rm = TRUE)
+  q_maxw_mult <- apply(all_maxw_mult, 2, quantile, probs = c(0.25, 0.75), na.rm = TRUE)
+  q_rand_mult <- pmax(q_rand_mult, eps)
+  q_maxw_mult <- pmax(q_maxw_mult, eps)
+  
+  polygon(c(0:n, n:0), c(q_rand_mult[1, ], rev(q_rand_mult[2, ])),
+          col = adjustcolor(blue_rand, 0.08), border = NA)
+  polygon(c(0:n, n:0), c(q_maxw_mult[1, ], rev(q_maxw_mult[2, ])),
+          col = adjustcolor(red_maxw, 0.08), border = NA)
+  
+  # Individual paths
+  for(i in 1:N) {
+    lines(0:n, all_rand_mult[i, ], col = adjustcolor(blue_rand, 0.10))
+    lines(0:n, all_maxw_mult[i, ], col = adjustcolor(red_maxw, 0.10))
+  }
+  
+  # Means
+  lines(0:n, colMeans(all_rand_mult, na.rm = TRUE), col = blue_rand, lwd = 4, lty = 1)
+  lines(0:n, colMeans(all_maxw_mult, na.rm = TRUE), col = red_maxw,  lwd = 4, lty = 1)
+  
+  # Medians
+  med_rand_mult <- apply(all_rand_mult, 2, median, na.rm = TRUE)
+  med_maxw_mult <- apply(all_maxw_mult, 2, median, na.rm = TRUE)
+  med_rand_mult <- pmax(med_rand_mult, eps)
+  med_maxw_mult <- pmax(med_maxw_mult, eps)
+  lines(0:n, med_rand_mult, col = blue_rand, lwd = 3, lty = 3)
+  lines(0:n, med_maxw_mult, col = red_maxw,  lwd = 3, lty = 3)
+  
+  abline(v = shock_r, col = "red", lty = 2, lwd = 2)
+  
+  legend("topleft",
+         legend = c("Random (mean)", "Maxwell (mean)", "Random (median)", "Maxwell (median)"),
+         col    = c(blue_rand, red_maxw, blue_rand, red_maxw),
+         lwd    = c(4, 4, 3, 3),
+         lty    = c(1, 1, 3, 3),
+         bty    = "n")
+})
+
+```
+
+
+### Survival & Wealth Distribution 
+
+```{r}
+
+renderPlot({
+  req(input$reload_exp) 
+  # --- Logic Prep (N-Runs) ---
+  N <- input$n_sims; n <- input$n_rounds
+  c_add <- input$fixed_cost; c_mult <- input$perc_cost / 100
+  shock_r <- input$shock_round; thresh <- input$bankrupt_thresh
+  
+  #val_add <- c(-40, 5, 50); val_mult <- c(0.60, 1.05, 1.50)
+  P_H <- matrix(1/3, 3, 3)
+  P_M <- matrix(c(0.6, 0.2, 0.2, 0.2, 0.6, 0.2, 0.2, 0.2, 0.6), 3, 3, byrow=T)
+  P_L_base <- matrix(c(0.9, 0.05, 0.05, 0.05, 0.9, 0.05, 0.05, 0.05, 0.9), 3, 3, byrow=T)
+  P_A <- matrix(c(0.05, 0.475, 0.475, 0.475, 0.05, 0.475, 0.475, 0.475, 0.05), 3, 3, byrow=T)
+  
+  final_ra <- final_ma <- final_rm <- final_mm <- numeric(N)
+  bank_ra <- bank_ma <- bank_rm <- bank_mm <- 0
+
+  for(i in 1:N) {
+    m_states <- matrix(NA, n + 1, 4); m_states[1,] <- c(2, 2, 2, 2)
+    w_ra <- w_ma <- w_rm <- w_mm <- 100
+    h_ra <- h_ma <- h_rm <- h_mm <- FALSE
+    
+    for(t in 1:n) {
+      cP_M <- P_M; cP_L <- P_L_base
+      if(t >= shock_r) {
+        if(input$shock_type == "swap") { cP_M <- P_L_base; cP_L <- P_M }
+        if(input$shock_type == "crash") { cP_L <- P_H }
+      }
+      m_states[t+1, 1] <- sample(1:3, 1, prob=P_H[m_states[t,1],])
+      m_states[t+1, 2] <- sample(1:3, 1, prob=cP_M[m_states[t,2],])
+      m_states[t+1, 3] <- sample(1:3, 1, prob=cP_L[m_states[t,3],])
+      m_states[t+1, 4] <- sample(1:3, 1, prob=P_A[m_states[t,4],])
+      
+      evs_a <- c(2, get_ev(m_states[t,2], cP_M, val_add), get_ev(m_states[t,3], cP_L, val_add), get_ev(m_states[t,4], P_A, val_add))
+      evs_m <- c(mean(val_mult), get_ev(m_states[t,2], cP_M, val_mult), get_ev(m_states[t,3], cP_L, val_mult), get_ev(m_states[t,4], P_A, val_mult))
+      
+      c_ma_idx <- which.max(evs_a); c_mm_idx <- which.max(evs_m); c_r_idx <- sample(1:4, 1)
+      
+      w_ra <- w_ra + val_add[m_states[t+1, c_r_idx]]
+      w_ma <- w_ma + val_add[m_states[t+1, c_ma_idx]] - (2 * c_add)
+      w_rm <- w_rm * val_mult[m_states[t+1, c_r_idx]]
+      w_mm <- (w_mm * (1 - c_mult*2)) * val_mult[m_states[t+1, c_mm_idx]]
+      
+      if(w_ra <= thresh) h_ra <- TRUE; if(w_ma <= thresh) h_ma <- TRUE
+      if(w_rm <= thresh) h_rm <- TRUE; if(w_mm <= thresh) h_mm <- TRUE
+    }
+    final_ra[i] <- w_ra; final_ma[i] <- w_ma
+    final_rm[i] <- w_rm; final_mm[i] <- w_mm
+    if(h_ra) bank_ra <- bank_ra + 1; if(h_ma) bank_ma <- bank_ma + 1
+    if(h_rm) bank_rm <- bank_rm + 1; if(h_mm) bank_mm <- bank_mm + 1
+  }
+
+  par(mfrow=c(2, 2), mar=c(4,4,3,1))
+  barplot(c(bank_ra, bank_ma)/N*100, names.arg=c("Random", "Maxwell"), col=c(blue_rand, red_maxw), main=paste("Additive: Bankrupt (<", thresh, ")"), ylab="Rate %", ylim=c(0, 100))
+  legend("topright", legend=c("Random", "Maxwell"), fill=c(blue_rand, red_maxw), bty="n", cex=0.8)
+  
+  barplot(c(bank_rm, bank_mm)/N*100, names.arg=c("Random", "Maxwell"), col=c(blue_rand, red_maxw), main=paste("Multiplicative: Bankrupt (<", thresh, ")"), ylab="Rate %", ylim=c(0, 100))
+  legend("topright", legend=c("Random", "Maxwell"), fill=c(blue_rand, red_maxw), bty="n", cex=0.8)
+  
+
+# --- Additive Wealth Distribution ---
+
+# Determine the common X-axis range to ensure both distributions fit the window
+common_x_add <- range(c(final_ra, final_ma), na.rm = TRUE)
+
+# Calculate histogram data without plotting to find the global Y-axis peak
+hist_ra_data <- hist(final_ra, plot = FALSE)
+hist_ma_data <- hist(final_ma, plot = FALSE)
+global_y_max_add <- max(c(hist_ra_data$counts, hist_ma_data$counts))
+
+# Plot the primary histogram with fixed limits for comparison
+hist(final_ra, 
+     col = adjustcolor(blue_rand, 0.4), 
+     main = "Additive Wealth Dist.", 
+     xlab = "Final Points", 
+     border = "white",
+     xlim = common_x_add,
+     ylim = c(0, global_y_max_add * 1.1)) # Added 10% headroom for the legend
+
+# Overlay the second histogram
+hist(final_ma, 
+     col = adjustcolor(red_maxw, 0.4), 
+     add = TRUE, 
+     border = "white")
+
+legend("topright", legend = c("Random", "Maxwell"), fill = c(blue_rand, red_maxw), bty = "n", cex = 0.8)
+
+# --- Multiplicative Wealth Distribution (Log Scale Fix) ---
+
+# Multiplicative systems produce extreme outliers that crush the x-axis scale
+# We transform values using log10(wealth + 1) to reveal the log-normal structure
+log_final_mm <- log10(final_mm + 1)
+log_final_rm <- log10(final_rm + 1)
+
+# Calculate shared ranges for the log-transformed data
+common_x_log <- range(c(log_final_mm, log_final_rm), na.rm = TRUE)
+
+# Use probability density instead of counts for better statistical comparison
+h_mm_log <- hist(log_final_mm, prob = TRUE, plot = FALSE)
+h_rm_log <- hist(log_final_rm, prob = TRUE, plot = FALSE)
+global_y_max_log <- max(c(h_mm_log$density, h_rm_log$density))
+
+# Plot the log-transformed multiplicative distributions
+hist(log_final_mm, 
+     breaks = 20, 
+     prob = TRUE, 
+     col = adjustcolor(red_maxw, 0.4),  
+     main = "Multiplicative Wealth (Log Scale)", 
+     xlab = "Final Wealth (log10)", 
+     border = "white",
+     xlim = common_x_log, 
+     ylim = c(0, global_y_max_log * 1.1))
+
+hist(log_final_rm, 
+     breaks = 20, 
+     prob = TRUE, 
+     col = adjustcolor(blue_rand, 0.4), 
+     add = TRUE, 
+     border = "white")
+
+legend("topright", legend = c("Random", "Maxwell"), fill = c(blue_rand, red_maxw), bty = "n", cex = 0.8)
+})
+
+```
+
+

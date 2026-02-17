@@ -1,0 +1,321 @@
+---
+title: "WHL task part 2 and 3 "
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+
+########### Run this part at the beginning ##
+########### Start ###########################
+requiredPackages <- c( "flexdashboard",  # layout
+                       "wesanderson",    # colors
+                       "shiny",          # shiny
+                       "readr",          # open data set
+                       "wordcloud","shinyWidgets")
+for(i in requiredPackages){if(!require(i,character.only = TRUE)) install.packages(i)}
+for(i in requiredPackages){if(!require(i,character.only = TRUE)) library(i,character.only = TRUE) }
+
+# 2. loading packages - important to send to shiny server - inform shiny serve abut the used packages 
+library("flexdashboard") 
+library("wesanderson") 
+library("shiny")
+library("readr") 
+library("wordcloud") 
+library("shinyWidgets") 
+
+pal_col <- wes_palette(n = 7,type = "continuous", name="Zissou1")
+########### End ########################
+```
+
+0.Intro
+=======================================================================
+
+Inputs {.sidebar}
+-----------------------------------------------------------------------
+
+<h3>Horizon</h3>
+
+```{r, echo=FALSE}
+numericInput("T", "Horizon T (years)", value = 50, min = 1, max = 120, step = 1)
+```
+
+<h3>Life weights π<sub>t</sub></h3>
+
+```{r, echo=FALSE}
+selectInput("pi_mode", "π_t mode",
+            choices = c("Constant (π_t = 1)"="const",
+                        "Exponential (π_t = exp(-lambda*t))"="exp"))
+numericInput("lambda", "lambda (only if exponential)", value = 0.005, min = 0, max = 0.2, step = 0.001)
+```
+
+<h3>Value stream Y<sub>t</sub></h3>
+
+```{r, echo=FALSE}
+selectInput("Y_mode", "Y_t mode",
+            choices = c("Constant (Y_t = Y0)"="const",
+                        "Growth (Y_t = Y0*(1+g)^t)"="growth"))
+numericInput("Y0", "Y0 (PLN per year)", value = 100000, min = 0, step = 1000)
+numericInput("g", "Growth rate g (only for growth mode)", value = 0.02, min = -0.5, max = 0.5, step = 0.005)
+```
+
+<h3>Time valuation & scrolling</h3>
+
+```{r, echo=FALSE}
+numericInput("v", "v (PLN per hour)", value = 50, min = 0, step = 1)
+numericInput("m", "m (minutes per day)", value = 60, min = 0, max = 600, step = 5)
+```
+
+<h3>Present bias (β)</h3>
+
+<p>Hyperbolic here means: D(0)=1, and for t≥1: D(t)=β·(1/(1+r))^t.  
+So β changes the weight of the whole future relative to now.</p>
+
+```{r, echo=FALSE}
+numericInput("beta", "beta (0–1)", value = 0.85, min = 0, max = 1, step = 0.01)
+```
+
+```{r eval = TRUE, warning = FALSE, echo = FALSE  }
+actionBttn(
+   inputId = "refresh",
+   label = "Refresh",
+   style = "minimal", 
+   color = "primary",
+   icon = icon("sync"),
+   size = "md"
+)
+```
+
+Column
+-----------------------------------------------------------------------
+
+### What you should interpret
+
+<h3>Part 2: PV of scrolling and WHL</h3>
+
+<p>In Part 1 you estimated your own value of one hour of time <b>$v$</b> (PLN/h). In the Shiny app, the slider <b>$v$</b> means exactly the same thing: <b>enter the $v$ value you computed in the Word document (Step 2: $V_{time}\approx 4a$)</b>. Now treat “mindless scrolling” (shorts, reels, TikTok, feed) as a time expenditure that has a price.</p>
+
+<p style="padding-left: 40px;">1) Estimating scrolling time. Estimate your average daily time spent on mindless scrolling: <b>$m$</b> minutes per day (do not include work, studying, or necessary communication). Convert it to hours: <b>$h = m/60$</b>.</p>
+
+<p style="padding-left: 40px;">2) Opportunity cost of scrolling now. Compute the monetary cost (using your own <b>$v$</b>):</p>
+
+<p style="padding-left: 40px;">
+<b>$C_d = v \cdot h$</b> (PLN/day) <br />
+<b>$C_y = v \cdot h \cdot 365$</b> (PLN/year)
+</p>
+
+<p style="padding-left: 40px;">3) PV of scrolling cost over your lifetime. Choose a horizon <b>$T$</b> (number of years) and a discount rate <b>$r$</b> (real, as in the lectures). Following the lecture definition, use weights <b>$\pi_t$</b> (if you simplify, you may set <b>$\pi_t = 1$</b>, but state it explicitly):</p>
+
+<p style="padding-left: 40px;">
+<b>$PV_{\text{scroll}}=\sum_{t=0}^{T}\frac{\pi_t \, C_y}{(1+r)^t}$</b>
+</p>
+
+<p style="padding-left: 40px;">4) WHL of your life. Using the lecture materials, compute the life resource measure:</p>
+
+<p style="padding-left: 40px;">
+<b>$WHL=\sum_{t=0}^{T}\frac{\pi_t \, Y_t}{(1+r)^t}$</b>
+</p>
+
+<p style="padding-left: 40px;">Here <b>$Y_t$</b> is your annual income stream. If you simplify how it evolves, do it explicitly: e.g., <b>$Y_t=Y_0$</b> or <b>$Y_t=Y_0(1+g)^t$</b>. In Shiny you can test how the result changes if you assume faster income growth (e.g., <b>$g&gt;5\%$</b>) — this helps you understand the scale and sensitivity of the comparison.</p>
+
+<p style="padding-left: 40px;">5) Comparison. Report the ratio:</p>
+
+<p style="padding-left: 40px;">
+<b>$\frac{PV_{\text{scroll}}}{WHL}$</b>
+</p>
+
+<p style="padding-left: 40px;">and interpret it: what does this percentage mean in your case? Which assumptions matter most (<b>$v,m,r,T,\pi_t,Y_t$</b>)?</p>
+
+<p><b>Important:</b> this is not a moral task. It is an economic calculation. If you think the calculation is pointless, you may say so, but do it scientifically: state exactly which assumption breaks it and why.</p>
+
+<h3>Part 3 (exam description): quasi-hyperbolic discounting (β–δ) and undervaluation of future rewards</h3>
+
+<p>In Part 2 you computed quantities based on exponential discounting: <b>$D_{\text{exp}}(t)=\frac{1}{(1+r)^t}$</b>. This model assumes constant “patience” over time: if today you prefer A over B, then tomorrow (after shifting both options forward in time) the preference ranking should not reverse.</p>
+
+<p>In practice we often observe <i>present bias</i>: future benefits (even large ones) are discounted too strongly relative to immediate rewards. In the app we illustrate this with quasi-hyperbolic (β–δ) discounting:</p>
+
+<p>
+<b>$D(0)=1,\quad D(t)=\beta\delta^t \ \text{for}\ t\ge 1$</b>
+</p>
+
+<p><b>Technical definition (important):</b> in this app we do not introduce δ as an independent slider. We set <b>$\delta=\frac{1}{1+r}$</b>, so δ is directly derived from the chosen discount rate <b>$r$</b>. Then, for <b>$t\ge 1$</b>, equivalently: <b>$D(t)=\beta\left(\frac{1}{1+r}\right)^t$</b>.</p>
+
+<p>When <b>$\beta < 1$</b>, “the future as a whole” receives a lower weight at the moment of choice. This generates time inconsistency: today’s “me” may plan to choose the larger-but-later reward tomorrow, and tomorrow’s “me” reverses the choice because immediacy is rewarded again.</p>
+
+<p><b>Your task:</b> discuss how moving from exponential discounting to β–δ discounting can change the interpretation of your calculations from Part 2.</p>
+
+<p style="padding-left: 40px;">1) Undervaluation of future rewards. Give a simple real-life example: “today I postpone work because a small reward now dominates a larger reward later.” Explain it in terms of weights: if <b>$\beta < 1$</b>, future benefits (e.g., calm, a free weekend, a better result) are systematically “flattened” in evaluation.</p>
+
+<p style="padding-left: 40px;">2) Time inconsistency. Describe the conflict: plan versus execution. Point out what changes between today and tomorrow: not the facts, not the calculation from Part 2, but the reference point (what counts as “now”). This can make your choices unstable even if you can justify them “coldly” in advance.</p>
+
+<p style="padding-left: 40px;">3) Wellbeing effects. Explain the mechanism without moralizing: when future rewards are underweighted, it is easier to choose actions that provide immediate relief, while shifting costs onto the future “me.” As a result, a loop becomes more likely: short-run relief → postponing larger rewards → accumulating cost (stress, time pressure, loss of control) → an even stronger preference for “now.”</p>
+
+<p style="padding-left: 40px;">4) Model sensitivity. Finally, answer briefly: in what sense can exponential discounting in Part 2 be “too optimistic” as a description of you? And in what sense is the β–δ model useful (what does it explain), even if it is not “literally true”?</p>
+
+
+Column {.tabset}
+-----------------------------------------------------------------------
+
+### Plot: WHL and PV_scroll vs r
+
+```{r, echo=FALSE}
+renderPlot({
+  input$refresh
+
+  req(input$T, input$pi_mode, input$Y_mode, input$Y0, input$v, input$m, input$beta)
+
+  r_seq <- seq(0, 0.10, by = 0.001)
+  tt <- 0:input$T
+
+  pi_t <- if (input$pi_mode == "const") rep(1, length(tt)) else exp(-input$lambda * tt)
+  Y_t  <- if (input$Y_mode == "const") rep(input$Y0, length(tt)) else input$Y0 * (1 + input$g)^tt
+
+  h_year <- (input$m / 60) * 365
+  C_year <- input$v * h_year
+
+  WHL_exp <- numeric(length(r_seq))
+  PV_scroll_exp <- numeric(length(r_seq))
+  WHL_hyp <- numeric(length(r_seq))
+  PV_scroll_hyp <- numeric(length(r_seq))
+
+  for(i in seq_along(r_seq)){
+    r <- r_seq[i]
+    D_exp <- 1 / ((1 + r)^tt)
+
+    D_hyp <- rep(NA_real_, length(tt))
+    D_hyp[tt == 0] <- 1
+    D_hyp[tt >= 1] <- input$beta * (1 / (1 + r))^(tt[tt >= 1])
+
+    WHL_exp[i] <- sum(pi_t * Y_t * D_exp)
+    PV_scroll_exp[i] <- sum(pi_t * C_year * D_exp)
+    WHL_hyp[i] <- sum(pi_t * Y_t * D_hyp)
+    PV_scroll_hyp[i] <- sum(pi_t * C_year * D_hyp)
+  }
+
+  y_all <- c(WHL_exp, WHL_hyp, PV_scroll_exp, PV_scroll_hyp)
+  y_rng <- range(y_all, finite = TRUE)
+
+  plot(100*r_seq, WHL_exp, type = "l",
+       xlab = "r (percent)",
+       ylab = "Present value (PLN)", 
+       lwd = 2,
+       main = "WHL and PV_scroll as functions of r (0–10%)", col = pal_col[1], ylim = y_rng)
+  lines(100*r_seq, WHL_hyp, col = pal_col[6], lwd = 2)
+  lines(100*r_seq, PV_scroll_exp, lty = 2, col = pal_col[2], lwd = 2)
+  lines(100*r_seq, PV_scroll_hyp, lty = 2, col = pal_col[7], lwd = 2)
+
+  legend("topright",
+         legend = c("WHL (exp)", "WHL (β–δ)", "PV_scroll (exp)", "PV_scroll (β–δ)"),
+         lty = c(1,1,2,2),
+         lwd = c(2,2,2,2),
+         col = pal_col[c(1,6,2,7)],
+         bty = "n")
+})
+```
+
+### Plot: ratio PV_scroll / WHL vs r
+
+```{r, echo=FALSE}
+renderPlot({
+  input$refresh
+
+  req(input$T, input$pi_mode, input$Y_mode, input$Y0, input$v, input$m, input$beta)
+
+  r_seq <- seq(0, 0.10, by = 0.001)
+  tt <- 0:input$T
+
+  pi_t <- if (input$pi_mode == "const") rep(1, length(tt)) else exp(-input$lambda * tt)
+  Y_t  <- if (input$Y_mode == "const") rep(input$Y0, length(tt)) else input$Y0 * (1 + input$g)^tt
+
+  h_year <- (input$m / 60) * 365
+  C_year <- input$v * h_year
+
+  ratio_exp <- numeric(length(r_seq))
+  ratio_hyp <- numeric(length(r_seq))
+
+  for(i in seq_along(r_seq)){
+    r <- r_seq[i]
+    D_exp <- 1 / ((1 + r)^tt)
+
+    D_hyp <- rep(NA_real_, length(tt))
+    D_hyp[tt == 0] <- 1
+    D_hyp[tt >= 1] <- input$beta * (1 / (1 + r))^(tt[tt >= 1])
+
+    WHLe <- sum(pi_t * Y_t * D_exp)
+    PVe  <- sum(pi_t * C_year * D_exp)
+    WHLh <- sum(pi_t * Y_t * D_hyp)
+    PVh  <- sum(pi_t * C_year * D_hyp)
+
+    ratio_exp[i] <- ifelse(WHLe == 0, NA_real_, PVe / WHLe)
+    ratio_hyp[i] <- ifelse(WHLh == 0, NA_real_, PVh / WHLh)
+  }
+
+  plot(100*r_seq, 100*ratio_exp, type = "l",
+       xlab = "r (percent)",
+       ylab = "PV_scroll / WHL (percent)",
+       main = "How big is scrolling relative to WHL?",
+       lwd = 2, col = pal_col[1] )
+  lines(100*r_seq, 100*ratio_hyp, lwd = 2, col = pal_col[6])
+  abline(h = 0, lty = 3)
+  legend("topright",
+         legend = c("Exponential", "β–δ (present bias)"),
+         lty = c(1,1),
+         lwd = c(2,2),
+         col = pal_col[c(1,6)],
+         bty = "n")
+})
+```
+
+### Table: selected r values
+
+```{r, echo=FALSE}
+renderTable({
+  input$refresh
+
+  req(input$T, input$pi_mode, input$Y_mode, input$Y0, input$v, input$m, input$beta)
+
+  r_points <- c(0, 0.01, 0.03, 0.05, 0.10)
+  tt <- 0:input$T
+
+  pi_t <- if (input$pi_mode == "const") rep(1, length(tt)) else exp(-input$lambda * tt)
+  Y_t  <- if (input$Y_mode == "const") rep(input$Y0, length(tt)) else input$Y0 * (1 + input$g)^tt
+
+  h_year <- (input$m / 60) * 365
+  C_year <- input$v * h_year
+
+  out <- data.frame(
+    r = paste0(round(100*r_points,1), "%"),
+    WHL_exp = NA_real_,
+    PV_scroll_exp = NA_real_,
+    ratio_exp = NA_real_,
+    WHL_hyp = NA_real_,
+    PV_scroll_hyp = NA_real_,
+    ratio_hyp = NA_real_
+  )
+
+  for(i in seq_along(r_points)){
+    r <- r_points[i]
+    D_exp <- 1 / ((1 + r)^tt)
+
+    D_hyp <- rep(NA_real_, length(tt))
+    D_hyp[tt == 0] <- 1
+    D_hyp[tt >= 1] <- input$beta * (1 / (1 + r))^(tt[tt >= 1])
+
+    WHLe <- sum(pi_t * Y_t * D_exp)
+    PVe  <- sum(pi_t * C_year * D_exp)
+    WHLh <- sum(pi_t * Y_t * D_hyp)
+    PVh  <- sum(pi_t * C_year * D_hyp)
+
+    out$WHL_exp[i] <- round(WHLe, 0)
+    out$PV_scroll_exp[i] <- round(PVe, 0)
+    out$ratio_exp[i] <- round(100 * (PVe/WHLe), 3)
+    out$WHL_hyp[i] <- round(WHLh, 0)
+    out$PV_scroll_hyp[i] <- round(PVh, 0)
+    out$ratio_hyp[i] <- round(100 * (PVh/WHLh), 3)
+  }
+  out
+})
+```

@@ -452,7 +452,7 @@ hist(USArrests$Rape,
      main = "Rape Arrests",
      xlab = "Arrests per 100,000",
      # generating 4 discrete colors
-     col = wes_palette("Moonrise1", 4, type = "discrete"))
+     col = wes_palette("BottleRocket1", 4, type = "discrete"))
 
 # 1f) Reset the graphical environment
 par(mfrow = c(1, 1))
@@ -523,3 +523,4 @@ barplot(silver10$Silver.Medal,
 
 # 3. Close the file to save it
 dev.off()
+
