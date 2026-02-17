@@ -6,6 +6,9 @@ we cannot scrape Facebook, X, Instagram (requires permission -> impossible), but
 https://facebook.com/robots.txt
 /robots.txt can be applied
 
+scrap =
+crawl = 
+
 sometime used crawl delay 1 (1 sec)
 
 
