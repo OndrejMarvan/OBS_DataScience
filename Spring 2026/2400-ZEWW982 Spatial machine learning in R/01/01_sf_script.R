@@ -502,7 +502,7 @@ voi.sf <- st_read("data/wojewodztwa.shp", options = "ENCODING=WINDOWS-1252")
 
 
 # explore the object (structure and first rows)
-
+str(voi.sf)
 
 
 # check the levels of JPT_NAZWA_ variable (name variable of regions) - treat it as factor
@@ -516,6 +516,38 @@ voi.sf <- st_read("data/wojewodztwa.shp", options = "ENCODING=WINDOWS-1252")
 
 #plot the outline of mazowieckie region
 
+library(sf)
+library(ggplot2)
+library(dplyr) # Useful for filtering
+
+# read shapefile regarding the voivodeships in Poland
+# use additional option to fix the encoding in the file
+voi.sf <- st_read("data/wojewodztwa.shp", options = "ENCODING=WINDOWS-1252")
+
+# make appropriate transformation
+# EPSG 2180 is the standard coordinate system for Poland (PUWG 1992)
+voi.sf <- st_transform(voi.sf, crs = 2180)
+
+# explore the object (structure and first rows)
+str(voi.sf)
+head(voi.sf)
+
+# check the levels of JPT_NAZWA_ variable (name variable of regions) - treat it as factor
+voi.sf$JPT_NAZWA_ <- as.factor(voi.sf$JPT_NAZWA_)
+levels(voi.sf$JPT_NAZWA_)
+
+]# filter out only the mazowieckie region and save it as a separate object
+# Note: Check if the level is "mazowieckie" or "MAZOWIECKIE" (uppercase) in your data
+maz.voi.sf <- subset(voi.sf, JPT_NAZWA_ == "mazowieckie") 
+
+# Alternatively using dplyr:
+# maz.voi.sf <- voi.sf %>% filter(JPT_NAZWA_ == "mazowieckie")
+
+# plot the outline of mazowieckie region
+ggplot(data = maz.voi.sf) +
+  geom_sf() +
+  labs(title = "Mazowieckie Voivodeship") +
+  theme_minimal()
 
 
 
