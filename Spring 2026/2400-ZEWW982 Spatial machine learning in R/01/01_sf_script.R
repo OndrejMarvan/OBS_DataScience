@@ -247,29 +247,35 @@ ggplot() +
 # in Radom, Poland including the information whether they provide tattoos with 
 # "lineart" technique (this information is randomly generated :))
 
+# Read random-tattoo.csv file
+tattoo <- read.csv("data/radom-tattoo.csv")
 
-# tattoo <- ...
-# head(tattoo)
+head(tattoo)
 
+# 1. Create sf object which will store the information about those points
+# We add 'crs = 4326' to define the coordinate system (WGS84)
+tattoo.sf <- st_as_sf(tattoo, coords = c("long", "lat"), crs = 4326)
 
-# Create sf object which will store the information about those points
+# 2. Create ggplot graphic with the points 
+# Basic plotting using geom_sf()
+ggplot(data = tattoo.sf) +
+  geom_sf()
 
+# 3. Adjust your graphic, coloring points with respect to the lineart variable
+# Map the color to the 'lineart' column inside aes()
+ggplot(data = tattoo.sf) +
+  geom_sf(aes(color = lineart)) +
+  labs(title = "Tattoo Studios in Radom", 
+       subtitle = "Availability of Lineart Technique") +
+  theme_minimal()
 
-# tattoo.sf <- ...
-
-
-# Create ggplot graphic with the points 
-
-
-
-# Adjust your graphic, coloring points with respect to the lineart variable
-
-
-
-# Additionally, you can add modify the color pallet :)
-
-
-
+# 4. Additionally, you can modify the color palette :)
+# Manual color adjustment (assuming values are "Yes"/"No" or similar)
+ggplot(data = tattoo.sf) +
+  geom_sf(aes(color = lineart), size = 3) +
+  scale_color_manual(values = c("Yes" = "#9b5de5", "No" = "#00bbf9")) +
+  theme_minimal() +
+  labs(title = "Tattoo Studios in Radom", color = "Lineart?")
 
 ################################################################################
 #### Line data #################################################################
