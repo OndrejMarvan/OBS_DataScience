@@ -34,3 +34,8 @@ by prof [Katarzyna Kopczewska](https://usosweb.wne.uw.edu.pl/kontroler.php?_act
 
 Note: Topics may be adjusted during the semester. The list is a guide.
 
+## Class 01
+sf
+geopandas
+Nested geometry
+
