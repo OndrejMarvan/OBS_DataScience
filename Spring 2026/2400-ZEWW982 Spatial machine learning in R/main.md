@@ -36,7 +36,7 @@ Note: Topics may be adjusted during the semester. The list is a guide.
 
 ## Class 01
 sf
-geopandas
+geopandas for Python but still limited functions 
 Nested geometry
 
 Buffer? 
