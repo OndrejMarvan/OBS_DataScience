@@ -13,8 +13,8 @@ Sys.setenv(LANGUAGE='en')
 # A useful tool that we will use for checking
 # object classes is the pryr package 
 
-#install.packages('pryr')
-#library(pryr)
+install.packages('pryr')
+library(pryr)
 
 # Sadly, this package has retired from CRAN in January 2026. 
 # You can get it from the R Archive, but sometimes still it fails. 
