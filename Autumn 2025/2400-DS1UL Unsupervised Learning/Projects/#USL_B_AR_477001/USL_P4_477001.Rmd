@@ -1,0 +1,267 @@
+---
+title: "USL Project 4: Association Rules - European Social Survey"
+author: "Ondřej Marvan, 477001"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(tidyverse)
+library(arules)
+library(arulesViz)
+```
+
+# 1. Introduction
+
+I analyze the European Social Survey Round 11 to find association rules with **hincfel** (Feeling about household's income nowadays) as the consequent.
+
+Main question: *What factors are associated with how people feel about their household income?*
+
+**Dataset:** ESS Round 11 (2023/24) - <https://ess.sikt.no/en/>
+
+# 2. Load Data
+
+```{r}
+ess11 <- read.csv("Data/ESS11e04_1.csv")
+
+# Quick look
+cat("Rows:", nrow(ess11), "Columns:", ncol(ess11), "\n")
+cat("Countries:", length(unique(ess11$cntry)))
+``` 
+50,116 respondents from 30 European countries with 691 variables, including core demographic questions (age, gender, education), attitudes (trust, political views, life satisfaction).
+
+```{r}
+head(ess11)
+```
+
+# 3. Inspect hincfel Variable
+
+```{r}
+# hincfel coding:
+# 1 = Living comfortably
+# 2 = Coping
+# 3 = Difficult
+# 4 = Very difficult
+
+# Clean missing values (7,8,9 are refusal/don't know/no answer in ESS)
+ess11 <- ess11 %>%
+  filter(hincfel %in% 1:4)
+
+cat(nrow(ess11))
+```
+Variable hincfel has 4 categories measuring how people feel about their household income (1=comfortable to 4=very difficult). I removed invalid responses (codes 7-9) and lost ~700 cases (1.4%), leaving 49,411 valid respondents for analysis.
+
+```{r}
+# Distribution
+table(ess11$hincfel)
+prop.table(table(ess11$hincfel))
+```
+
+```{r}
+# Add labels
+ess11$hincfel_lab <- factor(ess11$hincfel,
+                            levels = 1:4,
+                            labels = c("Living comfortably", "Coping", 
+                                       "Difficult", "Very difficult"))
+
+# Plot
+ggplot(ess11, aes(x = hincfel_lab, fill = hincfel_lab)) +
+  geom_bar() +
+  labs(title = "Feeling about Household Income (hincfel)",
+       x = "", y = "Count") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+Most Europeans cope with their income (~22,000) or live comfortably (~15,500). About 10,000 respondents report financial difficulties (difficult + very difficult combined).
+
+# 4. Data Preperation for Association Rules
+
+```{r}
+# Categorical variables for association rules
+ess_data <- ess11 %>%
+  mutate(
+    # Target variable
+    Income_Feel = case_when(
+      hincfel == 1 ~ "Income=Comfortable",
+      hincfel == 2 ~ "Income=Coping",
+      hincfel == 3 ~ "Income=Difficult",
+      hincfel == 4 ~ "Income=VeryDifficult"
+    ),
+    
+    # Gender
+    Gender = ifelse(gndr == 1, "Male", "Female"),
+    
+    # Age groups
+    Age = case_when(
+      agea < 30 ~ "Age_18-29",
+      agea < 45 ~ "Age_30-44",
+      agea < 60 ~ "Age_45-59",
+      agea < 75 ~ "Age_60-74",
+      TRUE ~ "Age_75+"
+    ),
+    
+    # Education
+    Edu = case_when(
+      eduyrs < 12 ~ "Edu_Low",
+      eduyrs < 16 ~ "Edu_Medium",
+      TRUE ~ "Edu_High"
+    ),
+    
+    # Health
+    Health = case_when(
+      health %in% 1:2 ~ "Health_Good",
+      health == 3 ~ "Health_Fair",
+      health %in% 4:5 ~ "Health_Poor"
+    ),
+    
+    # Life satisfaction
+    LifeSat = case_when(
+      stflife <= 4 ~ "LifeSat_Low",
+      stflife <= 7 ~ "LifeSat_Medium",
+      TRUE ~ "LifeSat_High"
+    ),
+    
+    # Trust
+    Trust = case_when(
+      ppltrst <= 4 ~ "Trust_Low",
+      ppltrst <= 7 ~ "Trust_Medium",
+      TRUE ~ "Trust_High"
+    ),
+    
+    # Region
+    Region = case_when(
+      cntry %in% c("NO","SE","FI","IS","DK") ~ "Nordic",
+      cntry %in% c("DE","AT","CH","NL","BE") ~ "Western",
+      cntry %in% c("GB","IE") ~ "British",
+      cntry %in% c("FR","ES","PT","IT","GR","CY") ~ "Southern",
+      TRUE ~ "Eastern"
+    )
+  ) %>%
+  select(Income_Feel, Gender, Age, Edu, Health, LifeSat, Trust, Region) %>%
+  na.omit()
+
+cat("Complete cases:", nrow(ess_data), "\n")
+head(ess_data)
+```
+8 variables: Income_Feel (target), Gender, Age, Education, Health, Life Satisfaction, Trust, and Region. Countries are grouped into 5 regions.
+
+```{r}
+# Convert to transactions
+trans <- as(ess_data, "transactions")
+summary(trans)
+```
+**49,352 transactions** (respondents) and **28 items** (all category levels across 8 variables). Each transaction has exactly **8 items** (one per variable) - this is expected since every person has a value for each variable.
+
+Most frequent items show are **good health** is most common (32,383), slightly more **females** than males, and **high life satisfaction** is prevalent. This reflects the earlier finding that most Europeans feel relatively positive.
+
+
+```{r}
+# Check item labels
+itemLabels(trans)
+```
+this covers all categories: **4 income feelings**, **2 genders**, **5 age groups**, **3 education levels**, **3 health levels**, **3 life satisfaction levels**, **3 trust levels**, and **5 regions**.
+
+
+```{r}
+itemFrequencyPlot(trans, topN = 20, type = "absolute", 
+                  main = "Item Frequencies")
+```
+This shows the **20 most frequent items** in the dataset. **"Health_Good"** is most common (~32,000), followed by **"Female"** and **"LifeSat_High"** - confirming most respondents report positive wellbeing. Further, **"Income=Coping"** appears most often (~22,000), then **"Income=Comfortable"** (~15,000), while **"Income=Difficult"** is less frequent (~8,500). **"Income=VeryDifficult"** doesn't appear in top 20, indicating it's rare.
+
+
+# 5. Apriori Algorithm
+
+```{r}
+# Get income items for appearance list
+income_items <- grep("Income", itemLabels(trans), value = TRUE)
+income_items
+```
+Function **grep()** to extract item labels containing "Income" from transactions. This gives  the 4 target items for our association rules.
+
+
+```{r}
+# Run apriori with hincfel as consequent
+rules <- apriori(trans,
+                 parameter = list(supp = 0.01, conf = 0.3, minlen = 2),
+                 appearance = list(rhs = income_items, default = "lhs"),
+                 control = list(verbose = FALSE))
+
+cat("Rules found:", length(rules))
+```
+for Apriori with **support ≥ 1%**, There're **1,826 rules**.
+
+
+## Top Rules by Lift
+
+```{r}
+inspect(head(sort(rules, by = "lift"), 15))
+```
+Top rules by lift show the strongest associations. The **highest lift (2.46)** is for **Western European** men with **high education**, **good health**, and **high life satisfaction** → **feeling comfortable about income**. This indicates these factors strongly increase the likelihood of income comfort beyond random chance.
+
+## Top Rules by Confidence
+
+```{r}
+inspect(head(sort(rules, by = "confidence"), 15))
+```
+Top rules by confidence show the most reliable associations. The **highest confidence (0.78)** is for people with **high life satisfaction** and **good health** → feeling **comfortable about income**. This means that when these conditions are met, there's a 78% chance the person feels comfortable about their income.
+
+## Rules for Comfortable Income
+
+```{r}
+rules_comfort <- subset(rules, rhs %pin% "Comfortable")
+cat("Rules for Comfortable:", length(rules_comfort), "\n")
+inspect(head(sort(rules_comfort, by = "lift"), 10))
+```
+**Best rule:** Western European men with high education, good health, and high life satisfaction have 77.6% probability of feeling comfortable (lift 2.46 = 2.5x more likely than average).
+
+## Rules for Difficult Income
+
+```{r}
+rules_diff <- subset(rules, rhs %pin% "Difficult")
+cat("Rules for Difficult/VeryDifficult:", length(rules_diff), "\n")
+inspect(head(sort(rules_diff, by = "lift"), 10))
+```
+Only 38 rules for "Difficult" - fewer because this outcome is less common. The top rule shows people with **low life satisfaction** in **Southern Europe** have a 38% chance of **finding income difficult** (**lift 2.18**). Low life satisfaction appears in all top rules, making it the dominant predictor of financial difficulty.
+
+# 6. ECLAT
+
+```{r}
+itemsets <- eclat(trans, parameter = list(supp = 0.02, minlen = 2),
+                  control = list(verbose = FALSE))
+cat("Itemsets:", length(itemsets))
+```
+**2,266 itemsets** with at least 2% support and minimum 2 items. 
+
+```{r}
+# Itemsets with income
+income_sets <- subset(itemsets, items %pin% "Income")
+inspect(head(sort(income_sets, by = "support"), 10))
+```
+Top itemset: **"Coping" + "Good Health"** appears in 29% of respondents (14,454 people) - simply because both are the most common categories in their own variables. **"Coping"** dominates (8 of top 10) because it's the most frequent income category. **"Comfortable"** pairs with **good health** and **high life satisfaction**.
+
+# 7. Visualizations
+
+```{r fig.width=10, fig.height=8}
+top15 <- head(sort(rules, by = "lift"), 15)
+plot(top15, method = "graph")
+```
+Network shows two separate clusters - **"Comfortable"** (right) connects to **high education**, **Western region**, **good health**; **"Difficult"** (left) connects to **low life satisfaction** and **Southern region**. The clusters don't overlap, meaning different factors predict each outcome.
+
+```{r fig.width=10, fig.height=6}
+plot(top15, method = "grouped", main = "Grouped Matrix")
+```
+Rules organized by consequent (RHS). Top row: 14 rules predict **"Comfortable"** (red = high lift ~2.4). Bottom row: only 1 rule predicts **"Difficult"** (lighter = lower lift ~2.18).
+Most rules combine **Western region**, **high education**, **good health**, and **male gender** to predict income comfort. The single **"Difficult"** rule involves **low life satisfaction** + **Southern region**.
+
+# 8. Conclusion
+
+**Findings:**
+
+Higher education and good health are associated with feeling comfortable about income. Low life satisfaction is the strongest predictor of income difficulties, appearing in all top rules for "Difficult". Regional differences exist with Western and Nordic countries showing higher income comfort while Southern and Eastern regions show more financial struggles. Trust levels also show associations with income perception.
+
+**Interpretation:**
+
+High lift values (around 2.0-2.5) indicate these associations are about twice as strong as random chance. High confidence (70-78% for comfortable rules) means the rules are reliable predictors. However, these are associations and not causal relationships.
+
+**Reference:** European Social Survey Round 11 (ESS ERIC, 2024). https://ess.sikt.no/en/
