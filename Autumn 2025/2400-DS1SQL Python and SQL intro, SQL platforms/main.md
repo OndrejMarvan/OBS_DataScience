@@ -182,6 +182,78 @@ C. 0 1 2 3
 
 df.groupby("G")["V"].sum()
 
-A. Groups by column G and sums V  
+**A. Groups by column G and sums V**  
 B. Sums entire dataframe  
 C. Sorts column G
+
+## Q16. What is the output?
+
+x = np.arange(5)  
+print(x[::2])
+
+A. [0 1]  
+**B. [0 2 4]**  
+C. [1 3]
+
+## Q17. Expected output:
+
+[('a', 3), ('b', 1), ('c', 2)]
+
+Which works?
+
+A. Using `groupby()` and `len(sub)`  
+**B. Using `value_counts()` and sorting**  
+C. Manual counting with boolean condition
+
+## Q18. What is the time complexity of:
+
+for i in range(n):  
+    for j in range(n):  
+        print(i, j)
+
+A. O(n)  
+B. O(n log n)  
+**C. O(n²)**
+
+## Q19. Which is fastest for large numeric arrays?
+
+A. Python loop  
+**B. NumPy vectorized operation**  
+C. Converting to list first
+
+## Q20. What is printed?
+
+x = [1,2,3]  
+print(x * 2)
+
+A. [2,4,6]  
+**B. [1,2,3,1,2,3]**  
+C. Error
+
+## Q21. What does `random.seed(42)` do?
+
+A. Makes random numbers faster  
+**B. Makes random results reproducible**  
+C. Generates 42 random numbers
+
+## Q22. What is the output?
+
+import pandas as pd  
+df = pd.DataFrame({"A":[1,None,3]})  
+print(df["A"].isna().sum())
+
+A. 0  
+**B. 1**  
+C. 2
+
+## Q23. What does `.loc[]` do?
+
+A. Access by integer position  
+**B. Access by label**  
+C. Sort index
+
+## Q24. Dataset of 1M numbers. Fastest mean?
+
+A. Manual loop  
+B. `np.mean(V)`  
+C. `sum(V)/len(V)`
