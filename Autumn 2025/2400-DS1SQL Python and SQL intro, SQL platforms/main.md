@@ -168,3 +168,20 @@ print(list(d.keys()))
 **A. ["a", "b"]**  
 B. (1, 2)  
 C. dict_keys object printed
+
+## Q14. What is the output?
+
+for i in range(3):  
+    print(i)
+
+A. 1 2 3  
+**B. 0 1 2**  
+C. 0 1 2 3
+
+## Q15. What does this do?
+
+df.groupby("G")["V"].sum()
+
+A. Groups by column G and sums V  
+B. Sums entire dataframe  
+C. Sorts column G
