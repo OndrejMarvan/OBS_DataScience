@@ -255,5 +255,13 @@ C. Sort index
 ## Q24. Dataset of 1M numbers. Fastest mean?
 
 A. Manual loop  
-B. `np.mean(V)`  
+**B. `np.mean(V)`**  
 C. `sum(V)/len(V)`
+
+## Q25. What does this code do?
+
+(Monte Carlo π estimation)
+
+A. Calculates exact π  
+**B. Estimates π using random sampling**  
+C. Computes square area
