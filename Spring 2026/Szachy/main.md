@@ -16,3 +16,5 @@ Goniec	3
 Wieża 5
 Hetman	9
 Król	∞ 
+
+Practise in lichess.org "maty"
