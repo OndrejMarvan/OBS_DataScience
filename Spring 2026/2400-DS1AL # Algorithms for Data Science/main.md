@@ -135,3 +135,51 @@ In both cases the algorithm returns **floor(n/2)**, which equals n/2 for even n 
 ==Q of Prof: Looping invariant== = A loop invariant is a condition that is true immediately before and immediately after each iteration of a loop.  It serves as a logical assertion about the relationship between variables in a loop, ensuring the loop maintains correctness throughout its execution.
 
 This may appear in exam (above)
+
+
+Task 1.4: Curtain Problem - a real-world problem brought by the lecturer’s wife Suppose that you washed the curtain of your window and now you want to hang it up again. To do so, you have to attach the curtain to the five ring clips lying loosely on a rod above the window. It is important that the clips are equally spaced on the curtain, otherwise it won’t look nice. Unfortunately, you don’t have any tool to measure the distances in order to find the right position for attaching the clips. However, you are a smart student and you want to use gravity and the idea underlying binary search to solve this problem. Equally attached clips. curtain clip Only three clips attached yet. rod 
+![[Pasted image 20260225192616.png]]
+(a) Describe how to find equally spaced positions for the clips. Note that you can move the ring clips along the rod and that the curtain is obeying the laws of gravity. Your first step is to attach the top corners of the curtain to the left- and right-most clip. 
+(b) Does your procedure also work for seven clips? 
+(c) For what numbers of clips does your procedure work?
+
+## Solution
+
+### (a) Procedure for 5 Clips
+
+**Key physical insight:** When a curtain hangs freely from exactly two points, gravity pulls it into a symmetric curve (a catenary). The lowest point of the curtain hangs at **exactly the horizontal midpoint** between the two attachment points. This gives us a perfect, tool-free midpoint finder.
+
+The procedure mirrors binary search by repeatedly bisecting intervals:
+
+**Step 1.** Attach the top-left corner of the curtain to the leftmost clip (clip 1) and the top-right corner to the rightmost clip (clip 5). Let the curtain hang — its lowest point is the exact midpoint of the whole width. Attach clip 3 there.
+
+**Step 2.** Now attach the curtain between clip 1 and clip 3 only. The lowest point is the midpoint of that half. Attach clip 2 there.
+
+**Step 3.** Attach the curtain between clip 3 and clip 5. The lowest point is the midpoint of the right half. Attach clip 4 there.
+
+All five clips are now equally spaced: the four gaps are each exactly one quarter of the total curtain width. The procedure uses **3 weighings** (one per step), mirroring how binary search on 4 intervals needs log2(4) = 2 bisection levels plus the initial attachment.
+
+### (b) Does It Work for 7 Clips?
+
+**No.** With 7 clips there are 6 equal gaps needed. After Step 1 we place clip 4 at the midpoint of the whole width (splitting into two halves of 3 gaps each). We then bisect each half, placing clips 2 and 6 at the quarter-points (splitting each half into segments of 1.5 gaps). At this point the segments are no longer bisectable into whole equal pieces — the next midpoints would land at the 1/8-positions of the whole curtain, giving spacings of 1/8 and 1/8, not 1/6 and 1/6. The binary bisection procedure does **not** produce equal spacing for 7 clips.
+
+### c) General Rule: Which Numbers of Clips Work?
+
+The procedure works if and only if the number of gaps (which is one less than the number of clips) is a **power of 2**.
+
+**Why:** Each round of bisection doubles the number of attached clips minus 1, i.e., it doubles the number of placed intervals. Starting from 1 interval (the full width), after k rounds we have 2^k equally spaced intervals and therefore 2^k + 1 clips. If the number of required gaps is not a power of 2, the bisection points never align with the required equal-spacing positions.
+
+The procedure works exactly for clip counts of the form:
+
+> **n = 2^k + 1** for some integer k ≥ 1
+
+That is: **3, 5, 9, 17, 33, 65, ...**
+
+|k|n = 2^k + 1|Bisection rounds needed|
+|---|---|---|
+|1|3|1|
+|2|5|2|
+|3|9|3|
+|4|17|4|
+
+For any such n, the procedure places all n clips in exactly k = log2(n−1) steps, each step bisecting all current open intervals simultaneously — a direct physical analogue of binary search.
