@@ -183,3 +183,138 @@ That is: **3, 5, 9, 17, 33, 65, ...**
 |4|17|4|
 
 For any such n, the procedure places all n clips in exactly k = log2(n−1) steps, each step bisecting all current open intervals simultaneously — a direct physical analogue of binary search.
+
+===Calculator may be needed but we won't be in need for calc during exam=
+
+## Solution
+
+### Useful reference values
+
+- 1 minute = 60 seconds
+- 1 hour = 3 600 seconds
+- 1 day = 86 400 seconds
+- 1 year ≈ 31 557 600 seconds ≈ 3.16 × 10^7 seconds
+- "—" means the running time exceeds 10 years
+
+---
+
+### Part (a): 10 operations per second
+
+Each operation takes 0.1 seconds. Time = (number of operations) / 10.
+
+|n|log2 n|n|n log2 n|n^2|2^n|
+|---|---|---|---|---|---|
+|10|0.3 sec|1 sec|3 sec|10 sec|1 min 42 sec|
+|20|0.4 sec|2 sec|9 sec|40 sec|1 day 5 hours|
+|21|0.4 sec|2 sec|9 sec|44 sec|2 days 10 hours|
+|1 000|1 sec|1 min 40 sec|17 min|1 day 4 hours|—|
+|1 000 000|2 sec|1 day 4 hours|23 days|—|—|
+|1 000 000 000|3 sec|3 years|—|—|—|
+
+**Selected calculations for part (a):**
+
+- n=10, 2^n: 2^10 = 1024 ops → 102.4 sec ≈ 1 min 42 sec
+- n=20, 2^n: 2^20 = 1 048 576 ops → 104 858 sec ≈ 1 day 5 hours
+- n=10^6, n^2: 10^12 ops → 10^11 sec ≈ 3 170 years → ignored
+- n=10^9, n: 10^9 ops → 10^8 sec ≈ 3.17 years
+
+---
+
+### Part (b): 1 000 000 operations per second
+
+Each operation takes 1 microsecond (μs). Time = (number of operations) / 1 000 000.
+
+|n|log2 n|n|n log2 n|n^2|2^n|
+|---|---|---|---|---|---|
+|10|3 μs|10 μs|33 μs|100 μs|1 ms|
+|20|4 μs|20 μs|86 μs|400 μs|1 sec|
+|21|4 μs|21 μs|92 μs|441 μs|2 sec|
+|1 000|10 μs|1 ms|10 ms|1 sec|—|
+|1 000 000|20 μs|1 sec|20 sec|11 days|—|
+|1 000 000 000|30 μs|17 min|8 hours|—|—|
+
+**Selected calculations for part (b):**
+
+- n=20, 2^n: 2^20 = 1 048 576 ops → 1.05 sec ≈ 1 sec
+- n=1000, 2^n: 2^1000 ≈ 10^301 ops → way beyond 10 years
+- n=10^6, n^2: 10^12 ops → 10^6 sec ≈ 11.6 days
+- n=10^9, n log2 n: 29.9 × 10^9 ops → 29 900 sec ≈ 8.3 hours
+
+---
+
+### Key observations
+
+The two tables together illustrate a fundamental point. Increasing computing speed by a factor of 100 000 (from 10 to 1 000 000 ops/sec) makes the polynomial algorithms (log n, n, n log n, n^2) dramatically faster — but it barely helps the exponential algorithm (2^n). For n = 20 the exponential algorithm drops from over a day to just 1 second, but already at n = 1000 it is untouchable regardless of hardware. This is why the distinction between polynomial and exponential algorithms matters far more than the speed of the machine.
+
+Task 1.5: Guess my number!—Level 2 Consider the variant of the game Guess my number! when there is no upper bound on the integer number x to be guessed. We only know x ≥ 8. Propose an algorithm to solve the problem using at most c · log2 x questions where c can be any constant number that does not depend on x; e.g. c = 8. Hint: First, try to find an upper bound r of x with as few questions as possible. Then, run Binary Search from the lecture. You can assume that it needs only log2 n questions when n is the size of the given interval containing x.
+
+## Solution
+
+### The Core Challenge
+
+In standard binary search we need a known interval [l, r] containing x. Here we have no upper bound, so we must first **find one** — and we must do so cheaply enough that the total question count stays within c · log2 x.
+
+---
+
+### Phase 1: Finding an Upper Bound by Doubling
+
+Start with r = 8 (the given lower bound) and repeatedly double r, asking "Is x ≤ r?" until the answer is yes.
+
+```
+r = 8
+while x > r do
+    r = r * 2
+```
+
+When the loop exits, we know:
+
+> r / 2 < x ≤ r
+
+So x lies in the interval (r/2, r] of size r/2. We also know r ≤ 2x, since we only doubled past x once — the previous value r/2 was still below x, meaning r/2 < x, so r < 2x, thus **r ≤ 2x**.
+
+**How many questions did Phase 1 use?**
+
+Each iteration doubles r, starting from 8 = 2^3. After k iterations r = 2^(3+k). The loop stops when r ≥ x, i.e. when 2^(3+k) ≥ x, i.e. when k ≥ log2 x − 3. So the loop runs at most **log2 x** iterations, using at most log2 x questions.
+
+---
+
+### Phase 2: Binary Search in the Found Interval
+
+We now run standard binary search on the interval (r/2, r], which has size r/2 ≤ x. By the assumption from the problem, binary search on an interval of size n needs log2 n questions. Here n = r/2 ≤ x, so Phase 2 uses at most **log2 x** questions.
+
+---
+
+### Total Question Count
+
+Total questions ≤ (Phase 1) + (Phase 2) ≤ log2 x + log2 x = **2 · log2 x**
+
+This satisfies the requirement with constant **c = 2**, which is much better than the allowed c = 8.
+
+---
+
+### Full Algorithm
+
+```
+// Phase 1: find upper bound
+r = 8
+while "Is x > r?" → yes:
+    r = r * 2
+
+// Now we know r/2 < x ≤ r
+// Phase 2: binary search on (r/2, r]
+l = r / 2
+while l + 1 < r:
+    m = (l + r) / 2
+    if "Is x ≤ m?" → yes:
+        r = m
+    else:
+        l = m
+
+// x = r (or x = l+1, the only remaining candidate)
+```
+
+---
+
+### Why the Doubling Strategy is Essential
+
+If instead we incremented r by a fixed step s, we would need x/s questions in Phase 1, which grows linearly in x — far too slow. Doubling ensures Phase 1 costs only logarithmically many questions, matching the cost of Phase 2, so the two phases together stay within **c · log2 x** for a small constant c.
