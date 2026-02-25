@@ -56,5 +56,82 @@ A few values for reference:
 |3                        |                         27|
 |4                        |                         81|
 
+| First name | Last name |
+| ---------- | --------- |
+| Max        | Planck    |
+| Marie      | Curie     |
+
 
 So the maximum number of coins among which we can find the forged one with k weighings is exactly **3^k**.
+
+
+Task 1.2: Divide by Two In this task, we want to divide a given integer by two without using the division operation. Consider the following algorithm. Algorithm 1: Input: integer n ≥ 0 Output: the value n/2 (possibly fractional) ℓ = 0 r = n while ℓ ̸= r do ℓ = ℓ + 1 r = r − 1 return ℓ 
+(a) How often does the while loop repeat in dependence of n? 
+(b) The program is not correct. What is the error? Fix the mistake! 
+(c) Prove the correctness of the fixed algorithm with a loop invariant. Show also that the algorithm terminates.
+
+E.g. Num 4 goes: 
+1. 0 and 4
+2. 1 and 3
+3. 2 and 2
+
+## Solution
+
+### (a) Number of Loop Iterations
+
+At each iteration, ℓ increases by 1 and r decreases by 1, so the difference r − ℓ shrinks by 2 per iteration. Initially r − ℓ = n.
+
+**If n is even:** after n/2 iterations we reach ℓ = r = n/2, and the loop exits. The loop runs **n/2 times**.
+
+**If n is odd:** after (n−1)/2 iterations we have ℓ = (n−1)/2 and r = (n+1)/2, so ℓ ≠ r and we enter another iteration, giving ℓ = (n+1)/2 and r = (n−1)/2. Now ℓ and r have **crossed**: ℓ > r, yet ℓ ≠ r still holds and they keep diverging. The loop **never terminates**.
+
+### (b) The Error and the Fix
+
+**The error** is that the loop condition `ℓ ≠ r` is never satisfied when n is odd, because ℓ and r skip past each other and diverge. The algorithm runs forever on any odd input.
+
+**The fix:** replace the condition `ℓ ≠ r` with `r − ℓ > 1`. The corrected algorithm is:
+
+```
+ℓ = 0
+r = n
+while r − ℓ > 1 do
+    ℓ = ℓ + 1
+    r = r − 1
+return ℓ
+```
+
+Checking small cases:
+|n|Exits with (ℓ, r)|Returns ℓ|Correct floor(n/2)|
+|---|---|---|---|
+|0|(0, 0)|0|0 ✓|
+|1|(0, 1)|0|0 ✓|
+|2|(1, 1)|1|1 ✓|
+|3|(1, 2)|1|1 ✓|
+|4|(2, 2)|2|2 ✓|
+|5|(2, 3)|2|2 ✓|
+
+The algorithm correctly computes floor(n/2) for all n ≥ 0.
+
+### (c) Correctness Proof via Loop Invariant
+
+**Loop invariant:** At the start of every iteration (and after the loop), the following holds:
+
+> ℓ + r = n, and ℓ ≤ r.
+
+**Initialization.** Before the first iteration, ℓ = 0 and r = n, so ℓ + r = n and ℓ ≤ r (since n ≥ 0). The invariant holds.
+
+**Maintenance.** Assume the invariant holds at the start of an iteration, with r − ℓ > 1 (so the loop is entered). After the step we have ℓ' = ℓ + 1 and r' = r − 1. Then ℓ' + r' = (ℓ+1) + (r−1) = ℓ + r = n, preserving the first part. Also r' − ℓ' = (r−1) − (ℓ+1) = r − ℓ − 2. Since r − ℓ > 1 and r − ℓ is an integer, r − ℓ ≥ 2, so r' − ℓ' ≥ 0, meaning ℓ' ≤ r'. The invariant is maintained.
+
+**Termination.** The value r − ℓ is a non-negative integer that decreases by exactly 2 at each iteration. It must eventually reach a value ≤ 1 (either 0 or 1), at which point the condition r − ℓ > 1 is false and the loop exits. Therefore the algorithm always terminates.
+
+**Correctness on exit.** When the loop exits, the invariant gives ℓ + r = n and ℓ ≤ r, and the negated guard gives r − ℓ ≤ 1. Since ℓ ≤ r we have r − ℓ ∈ {0, 1}.
+
+- If n is **even**: r − ℓ must be 0 (because ℓ + r = n is even, so r − ℓ has the same parity as n, which is even, ruling out r − ℓ = 1). Thus ℓ = r = n/2, and the algorithm returns n/2. ✓
+- If n is **odd**: r − ℓ must be 1 (same parity argument). Thus r = ℓ + 1, and ℓ + (ℓ+1) = n, giving ℓ = (n−1)/2 = floor(n/2). ✓
+
+In both cases the algorithm returns **floor(n/2)**, which equals n/2 for even n and is the natural interpretation of "n divided by 2" for odd n. □
+
+
+==Q of Prof: Looping invariant== = A loop invariant is a condition that is true immediately before and immediately after each iteration of a loop.  It serves as a logical assertion about the relationship between variables in a loop, ensuring the loop maintains correctness throughout its execution.
+
+This may appear in exam (above)
