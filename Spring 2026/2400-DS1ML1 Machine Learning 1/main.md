@@ -16,5 +16,10 @@ Harrington, P. (2012). Machine learning in action (Vol. 5). Greenwich, CT: Manni
 Intel (2018). Introduction to Machine Learning. Retrieved from https://www.intel.com/content/www/us/en/developer/learn/course-machine-learning.html
 VanderPlas, J. (2016). Python data science handbook: Essential tools for working with data. O'Reilly Media, Inc.
 
-
+The following weights are used to determine the final grade (max 100 pts):
+- 40 pts - mid-term theoretical exam
+- 30 pts for each of 2 projects, including:
+    - 10 pts for in class presentation
+    - 10 pts for presentation contents
+    - 10 pts for models performance in competition (out of sample test)
 
