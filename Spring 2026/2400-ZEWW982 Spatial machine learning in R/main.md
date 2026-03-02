@@ -40,3 +40,8 @@ geopandas for Python but still limited functions
 Nested geometry
 
 Buffer? 
+
+# 02
+Function Purpose 
+st_transform(x, crs)`Reproject to new CRS`
+st_filter(x, y, .predicate)`Keep features of x matching y`st_join(x, y, join)`Spatial join (adds y's columns to x)`st_intersects()`Predicate: any shared space`st_within()`Predicate: strictly inside`st_intersection(x, y)`Geometry clip (returns overlapping pieces)`st_centroid(x)`Compute centroids`st_distance(x, y)`Pairwise distances`st_bbox(x)`Bounding box`st_coordinates(x)`Extract coordinates as matrix`st_drop_geometry()`Remove geometry (for tabular operations)`st_make_valid(x)`Fix invalid geometries`st_area(x)`Compute area`rast(...)`Create raster template (terra)`rasterize(xy, rast, values, fun)`Convert points to raster
