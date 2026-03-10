@@ -1,0 +1,22 @@
+Patient note A:
+Name: Elena Petrova
+DOB: 1991-04-18
+Age now: 34
+Income bracket: 72,000 USD
+Email on file -> elena.petrova+trial@medmail.com
+Gene marker observed: BRCA1
+Follow-up marker: TP53
+
+Patient note B:
+Name: Omar Nabil
+Born on 12/07/1986. Current age = 39.
+Compensation last year was EUR 58,300.
+Best contact is omar_nabil86@research.co.uk
+Gene flags: EGFR, KRAS
+
+Patient note C:
+Subject: Priya Raman
+Age: 27 years
+Monthly freelance income approx. $4,200
+Preferred email: priya.raman.dev@proton.me
+Mentioned genes: APOE and MTHFR

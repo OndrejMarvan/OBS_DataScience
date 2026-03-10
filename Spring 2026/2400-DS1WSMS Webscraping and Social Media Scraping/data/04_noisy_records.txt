@@ -1,0 +1,5 @@
+Record>> user=Kira; years=24; pay=$39,900; email=kira24@demo.com; genes=[FTO, MC4R]
+Record>> user=Leon; years=58; pay=USD104500; email=leon.bauer@enterprise.ai; genes=[BRCA1;BRCA2]
+Record>> user=Sara; years=33; pay=91_200 USD; email=sara.connor+ops@cyber.net; genes=[CFTR]
+Record>> user=Ivy; years=44; pay=Income not disclosed publicly; email=ivy44@hidden.example; genes=[TP53, RB1]
+Record>> user=Mateo; years=27; pay=€51.700; email=mateo_qc@euro-lab.eu; genes=[JAK2, CALR, MPL]

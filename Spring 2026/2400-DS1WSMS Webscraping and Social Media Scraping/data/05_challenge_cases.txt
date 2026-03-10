@@ -1,0 +1,17 @@
+Case file X-01:
+"Renee", believed to be 38, reported income somewhere between $88,000 and $91,500 depending on bonus timing.
+Active contact emails: renee.primary@alpha.com, renee.backup+alerts@beta.org.
+Her notes referenced HLA-B27, CYP2D6, and COMT.
+
+Case file X-02:
+Thomas Wu (age thirty-two in an early transcript, later corrected to age 32) earns about 6,850 USD monthly.
+Reach him at thomas.wu@fin-example.com. Historical alias: tom_wu1993@oldmail.net.
+Gene mentions included BRIP1 / RAD51C / RAD51D.
+
+Case file X-03:
+Elena's profile lists: Age=47; Earnings=CAD 99,400; Email=elena47@canmail.ca; Genes=APC|MLH1|MSH2.
+Another sentence says her household income may exceed 100000 CAD when consulting revenue is included.
+
+Case file X-04:
+Temporary volunteer, Arjun, 22, gave no fixed salary figure but wrote "stipend 1,250 per month".
+Email used during onboarding: arjun.temp@uni.edu. Biology notes named BRAF and NRAS.

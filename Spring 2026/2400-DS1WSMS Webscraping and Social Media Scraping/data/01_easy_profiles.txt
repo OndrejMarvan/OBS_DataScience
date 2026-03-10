@@ -1,0 +1,8 @@
+Candidate 1: Maria Gomez is 29 years old and works as a lab assistant. Her annual income is $48,500. 
+You can reach her at maria.gomez29@example.com. Sample ID: SG-2048.
+
+Candidate 2: David Lee, age 41, reported yearly earnings of $92,000 and listed the email dlee_hr@company.org.
+Internal ref: EMP-7781.
+
+Candidate 3: Noor Hassan is 35 years old. Estimated income: USD 67,250 per year.
+Contact: noor.hassan@sample.net. Tracking code: NH-5530.
