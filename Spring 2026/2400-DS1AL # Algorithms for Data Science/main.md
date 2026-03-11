@@ -324,3 +324,513 @@ If instead we incremented r by a fixed step s, we would need x/s questions in Ph
 Cheatsheet is allowed during the exam but will be checked if not including something else as well. 
 log of n grows slower than linear function... -> faster algorithm will grow slower than slow algorithm 
 
+Transformation rules to follow in docs!
+
+**Exam** Simplification of formulas (photo in phone)
+
+# AFDS – Exercise 2 Solutions
+
+## Task 2.1: Oh-Notation
+
+### (a) Do you know which algorithm is faster?
+
+**No.** $O$-notation only gives an **upper bound**, not a tight bound. Saying $A$ is $O(n \log n)$ means its running time is _at most_ roughly $n \log n$ — but it could be much less. Same for $B$ being $O(n^2)$. Without $\Theta$-bounds, we can't compare them. $B$ might actually run in $O(1)$ for all we know.
+
+---
+
+### (b) $\Theta(10 \cdot n^2 + 978 \cdot n + n \cdot n \cdot 2 \cdot n / 1000)$
+
+Simplify each term:
+
+- $10 \cdot n^2 \to n^2$
+- $978 \cdot n \to n$
+- $n \cdot n \cdot 2 \cdot n / 1000 = \frac{2}{1000} n^3 \to n^3$
+
+We get $\Theta(n^2 + n + n^3)$. The dominant term is $n^3$.
+
+$$\boxed{\Theta(n^3)}$$
+
+---
+
+### (c) $\Theta!\left(1000 (\log_5 n)^{1000} + \sqrt{n} \cdot 2000 + (11/10)^n\right)$
+
+Simplify each term:
+
+- $1000 (\log_5 n)^{1000} \to (\log n)^{1000}$ — a polylogarithmic function
+- $\sqrt{n} \cdot 2000 \to n^{1/2}$ — a polynomial
+- $(11/10)^n = 1.1^n$ — an exponential
+
+By **LOG < POL**: $(\log n)^{1000}$ grows slower than $n^{1/2}$. By **POL < EXP**: $n^{1/2}$ grows slower than $1.1^n$.
+
+$$\boxed{\Theta(1.1^n)}$$
+
+---
+
+### (d) $\Theta!\left(4 \cdot n^{1/4} \cdot n^{0.25} + 2^{(2n)^2 / n} + 50 \log^2(100n) + \log_3(9^n)\right)$
+
+Simplify each term:
+
+**Term 1:** $4 \cdot n^{1/4} \cdot n^{0.25} = 4 \cdot n^{1/4 + 1/4} = 4 \cdot n^{1/2} \to n^{1/2}$
+
+**Term 2:** $2^{(2n)^2/n} = 2^{4n^2/n} = 2^{4n} \to 2^{4n}$. This is exponential.
+
+**Term 3:** $50 \log^2(100n) \to \log^2 n$. Since $\log(100n) = \log 100 + \log n = \Theta(\log n)$.
+
+**Term 4:** $\log_3(9^n) = n \cdot \log_3 9 = n \cdot 2 = 2n \to n$. This is linear.
+
+Now compare: $\log^2 n < n^{1/2} < n$ by LOG < POL, and $n < 2^{4n}$ by POL < EXP.
+
+$$\boxed{\Theta(2^{4n})}$$
+
+> Note: $2^{4n} = (2^4)^n = 16^n$, so equivalently $\Theta(16^n)$.
+
+---
+
+### (e) $\Theta(91n + n^2 \cdot 4n^2 + 3\log n + 42n^3)$
+
+Simplify:
+
+- $91n \to n$
+- $n^2 \cdot 4n^2 = 4n^4 \to n^4$
+- $3 \log n \to \log n$
+- $42n^3 \to n^3$
+
+Ordering: $\log n < n < n^3 < n^4$.
+
+$$\boxed{\Theta(n^4)}$$
+
+---
+
+### (f) $\Theta(1000^{1000^{1000}} + \frac{1}{2} \cdot 1.0001^n + 40 \cdot n^{100})$
+
+- $1000^{1000^{1000}}$ is a gigantic but **constant** $\to 1$.
+- $\frac{1}{2} \cdot 1.0001^n \to 1.0001^n$ — exponential.
+- $40 \cdot n^{100} \to n^{100}$ — polynomial.
+
+By POL < EXP: $n^{100}$ grows slower than $1.0001^n$.
+
+$$\boxed{\Theta(1.0001^n)}$$
+
+---
+
+### (g) $\Theta(5\log(5n))$
+
+$5\log(5n) = 5(\log 5 + \log n) = 5\log 5 + 5\log n$.
+
+Drop the constant $5\log 5$ and the constant factor $5$:
+
+$$\boxed{\Theta(\log n)}$$
+
+---
+
+### (h) $\Theta(5 \cdot 2^{5n+5})$
+
+$5 \cdot 2^{5n+5} = 5 \cdot 2^5 \cdot 2^{5n} = 160 \cdot 2^{5n}$.
+
+Drop the constant factor. Also $2^{5n} = (2^5)^n = 32^n$.
+
+$$\boxed{\Theta(32^n)}$$
+
+---
+
+### (i) $\Theta(42m + k/100 + m \cdot 21 \cdot k + 22\log_2 n)$
+
+Simplify:
+
+- $42m \to m$
+- $k/100 \to k$
+- $21mk \to mk$
+- $22\log_2 n \to \log n$
+
+Since $m \leq mk$ and $k \leq mk$, those are dominated. We keep $mk$ and $\log n$ (they depend on different parameters, so we can't drop either).
+
+$$\boxed{\Theta(mk + \log n)}$$
+
+---
+
+## Task 2.2: Oh-Notation++
+
+### (a) Order by growth rate
+
+First, let's simplify some of the functions:
+
+- $\log(n^2) = 2\log n = \Theta(\log n)$
+- $4^{\log n} = (2^2)^{\log n} = 2^{2\log n} = n^2$
+- $2^{\sqrt{2}\log n}$: note $2^{\log n} = n$, so $2^{\sqrt{2}\log n} = n^{\sqrt{2}} \approx n^{1.414}$
+
+So the list becomes:
+
+|Original|Simplified|
+|---|---|
+|$\log(n^2)$|$\log n$|
+|$(\log n)^2$|$(\log n)^2$|
+|$\sqrt{n}$|$n^{0.5}$|
+|$2^{\sqrt{2}\log n}$|$n^{\sqrt{2}} \approx n^{1.414}$|
+|$n^2$|$n^2$|
+|$4^{\log n}$|$n^2$|
+|$n!$|$n!$|
+|$2^n$|$2^n$|
+|$n \cdot 2^n$|$n \cdot 2^n$|
+
+**Ordered from slowest to fastest growth:**
+
+$$\log n ;<; (\log n)^2 ;<; n^{0.5} ;<; n^{\sqrt{2}} ;<; n^2 = 4^{\log n} ;<; 2^n ;<; n \cdot 2^n ;<; n!$$
+
+Justification of key steps:
+
+- $\log n < (\log n)^2$: for large $n$, squaring a growing function makes it bigger.
+- $(\log n)^2 < n^{0.5}$: by LOG < POL.
+- $n^{0.5} < n^{\sqrt{2}} < n^2$: polynomial with increasing exponents.
+- $n^2 < 2^n$: by POL < EXP.
+- $2^n < n \cdot 2^n$: multiplying by $n$ makes it grow faster.
+- $n \cdot 2^n < n!$: Stirling's approximation gives $n! \approx (n/e)^n$, which dominates $n \cdot 2^n$.
+
+---
+
+### (b) Is $f(n) + g(n) = \Theta(\max(f(n), g(n)))$?
+
+**Yes.** (Assuming $f, g \geq 0$.)
+
+**Upper bound ($O$):** $f(n) + g(n) \leq \max(f,g) + \max(f,g) = 2 \cdot \max(f(n), g(n))$. So $f + g = O(\max(f,g))$ with $C = 2$.
+
+**Lower bound ($\Omega$):** $f(n) + g(n) \geq \max(f(n), g(n))$. So $f + g = \Omega(\max(f,g))$ with $C = 1$.
+
+Together: $f(n) + g(n) = \Theta(\max(f(n), g(n)))$. $\blacksquare$
+
+---
+
+### (c) Is $(n + 100)^5 = \Theta(n^5)$?
+
+**Yes.**
+
+**Upper bound:** For $n \geq 1$: $n + 100 \leq n + 100n = 101n$, so $(n+100)^5 \leq (101n)^5 = 101^5 \cdot n^5$. Take $C = 101^5$.
+
+**Lower bound:** $(n+100)^5 \geq n^5$ always. Take $C = 1$.
+
+So $(n+100)^5 = \Theta(n^5)$. $\blacksquare$
+
+---
+
+### (d) Is $\log_3 n + \log_5 n = \Theta(\log_7 n)$?
+
+**Yes.** All logarithm bases differ only by constant factors:
+
+$$\log_a n = \frac{\log_b n}{\log_b a}$$
+
+So $\log_3 n = \frac{\log n}{\log 3}$ and $\log_5 n = \frac{\log n}{\log 5}$ and $\log_7 n = \frac{\log n}{\log 7}$.
+
+Then: $\log_3 n + \log_5 n = \left(\frac{1}{\log 3} + \frac{1}{\log 5}\right) \log n = \Theta(\log n) = \Theta(\log_7 n)$. $\blacksquare$
+
+---
+
+### (e) Is $300\log(n^{n^k}) + k^k + 2^{\sqrt{k}\log k} = O(n\log n + 2^{k\log k})$?
+
+Simplify the left side:
+
+- $300\log(n^{n^k}) = 300 \cdot n^k \cdot \log n \to n^k \log n$
+- $k^k = 2^{k \log k}$ (since $k^k = (2^{\log k})^k = 2^{k\log k}$)
+- $2^{\sqrt{k}\log k} = k^{\sqrt{k}}$, which grows slower than $k^k = 2^{k\log k}$ for large $k$
+
+So the left side is $\Theta(n^k \log n + 2^{k\log k})$.
+
+The right side is $O(n\log n + 2^{k\log k})$.
+
+For general $k$, $n^k \log n$ is not bounded by $n \log n$ (e.g. if $k = 2$, then $n^2 \log n$ is not $O(n\log n)$).
+
+**No**, the statement does not hold in general. $\blacksquare$
+
+> It would hold if $k$ is a fixed constant with $k \leq 1$, but for arbitrary $k$ it fails.
+
+---
+
+## Task 2.3: Oh-Notation Definitions
+
+### (a) Multi-parameter Big-O
+
+$f(n_1, \dots, n_i) = O(g(n_1, \dots, n_i))$ if there exist constants $C > 0$ and $n_0 \geq 0$ such that for all $n_1, \dots, n_i \geq n_0$:
+
+$$f(n_1, \dots, n_i) \leq C \cdot g(n_1, \dots, n_i)$$
+
+---
+
+### (b) Prove $f(n) = \Omega(g(n))$ iff $g(n) = O(f(n))$
+
+**($\Rightarrow$):** Assume $f(n) = \Omega(g(n))$. Then there exist $C > 0$ and $n_0$ such that for all $n \geq n_0$:
+
+$$f(n) \geq C \cdot g(n)$$
+
+Rearranging: $g(n) \leq \frac{1}{C} \cdot f(n)$.
+
+Set $C' = 1/C > 0$. Then $g(n) \leq C' \cdot f(n)$ for all $n \geq n_0$, which means $g(n) = O(f(n))$.
+
+**($\Leftarrow$):** Symmetric. Assume $g(n) = O(f(n))$, so $g(n) \leq C' \cdot f(n)$ for all $n \geq n_0$. Then $f(n) \geq \frac{1}{C'} \cdot g(n)$, so $f(n) = \Omega(g(n))$. $\blacksquare$
+
+---
+
+## Task 2.4: Airfield (Longest Plateau)
+
+### Algorithm
+
+Scan through the array once, tracking the current plateau and the best plateau found so far.
+
+```
+LongestPlateau(h[1..n]):
+    bestStart = 1
+    bestLen = 1
+    curStart = 1
+    curLen = 1
+
+    for i = 2 to n:
+        if h[i] == h[i-1]:
+            curLen = curLen + 1
+        else:
+            curStart = i
+            curLen = 1
+
+        if curLen > bestLen:
+            bestLen = curLen
+            bestStart = curStart
+
+    return bestStart
+```
+
+### Running time
+
+We do a single pass through the array with constant work per element.
+
+$$\boxed{\Theta(n)}$$
+
+---
+
+## Task 2.5: Forest Age / Salary Database
+
+### (a) $O(1)$ extra memory solution
+
+With only constant extra memory, for each query $q[j]$, we scan through the entire database $d$ and count matches.
+
+```
+NaiveCounting(d[1..n], q[1..m], k):
+    for j = 1 to m:
+        count = 0
+        for i = 1 to n:
+            if d[i] == q[j]:
+                count = count + 1
+        res[j] = count
+    return res
+```
+
+**Running time:** For each of the $m$ queries, we scan all $n$ elements.
+
+$$\boxed{\Theta(m \cdot n)}$$
+
+---
+
+### (b) $O(n + m + k)$ solution using counting
+
+Use the **counting technique**: build a frequency array of size $k+1$ that counts how many times each value appears in $d$. Then answer each query in $O(1)$.
+
+```
+CountingAnswer(d[1..n], q[1..m], k):
+    // Step 1: build frequency table
+    freq[0..k] = new array initialized to 0    // size k+1
+
+    for i = 1 to n:
+        if d[i] <= k:
+            freq[d[i]] = freq[d[i]] + 1
+
+    // Step 2: answer queries
+    for j = 1 to m:
+        res[j] = freq[q[j]]
+
+    return res
+```
+
+**Running time:** Building `freq` takes $O(n)$, answering queries takes $O(m)$, initializing `freq` takes $O(k)$.
+
+$$\boxed{\Theta(n + m + k)}$$
+
+**Extra memory:** The `freq` array has size $k + 1$.
+
+$$\boxed{\Theta(k)}$$
+
+**Comparison with (a) when $m = \Theta(\sqrt{n})$ and $k = \Theta(m) = \Theta(\sqrt{n})$:**
+
+- (a): $\Theta(m \cdot n) = \Theta(\sqrt{n} \cdot n) = \Theta(n^{3/2})$
+- (b): $\Theta(n + m + k) = \Theta(n + \sqrt{n} + \sqrt{n}) = \Theta(n)$
+
+So (b) is significantly faster in this scenario.
+
+---
+
+## Task 2.6: SomeSortingAlgo (Selection Sort)
+
+### (a) Swap function
+
+```
+Swap(a, i, l):
+    temp = a[i]
+    a[i] = a[l]
+    a[l] = temp
+```
+
+---
+
+### (b) Best and worst case running time
+
+The outer loop runs $n-1$ times. For each iteration $i$, the inner loop runs from $i+1$ to $n-1$ (after the fix), which is about $n - i$ iterations. The total number of inner iterations is:
+
+$$\sum_{i=1}^{n-1}(n - i) = (n-1) + (n-2) + \dots + 1 = \frac{n(n-1)}{2}$$
+
+This sum is the same regardless of the input (no early termination).
+
+$$\boxed{\text{Best case} = \text{Worst case} = \Theta(n^2)}$$
+
+---
+
+### (c) The bug and shortest failing input
+
+**The bug:** In line 5, the condition is `while j < n` but it should be `while j <= n` (or equivalently `j < n+1`). As written, the algorithm never checks the last element `a[n]`.
+
+**Shortest failing input:** $a = [2, 1]$.
+
+- $i = 1$, $minPos = 1$, $j = 2$.
+- Inner while: `j < 2` is false → inner loop doesn't execute.
+- $minPos = 1 = i$, so no swap. $i$ becomes 2. Outer loop ends.
+- Output: $[2, 1]$ — **not sorted.**
+
+**Fix:** Change line 5 from `while j < n` to `while j <= n`.
+
+> Alternatively change to `while j < n + 1`, which is equivalent.
+
+---
+
+### (d) Proof that inner loop finds position of minimum in $a[i..n]$
+
+**Loop invariant (for the inner while loop, lines 4–8):** At the start of each iteration with loop variable $j$, $minPos$ holds the index of a smallest element in $a[i..j-1]$.
+
+**Initialization ($j = i + 1$):** $minPos = i$, and $a[i..i]$ contains only $a[i]$, so $a[minPos]$ is trivially the minimum.
+
+**Maintenance:** Suppose the invariant holds for some $j$. We compare $a[j]$ with $a[minPos]$:
+
+- If $a[j] < a[minPos]$: we set $minPos = j$. Now $minPos$ points to the smallest in $a[i..j]$.
+- Otherwise: $a[minPos]$ is still the smallest in $a[i..j]$.
+
+Then $j$ increments to $j+1$, and the invariant holds for the new $j$.
+
+> (Using the fixed version where the condition is $j \leq n$.)
+
+**Termination:** The loop ends when $j = n + 1$. The invariant gives us that $minPos$ is the index of a smallest element in $a[i..n]$. $\blacksquare$
+
+---
+
+### (e) Correctness of the whole algorithm
+
+**Loop invariant (for the outer while, line 2):** At the start of each iteration:
+
+1. $a[1..i-1]$ is sorted non-decreasingly.
+2. Every element in $a[1..i-1]$ is $\leq$ every element in $a[i..n]$.
+3. $a[1..n]$ is a permutation of the original array.
+
+**Initialization ($i = 1$):** $a[1..0]$ is empty, so (1) and (2) hold vacuously. (3) holds since nothing changed.
+
+**Maintenance:** Assume the invariant holds for iteration $i$. By part (d), the inner loop finds $minPos$ — the index of the minimum of $a[i..n]$.
+
+After `Swap(a, i, minPos)`:
+
+- $a[i]$ now contains the smallest element of $a[i..n]$.
+- By (2), all elements in $a[1..i-1]$ are $\leq$ all elements in $a[i..n]$, so in particular $\leq a[i]$.
+- So $a[1..i]$ is sorted non-decreasingly.
+- Every element in $a[1..i]$ is $\leq$ every element in $a[i+1..n]$ (since we placed the min of $a[i..n]$ at position $i$).
+- We only swapped elements, so (3) still holds.
+
+When $i$ increments to $i+1$, the invariant holds for $i+1$.
+
+**Termination:** The loop ends when $i = n$. The invariant gives: $a[1..n-1]$ is sorted and all elements in $a[1..n-1]$ are $\leq a[n]$. So the entire array $a[1..n]$ is sorted. $\blacksquare$
+
+---
+
+## Task 2.7: StrangeAlgo
+
+### (a) Output of StrangeAlgo(1000000000000000, 8941307)
+
+The recursion is `StrangeAlgo(n, k-2)` each time, and:
+
+- $k = 0 \to$ return 0
+- $k = 1 \to$ return 1
+
+Since $8941307$ is odd, subtracting 2 repeatedly keeps it odd, so it eventually reaches $k = 1$.
+
+$$\boxed{1}$$
+
+> More generally: output is $0$ if $k$ is even, $1$ if $k$ is odd.
+
+---
+
+### (b) Running time
+
+Each call does:
+
+- Lines 7–10: a loop from 1 to 1000 → $\Theta(1)$ (constant).
+- Lines 11–12: a loop from 1001 to $n$ → $\Theta(n)$.
+- One recursive call with $k - 2$.
+
+Total number of recursive calls: $\lfloor k/2 \rfloor = \Theta(k)$. Each call does $\Theta(n)$ work.
+
+$$\boxed{\Theta(nk)}$$
+
+---
+
+### (c) Memory complexity
+
+Each call allocates an array of size 1000 → $\Theta(1)$ per call. There are $\Theta(k)$ calls on the recursion stack (each waiting for the next to return).
+
+$$\boxed{\Theta(k)}$$
+
+> The $\Theta(k)$ accounts for the recursion stack depth. Each frame uses $\Theta(1)$ space (the 1000-element array is constant size), and there are $\Theta(k)$ frames.
+
+---
+
+### (d) Modify to run in $\Omega(n^k)$
+
+Replace the linear loop with a **nested recursion** that multiplies the work. The key idea: instead of calling `StrangeAlgo(n, k-2)` once, we nest it so each level multiplies by $n$.
+
+```
+StrangeAlgoModified(n, k):
+    if k == 0: return 0
+    if k == 1: return 1
+
+    i = 1
+    while i <= n:
+        i++
+
+    ret = StrangeAlgoModified(n, k - 1)   // changed: k-2 → k-1
+    return ret
+```
+
+Now the recursion depth is $k - 1$ (going $k, k-1, \dots, 1$). But each level does $\Theta(n)$ work, giving $\Theta(nk)$ total — that's still not $n^k$.
+
+To get $\Omega(n^k)$, we need to call the recursion $n$ times per level:
+
+```
+StrangeAlgoPower(n, k):
+    if k == 0: return 0
+    if k == 1:
+        i = 1
+        while i <= n:   // do Theta(n) work at base case
+            i++
+        return 1
+
+    i = 1
+    while i <= n:        // loop n times
+        StrangeAlgoPower(n, k - 1)
+        i++
+
+    return 0
+```
+
+Let $T(n, k)$ be the running time. Then:
+
+- $T(n, 1) = \Theta(n)$
+- $T(n, k) = n \cdot T(n, k-1)$
+
+This gives $T(n, k) = \Theta(n^k)$ — which is $\Omega(n^k)$. $\blacksquare$
