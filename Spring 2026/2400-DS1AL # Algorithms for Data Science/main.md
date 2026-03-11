@@ -461,17 +461,17 @@ First, let's simplify some of the functions:
 
 So the list becomes:
 
-|Original|Simplified|
-|---|---|
-|$\log(n^2)$|$\log n$|
-|$(\log n)^2$|$(\log n)^2$|
-|$\sqrt{n}$|$n^{0.5}$|
-|$2^{\sqrt{2}\log n}$|$n^{\sqrt{2}} \approx n^{1.414}$|
-|$n^2$|$n^2$|
-|$4^{\log n}$|$n^2$|
-|$n!$|$n!$|
-|$2^n$|$2^n$|
-|$n \cdot 2^n$|$n \cdot 2^n$|
+| Original             | Simplified                       |
+| -------------------- | -------------------------------- |
+| $\log(n^2)$          | $\log n$                         |
+| $(\log n)^2$         | $(\log n)^2$                     |
+| $\sqrt{n}$           | $n^{0.5}$                        |
+| $2^{\sqrt{2}\log n}$ | $n^{\sqrt{2}} \approx n^{1.414}$ |
+| $n^2$                | $n^2$                            |
+| $4^{\log n}$         | $n^2$                            |
+| $n!$                 | $n!$                             |
+| $2^n$                | $2^n$                            |
+| $n \cdot 2^n$        | $n \cdot 2^n$                    |
 
 **Ordered from slowest to fastest growth:**
 
