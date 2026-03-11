@@ -318,3 +318,9 @@ while l + 1 < r:
 ### Why the Doubling Strategy is Essential
 
 If instead we incremented r by a fixed step s, we would need x/s questions in Phase 1, which grows linearly in x — far too slow. Doubling ensures Phase 1 costs only logarithmically many questions, matching the cost of Phase 2, so the two phases together stay within **c · log2 x** for a small constant c.
+
+
+# Lab 2 (11.03.2026)
+Cheatsheet is allowed during the exam but will be checked if not including something else as well. 
+log of n grows slower than linear function... -> faster algorithm will grow slower than slow algorithm 
+
