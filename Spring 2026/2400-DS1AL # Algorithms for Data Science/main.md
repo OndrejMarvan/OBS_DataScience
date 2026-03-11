@@ -331,6 +331,7 @@ Transformation rules to follow in docs!
 # AFDS – Exercise 2 Solutions
 
 ## Task 2.1: Oh-Notation
+$\Theta$ = Theta
 
 ### (a) Do you know which algorithm is faster?
 
