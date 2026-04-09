@@ -14,7 +14,7 @@
 
 Suggestion to topic: ???
 
-## Lab (26.03.2026) 
+## Lab 6 (26.03.2026) 
 ## Advanced Econometrics: Models for Count Data
 
 _Tags: #econometrics #statistics #count_data #regression_
