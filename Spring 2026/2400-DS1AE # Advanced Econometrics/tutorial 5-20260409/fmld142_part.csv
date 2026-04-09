@@ -1,0 +1,824 @@
+age_ref,empltyp1,fam_size,marital1,sex_ref
+54,Private company,2,3,2
+21,Private company,2,1,1
+29,Private company,3,1,2
+34,Private company,6,5,2
+51,State government,2,1,2
+29,Private company,4,1,2
+68,Private company,1,5,2
+24,Private company,5,5,2
+64,Private company,3,1,2
+35,Private company,2,5,2
+22,State government,2,5,2
+44,Private company,1,5,1
+51,Federal government,1,3,1
+20,Private company,1,5,1
+40,Private company,8,5,2
+60,Private company,1,5,2
+76,Private company,2,1,2
+38,Self-employed,2,3,2
+61,Private company,2,1,1
+48,Private company,3,1,2
+28,Self-employed,1,5,2
+36,Private company,1,5,1
+42,Private company,3,1,1
+27,Private company,1,5,1
+35,Private company,1,5,2
+69,Private company,1,5,2
+53,Private company,4,1,1
+32,Private company,5,5,2
+23,Private company,1,5,1
+52,Private company,3,1,1
+60,State government,1,5,2
+24,Private company,2,1,1
+41,Private company,1,3,1
+50,Private company,3,1,2
+70,Private company,2,1,2
+35,Private company,6,1,2
+49,Private company,1,3,1
+26,Private company,2,1,1
+34,Private company,4,5,1
+47,Private company,1,5,2
+31,Local government,3,1,1
+39,Private company,2,3,2
+69,Private company,2,1,1
+62,Private company,1,3,1
+71,Local government,1,3,1
+24,Private company,1,5,2
+42,Private company,2,1,1
+35,Private company,2,1,1
+42,Private company,4,1,1
+64,Private company,2,1,1
+31,Federal government,3,1,2
+37,Private company,4,1,2
+73,Private company,2,1,2
+44,Private company,2,4,1
+31,Private company,4,1,2
+42,Private company,1,4,1
+46,Private company,1,3,2
+35,Private company,1,1,1
+52,Self-employed,3,1,1
+43,Private company,4,1,2
+25,Private company,4,1,2
+42,Private company,5,1,2
+63,Private company,2,1,1
+31,Private company,2,1,1
+33,Private company,3,1,2
+50,Private company,4,1,2
+35,Local government,2,3,2
+40,Private company,4,1,2
+72,Self-employed,2,1,2
+39,Private company,7,1,2
+56,State government,2,1,2
+25,Private company,2,5,1
+41,Private company,4,4,2
+61,Self-employed,2,1,2
+55,Private company,2,3,2
+73,Private company,2,1,1
+39,Self-employed,4,1,1
+53,Private company,4,1,2
+48,Local government,2,1,2
+63,Private company,1,5,2
+60,Private company,2,1,1
+46,Local government,7,1,2
+48,Self-employed,2,1,1
+64,Private company,2,1,2
+28,Private company,1,5,2
+56,Self-employed,1,5,1
+47,Local government,2,1,1
+47,Private company,2,5,2
+39,State government,6,1,2
+29,Private company,4,5,2
+44,Local government,7,3,2
+63,Private company,3,1,1
+56,Private company,2,1,1
+53,Private company,1,1,1
+68,Local government,2,1,1
+51,Private company,2,1,2
+37,Private company,4,1,1
+55,Private company,3,1,2
+21,Private company,5,5,1
+45,Private company,3,1,2
+63,Private company,3,1,2
+47,Private company,3,3,1
+66,State government,1,5,2
+29,Private company,1,5,1
+38,Private company,4,3,2
+46,Private company,6,1,1
+25,Private company,2,1,1
+50,Private company,5,1,2
+61,Private company,1,5,2
+19,Private company,1,5,1
+53,Private company,1,5,2
+21,Private company,1,5,2
+23,Private company,2,5,1
+55,Local government,2,1,2
+28,Private company,2,5,1
+54,Self-employed,2,1,2
+50,Private company,3,3,2
+65,Private company,1,2,2
+43,Private company,4,1,1
+54,Private company,2,1,2
+36,Private company,2,5,2
+29,Local government,1,5,2
+33,Private company,3,3,2
+54,Private company,1,5,1
+38,Private company,6,1,2
+53,Self-employed,3,1,1
+37,Private company,5,5,1
+49,Private company,5,1,1
+41,Self-employed,4,1,2
+71,State government,2,1,2
+41,Private company,2,1,1
+66,Private company,2,1,2
+62,Private company,1,2,1
+32,Self-employed,3,1,2
+40,Private company,1,3,2
+45,Self-employed,5,1,1
+29,Private company,2,1,2
+80,Local government,1,2,2
+51,Private company,4,1,2
+40,Private company,1,5,2
+44,Private company,4,1,1
+44,Private company,4,1,2
+50,Private company,1,5,1
+49,Private company,2,5,1
+50,Federal government,3,1,2
+33,Private company,4,1,2
+51,Private company,5,1,2
+19,Private company,1,5,2
+51,Private company,2,5,2
+58,Private company,1,3,2
+50,Private company,2,5,2
+59,Private company,1,5,1
+47,Private company,3,1,2
+63,Private company,1,2,2
+27,Private company,2,5,2
+34,Private company,5,1,1
+39,Private company,4,1,2
+23,Private company,2,1,1
+28,Local government,1,5,2
+28,Private company,1,5,1
+37,Private company,2,1,1
+52,Self-employed,2,1,2
+35,Private company,1,5,1
+56,Private company,2,1,2
+49,Private company,2,1,2
+34,Private company,4,1,2
+37,Private company,1,5,1
+62,Private company,2,1,1
+36,Private company,1,3,2
+26,State government,2,5,1
+52,Private company,2,1,1
+58,Private company,3,3,1
+30,Private company,2,5,2
+55,Self-employed,2,1,2
+78,Federal government,2,2,2
+43,Private company,2,3,2
+32,Private company,2,1,1
+40,Private company,2,3,1
+39,Private company,4,1,1
+30,Private company,1,5,2
+61,Self-employed,2,1,1
+21,State government,5,5,1
+40,Private company,1,5,1
+68,Private company,1,1,1
+38,Private company,1,3,1
+38,Self-employed,5,5,2
+63,State government,2,1,2
+65,Self-employed,2,1,1
+31,Private company,1,5,2
+68,Private company,2,1,2
+50,Private company,2,1,1
+18,Private company,2,1,2
+53,Private company,3,1,2
+51,Private company,1,2,1
+31,Federal government,1,5,1
+65,Self-employed,2,1,2
+56,Private company,1,2,1
+69,Private company,1,3,1
+30,Private company,2,5,1
+22,Private company,1,5,1
+58,Private company,2,5,2
+39,State government,4,1,2
+55,Private company,1,3,1
+57,Self-employed,1,3,1
+57,Self-employed,2,1,1
+39,Self-employed,5,1,2
+38,Private company,1,4,1
+41,Private company,4,1,2
+39,Federal government,4,1,1
+52,Local government,3,1,1
+34,Private company,2,3,1
+44,State government,3,1,2
+56,Private company,3,1,1
+45,Private company,1,3,2
+56,Private company,2,3,2
+61,State government,1,3,2
+44,Private company,2,1,2
+33,Private company,4,1,1
+43,Self-employed,2,1,1
+87,Private company,1,2,2
+52,Self-employed,4,1,1
+43,Private company,9,4,2
+53,Private company,2,3,1
+53,Private company,2,1,1
+51,Self-employed,3,3,2
+69,Private company,2,1,2
+43,Private company,1,5,2
+34,Private company,3,1,1
+32,Private company,1,3,1
+21,State government,1,5,1
+76,Private company,2,1,1
+44,Self-employed,2,1,1
+44,State government,2,1,1
+59,Private company,1,3,2
+80,Private company,5,5,1
+75,Private company,5,5,1
+27,Private company,4,1,1
+32,Private company,2,5,1
+47,Private company,3,1,1
+50,Private company,3,1,1
+28,Private company,4,5,2
+59,Self-employed,2,1,1
+60,Private company,1,5,1
+25,State government,2,5,2
+30,Self-employed,5,1,1
+39,Local government,1,4,1
+46,Private company,4,1,1
+72,Private company,1,2,1
+23,Private company,3,5,1
+38,Private company,4,1,1
+57,Local government,2,1,2
+63,Private company,1,1,1
+72,Private company,1,3,2
+22,Private company,1,5,2
+59,Private company,2,1,1
+56,Federal government,2,3,2
+53,Private company,3,3,1
+36,Private company,2,1,2
+30,Private company,2,1,2
+68,Self-employed,2,1,2
+65,Self-employed,1,2,1
+46,Private company,3,1,1
+57,Federal government,4,1,1
+58,Private company,4,1,1
+43,Private company,3,1,1
+52,Private company,3,1,2
+45,Private company,6,1,1
+36,Private company,4,3,2
+59,Local government,2,3,2
+28,State government,3,1,1
+57,Private company,2,1,2
+52,Private company,2,3,1
+53,Private company,1,3,2
+25,Private company,2,5,2
+61,Self-employed,3,1,1
+52,Private company,4,1,1
+41,Private company,5,1,1
+60,Private company,1,3,1
+36,Private company,1,3,1
+41,Federal government,4,3,2
+27,Self-employed,2,5,2
+35,Private company,5,1,2
+41,Private company,1,5,1
+59,Private company,3,1,1
+87,Private company,1,5,2
+30,Private company,1,4,1
+52,Self-employed,2,3,1
+71,Private company,2,1,1
+31,State government,5,1,2
+46,Local government,4,1,2
+43,Private company,2,1,2
+47,Private company,2,1,1
+62,Self-employed,2,1,1
+43,Private company,5,1,1
+36,Self-employed,2,1,2
+34,Private company,6,1,2
+40,Private company,2,5,2
+53,Private company,3,5,1
+52,Private company,1,3,1
+58,Federal government,2,1,2
+43,Private company,3,5,1
+27,Self-employed,1,5,1
+54,Private company,2,1,1
+55,Private company,2,1,2
+40,Private company,2,1,2
+28,Private company,2,1,2
+43,Private company,3,1,2
+51,Private company,3,1,1
+39,Private company,2,1,2
+32,Private company,4,1,2
+48,Local government,2,3,2
+54,Private company,4,1,2
+35,Private company,4,3,2
+33,Private company,2,1,2
+30,Private company,3,1,2
+63,Private company,2,1,2
+63,Private company,1,5,1
+76,Self-employed,3,1,1
+29,Private company,3,1,1
+42,Self-employed,5,1,1
+37,State government,5,5,1
+55,State government,5,5,1
+62,Self-employed,1,5,1
+23,Private company,1,5,2
+24,Federal government,1,5,2
+39,Private company,6,1,2
+41,Private company,4,1,1
+48,State government,2,5,2
+40,Private company,4,1,1
+40,Private company,7,1,1
+80,Private company,1,5,1
+48,Private company,3,3,2
+62,State government,3,1,1
+29,Federal government,2,1,1
+30,Private company,7,1,1
+44,Private company,7,1,2
+36,Self-employed,4,1,2
+32,Private company,1,5,1
+51,Private company,1,3,2
+31,Private company,4,4,2
+43,Private company,9,1,1
+59,Private company,4,1,2
+52,Self-employed,7,1,1
+25,Private company,1,5,2
+32,Private company,6,1,1
+58,Private company,4,1,2
+19,Private company,2,5,2
+20,Local government,5,5,1
+49,Private company,4,5,2
+48,Private company,4,1,2
+57,State government,1,3,1
+47,State government,2,5,1
+58,Federal government,4,1,2
+47,Private company,1,5,1
+69,Private company,4,2,1
+60,Private company,4,1,2
+25,Private company,1,5,1
+45,Private company,1,3,1
+45,Private company,1,5,2
+64,Self-employed,3,1,1
+71,Local government,1,5,1
+36,Self-employed,6,1,1
+73,State government,1,5,2
+60,Private company,1,3,2
+60,Private company,3,1,1
+32,Private company,4,1,1
+51,Private company,2,3,2
+44,Private company,3,5,2
+55,Self-employed,2,1,1
+50,Private company,4,3,2
+67,Private company,2,1,2
+52,Private company,2,1,2
+78,Private company,1,3,1
+25,Private company,5,1,2
+40,Self-employed,6,1,2
+49,Private company,5,1,2
+22,Private company,3,5,1
+34,Private company,3,3,2
+29,Private company,1,5,2
+58,State government,2,4,2
+37,Private company,2,3,1
+37,Private company,3,1,2
+51,Private company,1,3,1
+50,Private company,6,1,1
+60,Private company,2,5,1
+29,Private company,2,5,2
+48,Private company,1,3,1
+29,Private company,2,5,1
+56,Self-employed,2,1,1
+71,Private company,1,5,1
+87,Private company,1,5,1
+37,Private company,4,5,2
+30,Private company,2,1,1
+54,Private company,3,1,1
+43,Private company,2,5,2
+36,Private company,4,1,1
+45,Private company,6,3,2
+35,Private company,4,1,2
+29,Self-employed,1,5,2
+56,Federal government,1,5,2
+45,Self-employed,4,1,2
+26,Private company,1,5,1
+70,Private company,1,4,1
+52,Self-employed,5,1,2
+28,Self-employed,3,1,2
+34,Private company,2,5,1
+29,Private company,3,5,2
+35,State government,1,5,2
+49,Local government,1,5,2
+37,Private company,2,3,2
+38,State government,1,5,2
+59,Private company,3,2,1
+38,Private company,4,1,2
+53,Federal government,1,3,2
+51,Private company,1,4,1
+40,Private company,3,1,2
+54,Private company,2,3,1
+59,Private company,3,1,2
+36,Local government,1,5,1
+71,Self-employed,2,1,1
+65,Private company,1,3,2
+65,Private company,1,5,2
+43,Private company,5,1,2
+52,Federal government,1,3,2
+62,Private company,2,1,2
+25,Federal government,3,5,2
+35,Self-employed,3,1,2
+27,State government,2,1,2
+24,Private company,1,5,1
+21,Private company,3,1,1
+57,Private company,1,3,1
+47,Private company,5,1,2
+38,Federal government,3,1,1
+34,Private company,6,3,2
+31,State government,4,1,1
+37,Private company,2,5,2
+22,Private company,2,1,1
+32,Private company,3,1,1
+35,Private company,2,5,1
+39,Private company,1,5,1
+65,Local government,1,1,1
+50,Self-employed,1,3,1
+46,Private company,2,1,2
+33,Private company,5,1,1
+27,Private company,3,5,1
+59,Local government,3,1,2
+69,Private company,2,2,1
+69,Self-employed,1,3,2
+31,Private company,1,5,1
+34,Private company,6,1,1
+28,Private company,5,1,2
+49,Private company,6,1,1
+72,Private company,2,2,2
+42,Self-employed,2,3,2
+61,Local government,2,1,2
+61,Federal government,2,1,2
+57,Private company,1,3,2
+33,Private company,1,5,1
+39,Self-employed,1,4,1
+65,State government,1,3,2
+61,Private company,4,1,2
+31,Private company,5,1,1
+70,Private company,2,1,1
+39,Self-employed,3,4,2
+46,Private company,4,1,2
+60,Private company,2,1,2
+61,Private company,3,1,1
+46,Private company,2,5,1
+50,Private company,4,5,1
+52,Private company,1,5,1
+58,Local government,1,2,2
+50,Private company,4,1,1
+62,Self-employed,1,3,2
+66,Self-employed,2,1,2
+33,Self-employed,2,1,2
+28,Private company,3,1,1
+43,Local government,5,1,2
+57,Private company,3,3,2
+59,Private company,4,1,1
+66,Self-employed,1,3,2
+40,Private company,1,1,1
+66,Private company,2,1,1
+57,Local government,2,1,1
+39,Private company,5,4,2
+42,Private company,1,3,1
+49,Private company,4,3,2
+45,Private company,3,1,1
+18,Private company,4,5,1
+38,Local government,5,4,2
+53,Private company,2,3,2
+52,Private company,1,3,2
+41,Self-employed,1,5,1
+15,Self-employed,1,5,1
+36,Private company,3,5,2
+53,Private company,2,1,2
+26,Private company,4,1,2
+27,Private company,2,3,2
+26,Private company,1,5,2
+34,Private company,3,5,2
+25,Private company,5,1,1
+50,Private company,1,4,2
+25,Federal government,3,5,1
+65,Private company,2,1,1
+30,Private company,4,1,1
+49,Private company,3,3,2
+29,Private company,2,1,1
+87,Self-employed,1,2,1
+61,Local government,1,5,2
+31,Private company,2,3,1
+46,Self-employed,2,1,2
+23,Self-employed,1,5,1
+28,Private company,3,5,2
+41,Self-employed,6,1,2
+44,Self-employed,5,1,2
+35,Private company,3,1,2
+46,Private company,5,1,1
+50,Private company,1,3,2
+58,Private company,2,5,1
+71,State government,1,3,2
+52,State government,3,1,2
+44,Private company,3,1,1
+52,State government,1,3,2
+41,State government,4,1,2
+25,Private company,2,3,2
+66,Private company,1,3,2
+68,Self-employed,2,1,1
+32,Federal government,2,1,1
+44,Federal government,3,1,1
+40,State government,5,1,2
+40,Private company,2,3,2
+18,Private company,2,5,1
+66,Private company,1,3,1
+55,Self-employed,1,3,1
+45,Private company,4,1,2
+49,Self-employed,3,1,2
+20,Self-employed,1,5,1
+65,Private company,2,3,2
+65,Private company,2,5,2
+56,Private company,1,3,1
+31,Private company,2,5,1
+66,Self-employed,3,1,1
+64,State government,2,1,1
+45,Self-employed,2,3,1
+41,Federal government,2,1,1
+65,Private company,6,1,1
+51,Self-employed,5,1,2
+40,Private company,1,3,1
+68,Private company,1,4,2
+21,Private company,2,5,2
+54,Private company,3,1,2
+55,Private company,4,1,1
+53,Private company,3,1,1
+35,Private company,4,5,1
+27,State government,2,1,1
+50,Federal government,2,1,1
+72,Self-employed,1,5,2
+53,Self-employed,1,5,2
+28,Private company,2,1,1
+54,Private company,1,3,1
+40,Self-employed,4,1,2
+59,Private company,1,2,2
+40,Local government,3,1,1
+43,Private company,1,5,1
+87,Private company,2,1,1
+51,Private company,1,2,2
+38,Private company,1,3,2
+66,Private company,1,5,2
+56,Private company,2,5,2
+61,Private company,1,5,1
+70,Private company,1,3,2
+33,Private company,2,5,2
+54,Private company,1,5,2
+29,Private company,4,1,1
+55,Private company,3,1,1
+54,Private company,1,3,2
+67,Local government,3,1,1
+48,State government,4,1,1
+48,Private company,2,1,1
+41,State government,1,2,1
+54,Self-employed,4,1,1
+32,State government,3,1,2
+44,Private company,1,3,1
+57,Private company,1,5,2
+54,Private company,2,2,2
+27,Private company,2,5,1
+31,Private company,3,5,1
+33,Local government,2,5,2
+26,Private company,5,1,1
+51,Private company,3,1,2
+48,Private company,2,5,2
+48,Private company,4,1,1
+22,Self-employed,3,5,1
+28,Private company,5,3,2
+44,Self-employed,3,1,1
+69,Private company,1,2,2
+52,Local government,2,1,1
+87,Private company,1,3,2
+34,State government,3,1,2
+47,Private company,1,3,2
+50,Private company,2,3,2
+61,Private company,1,3,2
+44,Federal government,2,5,1
+59,Self-employed,1,2,2
+43,Private company,6,1,2
+57,Private company,2,1,1
+48,Private company,2,5,1
+27,Private company,3,5,2
+69,Self-employed,2,1,2
+45,Private company,4,1,1
+45,Private company,3,3,2
+20,State government,1,5,1
+47,Private company,4,1,1
+58,Self-employed,2,1,2
+72,Self-employed,1,3,1
+48,Private company,2,3,1
+62,Private company,1,3,2
+29,State government,1,1,1
+69,Private company,7,1,1
+45,Local government,2,5,2
+39,Private company,3,1,2
+53,Self-employed,1,3,2
+56,Private company,1,5,2
+56,Private company,7,1,1
+58,Private company,5,3,2
+49,State government,2,5,2
+72,Private company,1,2,2
+56,Self-employed,2,5,2
+32,Private company,1,5,2
+42,Private company,3,1,2
+48,Private company,5,1,2
+42,Federal government,4,1,2
+36,Private company,1,5,2
+28,Self-employed,3,5,1
+23,Private company,2,5,2
+50,Private company,5,1,1
+31,State government,2,1,2
+49,Federal government,3,1,2
+23,State government,1,5,1
+40,Self-employed,3,5,1
+21,Federal government,2,1,1
+33,Private company,3,5,2
+46,Private company,3,1,2
+39,Private company,6,1,1
+62,Local government,3,1,2
+35,Federal government,5,1,2
+49,Private company,1,5,1
+20,Private company,4,5,1
+45,Private company,5,1,2
+79,Private company,2,2,1
+32,Private company,2,3,1
+27,Private company,1,5,2
+32,Private company,4,5,2
+60,Federal government,1,3,1
+57,Self-employed,1,4,1
+41,Private company,5,1,2
+38,Self-employed,2,5,2
+41,Self-employed,3,1,1
+32,Self-employed,4,1,2
+36,Private company,3,4,2
+34,Private company,5,1,2
+62,Private company,2,3,1
+56,Local government,3,1,1
+45,Private company,2,1,2
+48,Private company,5,1,1
+20,Private company,3,1,2
+43,State government,1,5,1
+19,State government,1,5,1
+41,Private company,2,5,2
+29,State government,2,1,1
+55,Local government,2,5,1
+51,Local government,4,1,2
+57,Private company,1,2,2
+49,Private company,3,1,1
+30,Private company,3,1,1
+50,Federal government,1,1,1
+25,Local government,2,5,2
+46,Local government,3,5,2
+21,Private company,1,5,1
+61,Private company,2,2,2
+32,Private company,3,1,2
+63,Self-employed,3,1,1
+55,Self-employed,2,3,1
+31,Private company,1,3,1
+53,Private company,3,3,2
+52,Private company,1,5,2
+44,Federal government,2,4,2
+53,Self-employed,2,1,2
+62,State government,1,2,2
+32,Federal government,1,1,2
+24,Federal government,4,1,1
+36,Private company,4,1,2
+50,Self-employed,1,3,2
+36,Self-employed,2,1,1
+40,Private company,2,4,2
+71,Self-employed,2,1,2
+30,Private company,6,5,1
+33,Private company,2,5,1
+25,Private company,4,5,2
+24,Local government,1,5,1
+30,Local government,3,1,2
+44,Private company,5,1,2
+33,Local government,4,1,1
+54,Local government,1,5,1
+31,Self-employed,2,1,2
+25,Private company,3,5,2
+27,Private company,2,1,2
+51,Private company,2,2,2
+52,Local government,3,1,2
+62,Self-employed,4,3,1
+48,Private company,2,1,2
+45,Self-employed,3,5,2
+71,Private company,1,3,1
+35,Private company,4,5,2
+46,Private company,1,5,1
+46,Self-employed,2,1,1
+27,Private company,2,1,1
+27,Private company,4,5,2
+47,Private company,3,5,2
+30,Private company,3,4,1
+46,Private company,2,3,1
+62,Private company,3,1,1
+25,Local government,3,1,2
+49,Private company,8,1,1
+33,Private company,6,1,2
+64,Self-employed,2,1,1
+27,Private company,5,3,1
+55,Private company,1,5,2
+30,Self-employed,2,1,1
+46,Local government,3,1,1
+17,Private company,4,5,1
+56,Private company,1,2,2
+46,Federal government,2,1,2
+31,Local government,3,1,2
+46,State government,5,1,2
+62,Private company,1,2,2
+67,Federal government,2,3,2
+36,Local government,4,1,1
+56,Self-employed,1,3,1
+46,Private company,7,1,1
+56,State government,1,3,2
+55,Private company,3,4,1
+56,Private company,3,1,2
+49,Local government,1,4,1
+46,Local government,2,1,2
+59,Private company,5,1,1
+55,Private company,5,1,2
+39,Private company,5,1,2
+35,Local government,4,5,2
+34,Federal government,1,3,1
+29,Self-employed,4,1,2
+39,Local government,2,1,2
+58,Federal government,3,1,2
+37,Local government,5,1,2
+39,Private company,5,1,1
+55,Private company,1,2,2
+65,Private company,4,1,2
+50,Private company,1,3,1
+53,Private company,1,5,1
+42,Private company,2,3,1
+41,Self-employed,5,2,2
+47,Private company,2,3,1
+49,Private company,6,2,2
+44,Private company,3,1,2
+54,Private company,4,1,1
+49,Private company,4,1,1
+46,Private company,5,1,2
+35,State government,3,1,2
+70,Private company,1,2,1
+58,Private company,2,1,1
+38,Private company,2,3,2
+40,Federal government,3,3,1
+60,Private company,1,2,2
+41,Private company,3,1,1
+27,Private company,3,1,1
+45,Private company,3,5,2
+54,Self-employed,4,5,2
+32,Private company,2,5,2
+65,Private company,2,1,2
+80,Private company,1,2,2
+64,State government,1,3,2
+40,Self-employed,6,1,1
+52,Private company,5,4,2
+36,State government,4,1,2
+35,Private company,5,1,1
+36,Private company,3,3,1
+67,Local government,2,1,1
+57,Private company,2,5,2
+49,Private company,1,4,1
+27,Private company,3,1,2
+81,Self-employed,2,1,1
+33,Self-employed,4,1,2
+52,State government,3,1,1
+44,State government,3,3,2
+44,Private company,2,5,2
+47,Private company,4,3,2
+45,Self-employed,3,1,1
+21,Private company,2,5,1
+35,Private company,4,1,1
+26,Private company,5,5,1
+44,Private company,6,1,2
+45,Local government,3,1,2
+34,Federal government,5,1,2
+48,Private company,1,3,2
+41,Private company,3,5,2
+26,Private company,1,4,1
+41,Local government,1,5,1
+40,State government,2,5,2
+69,Local government,1,5,2
+34,Local government,2,1,2
+47,Private company,4,1,2
+34,State government,1,3,1
+33,Private company,4,5,1
+23,Private company,5,5,1
+39,Self-employed,4,5,1
+31,Self-employed,5,1,1
+49,Private company,1,5,2
+31,Private company,3,1,2
+39,Private company,2,1,1
+45,Self-employed,2,1,2
+42,Self-employed,3,1,2
+45,Self-employed,4,3,1
+55,Private company,1,3,2
+74,Private company,2,1,2

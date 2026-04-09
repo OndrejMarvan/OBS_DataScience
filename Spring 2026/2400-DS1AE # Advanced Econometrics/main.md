@@ -14,6 +14,138 @@
 
 Suggestion to topic: ???
 
+
+## Lab 5 (XX.03.2026)
+# Advanced Econometrics: Multinomial Logit, Conditional Logit
+
+_Tags: #econometrics #statistics #discrete_choice #logit_models_
+
+---
+
+## 1. Categorical Dependent Variables
+
+Many empirical models involve dependent variables that are categorical (e.g., satisfaction levels, transport choices) rather than continuous.
+
+### Ordered vs. Unordered Logit Models
+
+- **Ordered Logit (Ordinal Logit):** Used when categories have a natural ranking, such as a satisfaction scale from "Very dissatisfied" to "Very satisfied".
+    
+    - **Mechanism:** It assumes an underlying latent variable $y^* = X\beta + \epsilon$ and estimates coefficients along with cut-points (thresholds) $\tau_j$.
+        
+    - **Key Assumption:** Relies on the Proportional Odds (Parallel Lines) assumption. This means each explanatory variable shifts the odds of being in a higher category by the same amount, regardless of where the cut-point is (slopes are identical, only intercepts change). Tested using the Brant test.
+        
+- **Multinomial Logit (MNL / Unordered Logit):** Used when categories have no inherent order, such as choosing between a car, bus, or train.
+    
+    - **Mechanism:** It compares each outcome to a reference category, generating separate parameter vectors ($\beta$) for each alternative.
+        
+    - **Key Assumption:** Relies on the Independence of Irrelevant Alternatives (IIA) assumption. Tested using Hausman or Small-Hsiao tests.
+        
+
+Note: If the proportional odds assumption fails for an ordered logit, you should fall back on a generalized/partial ordered logit or a multinomial logit (which is more flexible but less efficient) .
+
+---
+
+## 2. Multinomial Logit vs. Conditional Logit
+
+Both models are used when people choose one option from several alternatives.
+
+### Multinomial Logit (MNL)
+
+- **Main Question:** Who chooses what?
+    
+- **Focus:** Choice depends on the characteristics of the _person_.
+    
+- **Variables Used:** Income, age, gender, education .
+    
+- **Utility Function:** $U_{ij} = X_i\beta_j + \epsilon_{ij}$ (Parameters $\beta$ vary by alternative $j$, but $X$ is individual-specific).
+    
+
+### Conditional Logit (CL)
+
+- **Main Question:** What option is attractive?
+    
+- **Focus:** Choice depends on the characteristics of the _alternatives_.
+    
+- **Variables Used:** Price, travel time, distance, comfort .
+    
+- **Utility Function:** $U_{ij} = Z_{ij}\beta + \epsilon_{ij}$ (The characteristics $Z$ vary by alternative, but the parameter $\beta$ is common).
+    
+
+### The IIA Problem (Independence of Irrelevant Alternatives)
+
+- **Definition:** The odds ratio between two alternatives does not depend on other available alternatives (e.g., adding a "Blue Bus" steals equally from "Car" and "Red Bus", which is unrealistic) .
+    
+- **CL vs IIA:** Conditional logit improves on basic MNL by using alternative-specific variables, making predictions more realistic, but it **does not** fully remove the strict IIA assumption .
+    
+
+---
+
+## 3. Advanced Models: Mixed and Nested Logits
+
+### Mixed Logit (Random Parameters Logit)
+
+- **Concept:** People have different tastes, so coefficients are random and vary across individuals ($\beta_i \sim f(\beta)$) rather than being fixed.
+    
+- **Advantages:** It is highly flexible, captures unobserved preference heterogeneity, allows correlation across alternatives, and effectively relaxes the strict IIA assumption .
+    
+- Note: Mixed cloglog is for timing/hazard models, whereas Mixed logit is for choices among alternatives .
+    
+
+### Nested Logit
+
+- **Concept:** Groups similar alternatives into "nests" (e.g., public transport vs. private transport).
+    
+- **Advantages:** Partially relaxes IIA. IIA holds _within_ a nest, but not necessarily across all alternatives, allowing for stronger substitution among similar choices.
+    
+
+---
+
+## 4. Data Preparation in R (`mlogit` package)
+
+To estimate these models, data must be converted from **Wide Format** to **Long Format**.
+
+- **Wide Format:** 1 row per individual. Alternative attributes (like prices) are stored in separate columns (e.g., `price.beach`, `price.boat`).
+    
+- **Long Format:** Multiple rows per individual (1 row per alternative).
+    
+    - This is required because CL models compare alternatives _within_ each choice situation.
+        
+
+### Key Variables in Long Format
+
+- **`alt`**: The name of the specific alternative (e.g., beach, boat).
+    
+- **`chid`**: Choice ID. Groups rows belonging to the same decision-maker or choice occasion.
+    
+- **`mode`**: Becomes a logical indicator (`TRUE` for the chosen alternative, `FALSE` for non-chosen ones) .
+    
+- **Individual variables (e.g., `income`)**: Repeat identically across all alternative rows for the same person.
+    
+
+### Formula Syntax in `mlogit`
+
+The formula dictates the type of model : `Dependent Variable ~ Alternative-Specific Variables | Individual-Specific Variables`
+
+- `mode ~ 0 | income`: Pure Multinomial Logit (no alternative-specific regressors).
+    
+- `soda ~ feat + disp + price | 0`: Conditional Logit (no individual-specific regressors).
+    
+
+---
+
+## 5. Interpreting Results & Marginal Effects
+
+- **Signs:** A negative coefficient (like price) lowers the probability of choice, while a positive coefficient (like display) raises it.
+    
+- **Marginal Effects Matrices:** * **Diagonal elements:** Own-effects (e.g., an increase in Coke's price decreases Coke's probability).
+    
+    - **Off-diagonal elements:** Cross-effects (e.g., an increase in Coke's price increases Pepsi's probability, showing substitution).
+        
+- **Percentage Points vs. Percent:** * Marginal effects in choice models are typically interpreted in **percentage points (pp)** (the absolute difference between percentages) rather than percent (relative change).
+    
+    - A 1 pp change can be economically huge if the baseline probability is very small.
+
+
 ## Lab 6 (26.03.2026) 
 ## Advanced Econometrics: Models for Count Data
 
