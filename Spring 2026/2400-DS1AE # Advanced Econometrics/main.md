@@ -25,4 +25,6 @@ Suggestion to topic: ???
 	2. Negative Binomial Model (Simple)
 		- For too spread out data 
 		- Many zeros AND some very large values
+		- Bigger spread than Poisson (Key difference: [ Variance > Mean ])
+		- **Use** when Data is very uneven (overdispersion = extra spread)
 		- 
