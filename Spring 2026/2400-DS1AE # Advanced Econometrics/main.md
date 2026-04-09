@@ -16,3 +16,13 @@ Suggestion to topic: ???
 
 ## Lab (26.03.2026) 
 ### Models for count data
+- Only positive numbers, that's why we cnanot use linear regression (can go negative).
+	- So, we need **Special models**.
+- Models
+	1. Poisson Distribution
+		- Small λ → many zeros, Bigger λ → shifts right
+		- 
+	2. Negative Binomial Model (Simple)
+		- For too spread out data 
+		- Many zeros AND some very large values
+		- 
