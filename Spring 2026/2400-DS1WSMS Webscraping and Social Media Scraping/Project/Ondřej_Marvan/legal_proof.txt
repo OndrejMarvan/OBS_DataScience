@@ -1,0 +1,73 @@
+LEGAL PROOF — Web Scraping Legality Assessment
+================================================
+Project: Water Budget Calculator for Falenty Nowe (Garden Irrigation)
+Date: April 2026
+
+This document proves that all three websites used in this project are legal to scrape.
+
+
+1. IMGW Public Data Archive (danepubliczne.imgw.pl)
+---------------------------------------------------
+URL: https://danepubliczne.imgw.pl/data/dane_pomiarowo_obserwacyjne/
+
+robots.txt: The IMGW website serves its /data/ directory as a plain Apache
+directory index. The robots.txt at danepubliczne.imgw.pl does not disallow
+access to the /data/ directory.
+
+Legal basis: Data is published under the Polish Open Data Policy based on
+"ustawa z dnia 11 sierpnia 2021 r. o otwartych danych i ponownym
+wykorzystaniu informacji sektora publicznego" (Dz. U. z 2023 r. poz. 1524)
+and EU regulation 2023/138.
+
+From the official regulations at https://danepubliczne.imgw.pl/regulations :
+"Korzystający może używać nieodpłatnie udostępnionych danych do celów
+prywatnych" — Users may use the published data free of charge for private
+purposes, including master's and doctoral theses.
+
+Attribution requirement: "Źródłem pochodzenia danych jest Instytut
+Meteorologii i Gospodarki Wodnej – Państwowy Instytut Badawczy"
+
+Conclusion: LEGAL — open public data, free for educational/private use.
+
+
+2. Open-Meteo Historical Weather API (archive-api.open-meteo.com)
+-----------------------------------------------------------------
+URL: https://archive-api.open-meteo.com/v1/archive
+
+robots.txt: This is a JSON API endpoint (not a website), so robots.txt
+is not applicable. The API is explicitly designed for programmatic access.
+
+Legal basis: From https://open-meteo.com/ :
+"Open-Meteo offers free access to its APIs for non-commercial use [...]
+No API key, registration, or credit card is required."
+"Data is licenced under Attribution 4.0 International (CC BY 4.0)."
+Source code is open-source under AGPLv3 at github.com/open-meteo/open-meteo.
+
+Conclusion: LEGAL — free API for non-commercial use, CC BY 4.0 data license.
+
+
+3. Meteostat Station Page (meteostat.net)
+-----------------------------------------
+URL: https://meteostat.net/en/station/12375
+
+robots.txt at meteostat.net/robots.txt:
+User-agent: *
+Allow: /
+(Meteostat allows all crawlers access to all pages.)
+
+Legal basis: Meteostat is an open-source project (MIT license for code).
+Data is provided under CC BY-NC 4.0 (Creative Commons Attribution-
+NonCommercial). From their GitHub (github.com/meteostat/meteostat-python):
+"Meteorological data is provided under the terms of the Creative Commons
+Attribution-NonCommercial 4.0 International Public License."
+This is an educational, non-commercial project.
+
+Conclusion: LEGAL — open data, robots.txt allows full access, CC BY-NC 4.0.
+
+
+Summary
+-------
+All three sources are legal to scrape for this educational project:
+ - IMGW: Polish Open Data law, explicitly free for private/educational use
+ - Open-Meteo: Free API, no restrictions, CC BY 4.0
+ - Meteostat: robots.txt allows all, CC BY-NC 4.0
