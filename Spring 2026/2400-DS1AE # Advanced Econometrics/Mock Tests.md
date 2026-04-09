@@ -1,5 +1,5 @@
 
-## Lab 07 (given during Lab 06)
+	## Lab 07 (given during Lab 06)
 First, note that the model includes dummy variables for hours 1 through 23. Because `hour 0` (midnight) is omitted from the output, it serves as the reference (base) category for the model.
 
 ### a) Interpret the estimate of the parameter for hour12 in the Poisson model
