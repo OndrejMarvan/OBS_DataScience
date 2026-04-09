@@ -13,3 +13,6 @@
 **Professor will provide us with corrected version the day after
 
 Suggestion to topic: ???
+
+## Lab (26.03.2026) 
+### Models for count data
