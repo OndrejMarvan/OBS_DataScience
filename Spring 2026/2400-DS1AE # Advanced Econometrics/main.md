@@ -29,3 +29,5 @@ Suggestion to topic: ???
 		- **Use** when Data is very uneven (overdispersion = extra spread)
 		
 	3. Zero-Inflated Poisson (ZIP): Math Made Simple
+
+![[Pasted image 20260409164616.png]]
