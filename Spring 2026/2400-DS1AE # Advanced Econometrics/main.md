@@ -27,4 +27,5 @@ Suggestion to topic: ???
 		- Many zeros AND some very large values
 		- Bigger spread than Poisson (Key difference: [ Variance > Mean ])
 		- **Use** when Data is very uneven (overdispersion = extra spread)
-		- 
+		
+	3. Zero-Inflated Poisson (ZIP): Math Made Simple
