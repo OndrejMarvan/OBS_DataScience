@@ -152,7 +152,9 @@ Suitability rating - not involving topography and soil quaility, only temp. and 
 Combines into **weighted composite** (40% Huglin, 35% Winkler, 25% Precip)
 
 ## 13.04.2026
-Deadlines: 
+**Deadlines:**
+till need of semester or till end of September 
+appendix (what is published) or supplement (code)
 no later than 
 
 Switching from a traditional diploma thesis to a research paper (often called a **"thesis by publication"** or an **"article-based thesis"**) is a modern approach that can be incredibly beneficial, especially if you are considering a career in academia or R&D.
