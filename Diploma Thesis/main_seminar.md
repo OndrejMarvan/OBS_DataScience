@@ -152,6 +152,9 @@ Suitability rating - not involving topography and soil quaility, only temp. and 
 Combines into **weighted composite** (40% Huglin, 35% Winkler, 25% Precip)
 
 ## 13.04.2026
+Deadlines: 
+no later than 
+
 Switching from a traditional diploma thesis to a research paper (often called a **"thesis by publication"** or an **"article-based thesis"**) is a modern approach that can be incredibly beneficial, especially if you are considering a career in academia or R&D.
 
 Essentially, instead of writing a 60–100 page monograph that might only be read by your committee, you produce a high-quality, peer-reviewed manuscript intended for a scientific journal.
