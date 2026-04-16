@@ -354,3 +354,7 @@ _Tags: #econometrics #statistics #censored_data #tobit #heckman_
 |**Tobit**|Censoring, many zeros, or boundary values.|Charity spending, or number of affairs.|
 |**Truncated**|Missing observations or sample cut off.|Income > 2000 only, or test score $\ge 40$.|
 |**Heckman**|Self-selection or non-random sample.|Wages (only workers), or loan approval.|
+
+
+## Lab 8 (16.04.2026)
+# Time Series 
