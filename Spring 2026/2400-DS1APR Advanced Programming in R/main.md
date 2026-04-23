@@ -271,3 +271,90 @@ E.g. https://cran.r-project.org/web/packages/pryr/index.html
     
 - **Method Inheritance:** Just like slots, a child class will automatically inherit and use the parent class's methods if no specific method is defined for the child.
 
+# Class 04: Object Oriented Programming (OOP) in R - R6 System
+
+### **Core R6 Concepts**
+
+- **Encapsulated OOP:** In the R6 system, methods are encapsulated within the classes themselves, meaning they belong directly to objects rather than generic functions. Methods are called using the syntax `object$method()`.
+    
+- **Mutability:** R6 objects are mutable, which means they can be modified in place without needing the assignment operator to save changes.
+    
+- **Efficiency and Roots:** R6 is similar to R's base Reference Classes (RC) but is much more efficient because R6 is built on top of S3, whereas RC is based on S4.
+    
+- **Using S3 Generics:** Because R6 is built upon the S3 system, standard S3 generic functions can still be used to work with R6 objects.
+    
+
+---
+
+### **Class Definition and Constructors**
+
+- **R6Class():** Classes are explicitly created using the `R6Class()` function from the `R6` package.
+    
+    - The first argument is the `classname`.
+        
+    - The second argument is `public`, which takes a list containing the public fields and methods for the object. All fields must have a default value specified.
+        
+- **Instantiation:** New objects are created by calling `$new()` on the class name (e.g., `className$new()`).
+    
+- **The `initialize` Method:** To create a proper constructor function that allows field values to be set upon object creation, you must define a public field named `initialize`.
+    
+    - This method runs automatically when `className$new()` is executed.
+        
+- **Self and Private Keywords:** Inside methods, use `self$` to access the object's public fields and `private$` to access its private elements.
+    
+- **Invisible Returns:** By default, all R6 methods return `self` invisibly, which facilitates method chaining.
+    
+
+---
+
+### **Validity Checking**
+
+- **DIY Validation:** Similar to the S3 system, validity checking in R6 must be implemented manually.
+    
+- **Defensive Programming:** You should use defensive programming functions (like `stopifnot()`) inside the `initialize` method to catch incorrect data inputs and prevent structural mistakes.
+    
+
+---
+
+### **Dynamic Class Modification**
+
+- **The `$set()` Method:** You can add new fields or methods to an existing class after its initial construction using the `$set()` method.
+    
+    - You must specify the visibility (`"public"` or `"private"`), the field name in quotes, and the definition or default value.
+        
+    - _Important Note:_ If you modify a class with `$set()`, objects created prior to the modification will not inherit the new fields and must be recreated.
+        
+
+---
+
+### **Inheritance**
+
+- **inherit Argument:** Inheritance is established by using the `inherit` field within the `R6Class()` function.
+    
+- **Superclasses:** A child class will automatically inherit all fields and methods from the parent class (superclass) unless they are specifically overridden.
+    
+- **super$ Keyword:** You can call the parent's version of a method within the child class by using `super$functionName()`, which operates similarly to `NextMethod()` in S3.
+    
+
+---
+
+### **Access Control (Visibility)**
+
+- **Public Fields:** Defined in the `public` list, these fields are fully accessible in the console. Users can call and modify them freely, which can bypass validity checks if not careful.
+    
+- **Private Fields:** Defined in the `private` list, these fields cannot be freely accessed or modified by the user from the console. They are typically accessed through specific public methods (e.g., `showAge()` or `changeAge()`) that safely validate changes.
+    
+- **Active Fields:** Defined in the `active` list, these look and act like simple fields from the outside but are actually functions under the hood.
+    
+    - They take a single `value` argument.
+        
+    - The `if(missing(value))` statement defines the behavior for simply reading the field, while the `else` block dictates the rules for modifying it.
+        
+
+---
+
+### **Integration with S3**
+
+- **Class Vectors:** Every R6 object inherits the general `"R6"` class, meaning `class(object)` will return both its specific class name and `"R6"`.
+    
+- **S3 Generics:** Because of this structure, you can implement standard S3 generic methods (like defining `print.className <- function(x) {...}`) to naturally integrate R6 objects into standard R workflows.
