@@ -358,3 +358,140 @@ E.g. https://cran.r-project.org/web/packages/pryr/index.html
 - **Class Vectors:** Every R6 object inherits the general `"R6"` class, meaning `class(object)` will return both its specific class name and `"R6"`.
     
 - **S3 Generics:** Because of this structure, you can implement standard S3 generic methods (like defining `print.className <- function(x) {...}`) to naturally integrate R6 objects into standard R workflows.
+
+# Class 5: Functions Part 1
+
+### **1. Why Use Functional Programming?**
+
+- **Readability:** Functional programming allows you to write more concise and readable code.
+    
+- **Reusability & Modularity:** It encourages the use of reusable code blocks, which makes your projects more modular and easier to maintain over time.
+    
+- **Reliability:** Relying on functions reduces the likelihood of errors caused by code duplication.
+    
+- **Troubleshooting:** Isolating logic inside functions significantly helps with debugging.
+    
+
+---
+
+### **2. Syntax and Return Values**
+
+- **General Syntax:** ```R
+    
+    name_of_function <- function(arguments) {
+    
+    # Do the math/logic here
+    
+    return(result)
+    
+    }
+    
+    ```
+    [cite: 620, 621, 622, 623]
+    ```
+    
+- **The `return()` Statement:** It specifies the exact value that the function should output to the calling code. While not strictly mandatory in R, using it is highly recommended because it is more elegant and explicit.
+    
+- **Implicit Returns & Traps:** If you do not use `return()`, R automatically returns the last evaluated expression. However, if the last line of your function assigns a variable (e.g., `x <- n`), absolutely nothing will be returned to the global environment.
+    
+- **Returning Multiple Objects:** A function can only return a single object. To return multiple objects simultaneously, you must group them into a `list()`.
+    
+
+---
+
+### **3. Function Arguments**
+
+- **Required Arguments:** Arguments that have no default value and _must_ be included when calling the function. If they are missing, R will throw an error.
+    
+- **Optional/Default Arguments:** Arguments that have predefined default values. If the user does not provide a value for them, the default is automatically used.
+    
+- **Named Arguments:** You can supply arguments by name (e.g., `width = 4`). This removes the need to remember the exact position of the arguments and makes the function call much easier to read.
+    
+- **The `...` (Dot-Dot-Dot) Argument:** This allows a function to accept an unlimited list of additional parameters. It acts as a wrapper, passing any extra arguments forward to another function inside the body.
+    
+- **Functions as Arguments (`FUN`):** Because functions are first-class objects in R, they can be passed as arguments into other functions. This is typically denoted by the `FUN` parameter and is heavily utilized in the `apply` family of functions.
+    
+
+---
+
+### **4. Lazy Evaluation**
+
+- **Delayed Execution:** In R, expressions are not immediately evaluated when they are assigned to a variable or passed to a function. Instead, evaluation is delayed until the value is actually needed.
+    
+- **Promises:** The expression is temporarily stored as a "promise" (a placeholder). The promise is only forced and evaluated when the value is required for a calculation or printed to the console.
+    
+- **Performance:** This feature improves the performance of your code by completely avoiding unnecessary computations. (A great example of this is building a `ggplot` object, which acts as a "recipe" and only evaluates when you actually try to draw/print the plot).
+    
+
+---
+
+### **5. Defensive Programming**
+
+- **Anticipating Errors:** Defensive programming is a technique aimed at reducing bugs by anticipating potential problems and incorporating error-handling checks directly into your code.
+    
+- **Input Validation:** Before processing anything, validate the input to ensure it is the expected data type (e.g., checking if it is numeric) and falls within a reasonable range. Functions like `stopifnot()` are great for this.
+    
+- **Error Handling:** Include mechanisms (like `try-catch` statements or `stop()` calls) to detect unexpected conditions, notify the user, or safely log the error.
+    
+- **Vectorisation:** Remember that R is a heavily vectorised language. If you build your function using base mathematical operations, it will likely work natively on entire vectors without requiring you to write a `for` loop.
+
+# Class 6: Functions Part 2 (Defensive Programming)
+
+### **1. Principles of Defensive Programming**
+
+- **Core Goal:** A well-designed function should protect itself from bad input, communicate clearly, fail early when something is seriously wrong, and behave predictably.
+    
+- **Early Exits:** Input checks and assertions should always be placed near the beginning of the function body. This stops the function before it wastes time or memory on meaningless calculations.
+    
+
+---
+
+### **2. Communicating with the User**
+
+- **`stop("message")`:** Used for critical problems. Execution stops immediately, and an error message is printed to the console.
+    
+- **`warning("message")`:** Indicates something suspicious occurred (e.g., unexpected missing values), but execution is allowed to continue.
+    
+- **`message("message")`:** Provides a helpful, informative note to the user. It does not indicate an error or a problem.
+    
+
+---
+
+### **3. Assertions and Input Checking**
+
+- **Manual Checks:** Using `if(!condition) { stop("error") }` is the most flexible approach and usually results in the clearest, most user-friendly error messages.
+    
+- **`stopifnot()`:** A compact, built-in function that evaluates conditions one by one. If _any_ provided condition evaluates to `FALSE`, the function stops execution entirely.
+    
+
+---
+
+### **4. Error Handling and Continuity**
+
+- **`try()`:** By default, an error crashes a loop or function. Wrapping code in `try(expression)` allows the script to continue running even if that specific expression fails.
+    
+- **The Try-Error Class:** If `try()` fails, it returns a specific object of class `"try-error"`. You can run it silently using `try(expression, silent = TRUE)` to suppress console text.
+    
+- **`tryCatch()`:** A highly flexible tool that allows you to specify entirely different behaviors depending on what happens. You can define specific fallback actions for `error`, `warning`, and `message` events (e.g., forcing a function to safely return `NA` instead of crashing your entire pipeline).
+    
+
+---
+
+### **5. Function Cleanup and Exiting**
+
+- **`on.exit()`:** Guarantees that a specific piece of cleanup code will run the moment the function finishes, _even if an error caused it to crash_. This is critical when a function temporarily alters global settings (like plotting layouts using `par()`).
+    
+- **`invisible()`:** Returns an object so it can be assigned to a variable, but suppresses the automatic console printout. This is highly useful for functions designed primarily for side effects (like drawing a plot) where you still want to return the underlying data or model object behind the scenes.
+    
+
+---
+
+### **6. Custom Operators (Advanced)**
+
+- **Operator Logic:** In R, standard operators (like `+` or `%in%`) are just functions under the hood.
+    
+- **Custom Naming:** You can define your own operators by naming a function with a starting and ending percent sign, such as `` `%notin%` <- function(x, y) {...} ``.
+    
+- **Arguments:** Every custom operator is fundamentally a function that takes exactly two arguments: the left-hand side (`x`) and the right-hand side (`y`).
+    
+- **Best Practices:** Use custom operators carefully to maintain code readability, and absolutely never overwrite base R operators.
