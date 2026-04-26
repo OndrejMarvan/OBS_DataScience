@@ -1,0 +1,6 @@
+data/raw/
+data/processed/
+data/output/
+*.RData
+.Rhistory
+desktop.ini
