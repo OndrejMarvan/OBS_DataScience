@@ -10,33 +10,33 @@ tags:
 These are the 200 most commonly used words in any language. Master these across all five languages and you unlock basic comprehension everywhere.
 
 ## Pronouns and Determiners (1-25)
-| # | 🇨🇿 | 🇵🇱 | 🇩🇪 | 🇷🇺 | 🇬🇧 |
-|---|------|------|------|------|------|
-| 1 | já | ja | ich | я | I |
-| 2 | ty | ty | du | ты | you (sg) |
-| 3 | on | on | er | он | he |
-| 4 | ona | ona | sie | она | she |
-| 5 | ono/to | to | es | оно/это | it |
-| 6 | my | my | wir | мы | we |
-| 7 | vy | wy | ihr/Sie | вы | you (pl) |
-| 8 | oni | oni | sie | они | they |
-| 9 | ten/ta/to | ten/ta/to | der/die/das | тот/та/то | this/that/the |
-| 10 | tento | ten/ta/to | dieser | этот | this |
-| 11 | tamten | tamten | jener | тот | that |
-| 12 | kdo | kto | wer | кто | who |
-| 13 | co | co | was | что | what |
-| 14 | který | który | welcher | который | which |
-| 15 | všechno | wszystko | alles | всё | everything |
-| 16 | nic | nic | nichts | ничего | nothing |
-| 17 | někdo | ktoś | jemand | кто-то | someone |
-| 18 | nikdo | nikt | niemand | никто | nobody |
-| 19 | něco | coś | etwas | что-то | something |
-| 20 | každý | każdy | jeder | каждый | every/each |
-| 21 | jiný/další | inny/inny | anderer | другой | other/another |
-| 22 | stejný | taki sam | gleicher | такой же | same |
-| 23 | sám/sama | sam/sama | selbst | сам/сама | self |
-| 24 | svůj | swój | sein/ihr | свой | one's own |
-| 25 | takový | taki | solcher | такой | such |
+| #   | 🇨🇿       | 🇵🇱      | 🇩🇪        | 🇷🇺      | 🇬🇧          |
+| --- | ---------- | --------- | ----------- | --------- | ------------- |
+| 1   | já         | ja        | ich         | я         | I             |
+| 2   | ty         | ty        | du          | ты        | you (sg)      |
+| 3   | on         | on        | er          | он        | he            |
+| 4   | ona        | ona       | sie         | она       | she           |
+| 5   | ono/to     | to        | es          | оно/это   | it            |
+| 6   | my         | my        | wir         | мы        | we            |
+| 7   | vy         | wy        | ihr/Sie     | вы        | you (pl)      |
+| 8   | oni        | oni       | sie         | они       | they          |
+| 9   | ten/ta/to  | ten/ta/to | der/die/das | тот/та/то | this/that/the |
+| 10  | tento      | ten/ta/to | dieser      | этот      | this          |
+| 11  | tamten     | tamten    | jener       | тот       | that          |
+| 12  | kdo        | kto       | wer         | кто       | who           |
+| 13  | co         | co        | was         | что       | what          |
+| 14  | který      | który     | welcher     | который   | which         |
+| 15  | všechno    | wszystko  | alles       | всё       | everything    |
+| 16  | nic        | nic       | nichts      | ничего    | nothing       |
+| 17  | někdo      | ktoś      | jemand      | кто-то    | someone       |
+| 18  | nikdo      | nikt      | niemand     | никто     | nobody        |
+| 19  | něco       | coś       | etwas       | что-то    | something     |
+| 20  | každý      | każdy     | jeder       | каждый    | every/each    |
+| 21  | jiný/další | inny/inny | anderer     | другой    | other/another |
+| 22  | stejný     | taki sam  | gleicher    | такой же  | same          |
+| 23  | sám/sama   | sam/sama  | selbst      | сам/сама  | self          |
+| 24  | svůj       | swój      | sein/ihr    | свой      | one's own     |
+| 25  | takový     | taki      | solcher     | такой     | such          |
 
 ## Core Verbs (26-60)
 | # | 🇨🇿 | 🇵🇱 | 🇩🇪 | 🇷🇺 | 🇬🇧 |
