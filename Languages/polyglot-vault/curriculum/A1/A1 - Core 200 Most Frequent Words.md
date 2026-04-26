@@ -39,43 +39,43 @@ These are the 200 most commonly used words in any language. Master these across 
 | 25  | takový     | taki      | solcher     | такой     | such          |
 
 ## Core Verbs (26-60)
-| # | 🇨🇿 | 🇵🇱 | 🇩🇪 | 🇷🇺 | 🇬🇧 |
-|---|------|------|------|------|------|
-| 26 | být | być | sein | быть | to be |
-| 27 | mít | mieć | haben | иметь | to have |
-| 28 | dělat | robić/делать | machen/tun | делать | to do/make |
-| 29 | říci/říkat | powiedzieć/mówić | sagen | сказать/говорить | to say |
-| 30 | jít | iść | gehen | идти | to go |
-| 31 | moci/moct | móc | können | мочь | can/to be able |
-| 32 | vědět | wiedzieć | wissen | знать | to know |
-| 33 | chtít | chcieć | wollen | хотеть | to want |
-| 34 | vidět | widzieć | sehen | видеть | to see |
-| 35 | dát | dać | geben | дать | to give |
-| 36 | vzít | wziąć | nehmen | взять | to take |
-| 37 | přijít | przyjść | kommen | прийти | to come |
-| 38 | myslet | myśleć | denken | думать | to think |
-| 39 | dostat | dostać | bekommen | получить | to get/receive |
-| 40 | najít | znaleźć | finden | найти | to find |
-| 41 | psát | pisać | schreiben | писать | to write |
-| 42 | číst | czytać | lesen | читать | to read |
-| 43 | mluvit | mówić | sprechen | говорить | to speak |
-| 44 | žít | żyć | leben | жить | to live |
-| 45 | stát | stać | stehen | стоять | to stand |
-| 46 | sedět | siedzieć | sitzen | сидеть | to sit |
-| 47 | jíst | jeść | essen | есть | to eat |
-| 48 | pít | pić | trinken | пить | to drink |
-| 49 | spát | spać | schlafen | спать | to sleep |
-| 50 | umřít/zemřít | umrzeć | sterben | умереть | to die |
-| 51 | narodit se | urodzić się | geboren werden | родиться | to be born |
-| 52 | milovat | kochać | lieben | любить | to love |
-| 53 | pracovat | pracować | arbeiten | работать | to work |
-| 54 | hrát | grać | spielen | играть | to play |
-| 55 | koupit | kupić | kaufen | купить | to buy |
-| 56 | zaplatit | zapłacić | bezahlen | заплатить | to pay |
-| 57 | ptát se | pytać | fragen | спрашивать | to ask |
-| 58 | odpovědět | odpowiedzieć | antworten | ответить | to answer |
-| 59 | začít | zacząć | anfangen/beginnen | начать | to begin |
-| 60 | skončit | skończyć | aufhören/beenden | закончить | to end/finish |
+| #   | 🇨🇿         | 🇵🇱             | 🇩🇪              | 🇷🇺             | 🇬🇧           |
+| --- | ------------ | ---------------- | ----------------- | ---------------- | -------------- |
+| 26  | být          | być              | sein              | быть             | to be          |
+| 27  | mít          | mieć             | haben             | иметь            | to have        |
+| 28  | dělat        | robić            | machen/tun        | делать           | to do/make     |
+| 29  | říci/říkat   | powiedzieć/mówić | sagen             | сказать/говорить | to say         |
+| 30  | jít          | iść              | gehen             | идти             | to go          |
+| 31  | moci/moct    | móc              | können            | мочь             | can/to be able |
+| 32  | vědět        | wiedzieć         | wissen            | знать            | to know        |
+| 33  | chtít        | chcieć           | wollen            | хотеть           | to want        |
+| 34  | vidět        | widzieć          | sehen             | видеть           | to see         |
+| 35  | dát          | dać              | geben             | дать             | to give        |
+| 36  | vzít         | wziąć            | nehmen            | взять            | to take        |
+| 37  | přijít       | przyjść          | kommen            | прийти           | to come        |
+| 38  | myslet       | myśleć           | denken            | думать           | to think       |
+| 39  | dostat       | dostać           | bekommen          | получить         | to get/receive |
+| 40  | najít        | znaleźć          | finden            | найти            | to find        |
+| 41  | psát         | pisać            | schreiben         | писать           | to write       |
+| 42  | číst         | czytać           | lesen             | читать           | to read        |
+| 43  | mluvit       | mówić            | sprechen          | говорить         | to speak       |
+| 44  | žít          | żyć              | leben             | жить             | to live        |
+| 45  | stát         | stać             | stehen            | стоять           | to stand       |
+| 46  | sedět        | siedzieć         | sitzen            | сидеть           | to sit         |
+| 47  | jíst         | jeść             | essen             | есть             | to eat         |
+| 48  | pít          | pić              | trinken           | пить             | to drink       |
+| 49  | spát         | spać             | schlafen          | спать            | to sleep       |
+| 50  | umřít/zemřít | umrzeć           | sterben           | умереть          | to die         |
+| 51  | narodit se   | urodzić się      | geboren werden    | родиться         | to be born     |
+| 52  | milovat      | kochać           | lieben            | любить           | to love        |
+| 53  | pracovat     | pracować         | arbeiten          | работать         | to work        |
+| 54  | hrát         | grać             | spielen           | играть           | to play        |
+| 55  | koupit       | kupić            | kaufen            | купить           | to buy         |
+| 56  | zaplatit     | zapłacić         | bezahlen          | заплатить        | to pay         |
+| 57  | ptát se      | pytać            | fragen            | спрашивать       | to ask         |
+| 58  | odpovědět    | odpowiedzieć     | antworten         | ответить         | to answer      |
+| 59  | začít        | zacząć           | anfangen/beginnen | начать           | to begin       |
+| 60  | skončit      | skończyć         | aufhören/beenden  | закончить        | to end/finish  |
 
 ## Core Adjectives (61-90)
 | # | 🇨🇿 | 🇵🇱 | 🇩🇪 | 🇷🇺 | 🇬🇧 |
