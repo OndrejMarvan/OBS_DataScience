@@ -78,38 +78,38 @@ These are the 200 most commonly used words in any language. Master these across 
 | 60  | skončit      | skończyć         | aufhören/beenden  | закончить        | to end/finish  |
 
 ## Core Adjectives (61-90)
-| # | 🇨🇿 | 🇵🇱 | 🇩🇪 | 🇷🇺 | 🇬🇧 |
-|---|------|------|------|------|------|
-| 61 | dobrý | dobry | gut | хороший/добрый | good |
-| 62 | špatný/zlý | zły | schlecht | плохой | bad |
-| 63 | velký | duży/wielki | groß | большой | big |
-| 64 | malý | mały | klein | маленький | small |
-| 65 | nový | nowy | neu | новый | new |
-| 66 | starý | stary | alt | старый | old |
-| 67 | dlouhý | długi | lang | длинный/долгий | long |
-| 68 | krátký | krótki | kurz | короткий | short |
-| 69 | první | pierwszy | erster | первый | first |
-| 70 | poslední | ostatni | letzter | последний | last |
-| 71 | pravý | prawy | rechter/richtig | правый/правильный | right/correct |
-| 72 | levý | lewy | linker | левый | left |
-| 73 | celý | cały | ganz/ganzer | целый/весь | whole/entire |
-| 74 | jiný | inny | anderer | другой | different/other |
-| 75 | důležitý | ważny | wichtig | важный | important |
-| 76 | možný | możliwy | möglich | возможный | possible |
-| 77 | nutný/potřebný | konieczny/potrzebny | nötig/notwendig | нужный/необходимый | necessary |
-| 78 | těžký | ciężki/trudny | schwer/schwierig | тяжёлый/трудный | heavy/difficult |
-| 79 | lehký/snadný | lekki/łatwy | leicht/einfach | лёгкий | light/easy |
-| 80 | rychlý | szybki | schnell | быстрый | fast |
-| 81 | pomalý | wolny/powolny | langsam | медленный | slow |
-| 82 | tichý | cichy | leise/ruhig/still | тихий | quiet |
-| 83 | hlasitý | głośny | laut | громкий | loud |
-| 84 | plný | pełny | voll | полный | full |
-| 85 | prázdný | pusty/próżny | leer | пустой | empty |
-| 86 | otevřený | otwarty | offen | открытый | open |
-| 87 | zavřený | zamknięty | geschlossen | закрытый | closed |
-| 88 | živý | żywy | lebendig | живой | alive |
-| 89 | mrtvý | martwy | tot | мёртвый | dead |
-| 90 | volný | wolny | frei | свободный | free |
+| #   | 🇨🇿           | 🇵🇱                | 🇩🇪              | 🇷🇺               | 🇬🇧            |
+| --- | -------------- | ------------------- | ----------------- | ------------------ | --------------- |
+| 61  | dobrý          | dobry               | gut               | хороший/добрый     | good            |
+| 62  | špatný/zlý     | zły                 | schlecht          | плохой             | bad             |
+| 63  | velký          | duży/wielki         | groß              | большой            | big             |
+| 64  | malý           | mały                | klein             | маленький          | small           |
+| 65  | nový           | nowy                | neu               | новый              | new             |
+| 66  | starý          | stary               | alt               | старый             | old             |
+| 67  | dlouhý         | długi               | lang              | длинный/долгий     | long            |
+| 68  | krátký         | krótki              | kurz              | короткий           | short           |
+| 69  | první          | pierwszy            | erster            | первый             | first           |
+| 70  | poslední       | ostatni             | letzter           | последний          | last            |
+| 71  | pravý          | prawy               | rechter/richtig   | правый/правильный  | right/correct   |
+| 72  | levý           | lewy                | linker            | левый              | left            |
+| 73  | celý           | cały                | ganz/ganzer       | целый/весь         | whole/entire    |
+| 74  | jiný           | inny                | anderer           | другой             | different/other |
+| 75  | důležitý       | ważny               | wichtig           | важный             | important       |
+| 76  | možný          | możliwy             | möglich           | возможный          | possible        |
+| 77  | nutný/potřebný | konieczny/potrzebny | nötig/notwendig   | нужный/необходимый | necessary       |
+| 78  | těžký          | ciężki/trudny       | schwer/schwierig  | тяжёлый/трудный    | heavy/difficult |
+| 79  | lehký/snadný   | **lekki**/łatwy     | leicht/einfach    | лёгкий             | light/easy      |
+| 80  | rychlý         | szybki              | schnell           | быстрый            | fast            |
+| 81  | pomalý         | wolny/powolny       | langsam           | медленный          | slow            |
+| 82  | tichý          | cichy               | leise/ruhig/still | тихий              | quiet           |
+| 83  | hlasitý        | głośny              | laut              | громкий            | loud            |
+| 84  | plný           | pełny               | voll              | полный             | full            |
+| 85  | prázdný        | pusty/próżny        | leer              | пустой             | empty           |
+| 86  | otevřený       | otwarty             | offen             | открытый           | open            |
+| 87  | zavřený        | zamknięty           | geschlossen       | закрытый           | closed          |
+| 88  | živý           | żywy                | lebendig          | живой              | alive           |
+| 89  | mrtvý          | martwy              | tot               | мёртвый            | dead            |
+| 90  | volný          | wolny               | frei              | свободный          | free            |
 
 ## Core Adverbs and Connectors (91-130)
 | # | 🇨🇿 | 🇵🇱 | 🇩🇪 | 🇷🇺 | 🇬🇧 |
