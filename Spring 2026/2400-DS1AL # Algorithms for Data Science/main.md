@@ -842,3 +842,9 @@ differ by at most 1
 balanced/inbalanced 
 null nodes, just put them everywhere, so it's easier and more understandable 
 We cannot duplicate the value (if 5 is already placed, we cannot place it there again)
+
+BST -> easy 
+
+Exam will be similar to this one. 
+
+
