@@ -837,3 +837,6 @@ Let $T(n, k)$ be the running time. Then:
 This gives $T(n, k) = \Theta(n^k)$ — which is $\Omega(n^k)$. $\blacksquare$
 
 ## Lab 05 (06.05.2026)
+differ by at most 1
+
+balanced/inbalanced 
