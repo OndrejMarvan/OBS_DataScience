@@ -835,3 +835,5 @@ Let $T(n, k)$ be the running time. Then:
 - $T(n, k) = n \cdot T(n, k-1)$
 
 This gives $T(n, k) = \Theta(n^k)$ — which is $\Omega(n^k)$. $\blacksquare$
+
+## Lab 05 (06.05.2026)
