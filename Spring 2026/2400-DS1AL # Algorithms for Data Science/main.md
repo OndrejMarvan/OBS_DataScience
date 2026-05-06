@@ -840,3 +840,4 @@ This gives $T(n, k) = \Theta(n^k)$ — which is $\Omega(n^k)$. $\blacksquare$
 differ by at most 1
 
 balanced/inbalanced 
+null nodes, just put them everywhere, so it's easier and more understandable 
