@@ -358,3 +358,9 @@ _Tags: #econometrics #statistics #censored_data #tobit #heckman_
 
 ## Lab 8 (16.04.2026)
 # Time Series 
+
+
+## Lab 11 (07.05.2026)
+stationerity, non-stationerity 
+
+Augmented dec in the test and what are the other tests (KPSS a PP tests) for stationerity 
