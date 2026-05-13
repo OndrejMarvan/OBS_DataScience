@@ -10,6 +10,15 @@ tags: [machine-learning, classification, msc, wne-uw, midterm]
 
 > **Goal of these notes:** A complete, self-contained study guide for the mid-term theoretical exam (40 pts). Organized to mirror the lecture flow so you can revise top-to-bottom or jump to a specific concept.
 
+## 📚 Companion Notes
+
+This is the main conceptual guide. For deeper preparation, use these companion notes:
+
+- **[[ML1_Derivations]]** — Step-by-step proofs (OLS, log-loss MLE, bias-variance decomposition, SVM margin, etc.)
+- **[[ML1_Worked_Examples]]** — 15 numerical problems with full solutions (confusion matrices, KNN by hand, info gain, ROC construction, etc.)
+- **[[ML1_Comparison_Tables]]** — Side-by-side reference (algorithms, metrics, CV types, scalers, encoders, etc.)
+- **[[ML1_Exam_Day_QuickRef]]** — 30-min pre-exam refresh with formulas, traps, and exam strategy
+
 ## Table of Contents
 
 - [[#1 Introduction to Machine Learning]]
