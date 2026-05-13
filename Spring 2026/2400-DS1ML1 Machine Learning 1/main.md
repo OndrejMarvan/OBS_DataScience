@@ -24,3 +24,7 @@ The following weights are used to determine the final grade (max 100 pts):
     - 10 pts for models performance in competition (out of sample test)
 
 
+## Mock Test 
+
+
+
