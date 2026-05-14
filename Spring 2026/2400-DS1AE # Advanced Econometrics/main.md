@@ -364,3 +364,9 @@ _Tags: #econometrics #statistics #censored_data #tobit #heckman_
 stationerity, non-stationerity 
 
 Augmented dec in the test and what are the other tests (KPSS a PP tests) for stationerity 
+
+
+## Lab 2 (14.05.2026)
+What to expect in the test: 
+- Check if cointegrated or not from the screenshot
+- 
