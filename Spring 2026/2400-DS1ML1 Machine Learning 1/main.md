@@ -138,4 +138,14 @@ The following weights are used to determine the final grade (max 100 pts):
 **Reasoning:** LOOCV is an extreme form of k-fold cross-validation where _k_ equals the number of data points (_n_). Because you leave exactly one observation out for testing in each iteration, the "split" is completely deterministic. Unlike standard k-fold cross-validation, there is no randomness involved in how the data is divided. Therefore, LOOCV will always yield the exact same assessment for a given dataset, making statement C false.
 
 
+## L? (15.05.2026)
+Kedro
+https://kedro.org/
+
+Node <- In df1, Out df 
+
+Pipeline
+
+
+
 
