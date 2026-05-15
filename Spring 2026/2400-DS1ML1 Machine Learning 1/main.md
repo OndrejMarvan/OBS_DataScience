@@ -140,7 +140,7 @@ The following weights are used to determine the final grade (max 100 pts):
 
 ## L? (15.05.2026)
 Kedro
-https://kedro.org/
+https://docs.kedro.org/en/stable/
 
 Node <- In df1, Out df 
 
