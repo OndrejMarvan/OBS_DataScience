@@ -989,6 +989,8 @@ A cleaner planar embedding: place the 6-cycle $1{-}2{-}5{-}6{-}3{-}4{-}1$ on the
 
 **Output sequence:** `0, 0, 4, 3, 2, 1, 1, 2`
 
+
+
 ---
 
 ## Task 6.4 — Dijkstra
