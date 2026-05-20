@@ -867,7 +867,7 @@ Directed edges in the graph: $0 \to 1$, $0 \to 3$, $1 \to 2$, $1 \to 4$, $4 \to 
 0 → 1 → 3 → NONE
 1 → 2 → 4 → NONE
 2 → NONE
-3 → NONE
+3 → 0 -> N
 4 → 3 → NONE
 ```
 
@@ -883,24 +883,27 @@ Directed edges in the graph: $0 \to 1$, $0 \to 3$, $1 \to 2$, $1 \to 4$, $4 \to 
 
 ### (b) Stack operations (LIFO)
 
-|Operation|Stack (bottom → top)|Output|
-|---|---|---|
-|`Add(0)`|`[0]`|—|
-|`Add(4)`|`[0, 4]`|—|
-|`FindNewest()`|`[0, 4]`|**4**|
-|`Add(3)`|`[0, 4, 3]`|—|
-|`ExtractNewest()`|`[0, 4]`|**3**|
-|`Add(2)`|`[0, 4, 2]`|—|
-|`ExtractNewest()`|`[0, 4]`|**2**|
-|`Add(1)`|`[0, 4, 1]`|—|
-|`ExtractNewest()`|`[0, 4]`|**1**|
-|`ExtractNewest()`|`[0]`|**4**|
-|`FindNewest()`|`[0]`|**0**|
-|`Add(2)`|`[0, 2]`|—|
-|`ExtractNewest()`|`[0]`|**2**|
-|`ExtractNewest()`|`[]`|**0**|
+| Operation         | Stack (bottom → top) | Output |     |
+| ----------------- | -------------------- | ------ | --- |
+| `Add(0)`          | `[0]`                | —      |     |
+| `Add(4)`          | `[0, 4]`             | —      |     |
+| `FindNewest()`    | `[0, 4]`             | **4**  |     |
+| `Add(3)`          | `[0, 4, 3]`          | —      |     |
+| `ExtractNewest()` | `[0, 4]`             | **3**  |     |
+| `Add(2)`          | `[0, 4, 2]`          | —      |     |
+| `ExtractNewest()` | `[0, 4]`             | **2**  |     |
+| `Add(1)`          | `[0, 4, 1]`          | —      |     |
+| `ExtractNewest()` | `[0, 4]`             | **1**  |     |
+| `ExtractNewest()` | `[0]`                | **4**  |     |
+| `FindNewest()`    | `[0]`                | **0**  |     |
+| `Add(2)`          | `[0, 2]`             | —      |     |
+| `ExtractNewest()` | `[0]`                | **2**  |     |
+| `ExtractNewest()` | `[]`                 | **0**  |     |
 
-**Output sequence:** `4, 3, 2, 1, 4, 0, 2, 0`
+**Output sequence:** `4, 3, 2, 1, 4, 0, 2, 0
+
+Output (correct**): 4, 3, 2, 1, 4, 0, 2, 0**
+needs to have stuck on the side and start form the bottom. 
 
 ### (c) BFS from $s$ (alphabetical neighbor order)
 
@@ -946,6 +949,7 @@ The structure is two binary-tree-like fragments rooted at $4$:
 
 ### (b) Undirected graph from adjacency matrix
 
+!Undirect - that means that we have to look above or below the diagonal only, not both. 
 Edges (each appears once): $1{-}2,\ 1{-}4,\ 1{-}6,\ 2{-}5,\ 3{-}4,\ 3{-}6,\ 4{-}5,\ 5{-}6$.
 
 A planar layout without crossings — put $1, 2, 5, 6$ as a 4-cycle around the outside and $3, 4$ inside connected to it:
