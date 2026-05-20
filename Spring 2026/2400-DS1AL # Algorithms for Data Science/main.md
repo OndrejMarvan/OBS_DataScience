@@ -847,4 +847,417 @@ BST -> easy
 
 Exam will be similar to this one. 
 
+Lab 06 (20.05.2026)
 
+# AfDS Exercise 6 — Solutions
+
+> Topics: Graphs, Stacks, Queues, BFS, Dijkstra, Floyd–Warshall, MST
+
+---
+
+## Task 6.1 — Simple Tasks: Graphs, Stack and BFS
+
+### (a) Adjacency matrix & adjacency lists
+
+Directed edges in the graph: $0 \to 1$, $0 \to 3$, $1 \to 2$, $1 \to 4$, $4 \to 3$.
+
+**Adjacency lists:**
+
+```
+0 → 1 → 3 → NONE
+1 → 2 → 4 → NONE
+2 → NONE
+3 → NONE
+4 → 3 → NONE
+```
+
+**Adjacency matrix** (rows = from, columns = to):
+
+||0|1|2|3|4|
+|---|---|---|---|---|---|
+|**0**|0|1|0|1|0|
+|**1**|0|0|1|0|1|
+|**2**|0|0|0|0|0|
+|**3**|0|0|0|0|0|
+|**4**|0|0|0|1|0|
+
+### (b) Stack operations (LIFO)
+
+|Operation|Stack (bottom → top)|Output|
+|---|---|---|
+|`Add(0)`|`[0]`|—|
+|`Add(4)`|`[0, 4]`|—|
+|`FindNewest()`|`[0, 4]`|**4**|
+|`Add(3)`|`[0, 4, 3]`|—|
+|`ExtractNewest()`|`[0, 4]`|**3**|
+|`Add(2)`|`[0, 4, 2]`|—|
+|`ExtractNewest()`|`[0, 4]`|**2**|
+|`Add(1)`|`[0, 4, 1]`|—|
+|`ExtractNewest()`|`[0, 4]`|**1**|
+|`ExtractNewest()`|`[0]`|**4**|
+|`FindNewest()`|`[0]`|**0**|
+|`Add(2)`|`[0, 2]`|—|
+|`ExtractNewest()`|`[0]`|**2**|
+|`ExtractNewest()`|`[]`|**0**|
+
+**Output sequence:** `4, 3, 2, 1, 4, 0, 2, 0`
+
+### (c) BFS from $s$ (alphabetical neighbor order)
+
+Edges I read from the figure: `s–a, s–b, s–d, s–e, a–b, b–f, d–c, c–g, e–f, e–h, f–h, g–h`.
+
+Trace:
+
+- Extract **s** (d=0): enqueue a, b, d, e
+- Extract **a** (d=1): neighbors {b, s} already known
+- Extract **b** (d=1): enqueue f
+- Extract **d** (d=1): enqueue c
+- Extract **e** (d=1): enqueue h
+- Extract **f** (d=2): nothing new
+- Extract **c** (d=2): enqueue g
+- Extract **h** (d=2): nothing new
+- Extract **g** (d=3): done
+
+||s|a|b|c|d|e|f|g|h|
+|---|---|---|---|---|---|---|---|---|---|
+|**distance**|0|1|1|2|1|1|2|3|2|
+|**parent**|NONE|s|s|d|s|s|b|c|e|
+|**removal order**|1|2|3|7|4|5|6|9|8|
+
+---
+
+## Task 6.2 — Drawing Graphs
+
+### (a) Directed graph from adjacency lists
+
+Edges: $2 \to 1$, $2 \to 3$, $4 \to 2$, $4 \to 6$, $6 \to 5$, $6 \to 7$. Vertices $1, 3, 5, 7$ are sinks.
+
+The structure is two binary-tree-like fragments rooted at $4$:
+
+```
+        4
+       / \
+      2   6
+     / \ / \
+    1  3 5  7
+```
+
+(All arrows point downward, from parent to child. Drawing in this layout has no edge crossings.)
+
+### (b) Undirected graph from adjacency matrix
+
+Edges (each appears once): $1{-}2,\ 1{-}4,\ 1{-}6,\ 2{-}5,\ 3{-}4,\ 3{-}6,\ 4{-}5,\ 5{-}6$.
+
+A planar layout without crossings — put $1, 2, 5, 6$ as a 4-cycle around the outside and $3, 4$ inside connected to it:
+
+```
+        2 ──── 5
+        │  ╲ ╱ │
+        │   ╳  │       (the ╳ is just visual — actual edges
+        │  ╱ ╲ │        4–5 and 1–2 don’t cross)
+        1 ──── 6
+         ╲    ╱
+          4──3
+```
+
+A cleaner planar embedding: place the 6-cycle $1{-}2{-}5{-}6{-}3{-}4{-}1$ on the outside, then add the chords $1{-}6$ and $4{-}5$ on opposite sides — no crossings.
+
+---
+
+## Task 6.3 — Queue operations (FIFO)
+
+|Operation|Queue (front → back)|Output|
+|---|---|---|
+|`Add(0)`|`[0]`|—|
+|`Add(4)`|`[0, 4]`|—|
+|`FindOldest()`|`[0, 4]`|**0**|
+|`Add(3)`|`[0, 4, 3]`|—|
+|`ExtractOldest()`|`[4, 3]`|**0**|
+|`Add(2)`|`[4, 3, 2]`|—|
+|`ExtractOldest()`|`[3, 2]`|**4**|
+|`Add(1)`|`[3, 2, 1]`|—|
+|`ExtractOldest()`|`[2, 1]`|**3**|
+|`ExtractOldest()`|`[1]`|**2**|
+|`FindOldest()`|`[1]`|**1**|
+|`Add(2)`|`[1, 2]`|—|
+|`ExtractOldest()`|`[2]`|**1**|
+|`ExtractOldest()`|`[]`|**2**|
+
+**Output sequence:** `0, 0, 4, 3, 2, 1, 1, 2`
+
+---
+
+## Task 6.4 — Dijkstra
+
+Edges and weights I read from the figure:
+
+- $s{-}a:10$, $s{-}b:60$, $s{-}d:10$, $s{-}e:30$
+- $a{-}c:25$
+- $b{-}f:5$
+- $d{-}c:10$, $d{-}e:5$
+- $e{-}f:11$, $e{-}h:15$
+- $f{-}h:2$
+- $c{-}g:15$
+- $g{-}h:5$
+
+Trace (`*` = removed, `→` = relaxation):
+
+|Step|Extracted|dist update|
+|---|---|---|
+|1|$s$ (0)|$a{=}10,\ b{=}60,\ d{=}10,\ e{=}30$|
+|2|$a$ (10)|$c{=}35$ via $a$|
+|3|$d$ (10)|$c{=}20$ (parent $d$); $e{=}15$ (parent $d$)|
+|4|$e$ (15)|$f{=}26$ (parent $e$); $h{=}30$ (parent $e$)|
+|5|$c$ (20)|$g{=}35$ via $c$|
+|6|$f$ (26)|$h{=}28$ (parent $f$); $b{=}31$ (parent $f$)|
+|7|$h$ (28)|$g{=}33$ (parent $h$)|
+|8|$b$ (31)|no improvement|
+|9|$g$ (33)|done|
+
+**Final table:**
+
+||s|a|b|c|d|e|f|g|h|
+|---|---|---|---|---|---|---|---|---|---|
+|**distance**|0|10|31|20|10|15|26|33|28|
+|**parent**|NONE|s|f|d|s|d|e|h|f|
+
+**Edges on cheapest paths from $s$** (the shortest-path tree): $s{-}a$, $s{-}d$, $d{-}c$, $d{-}e$, $e{-}f$, $f{-}b$, $f{-}h$, $h{-}g$.
+
+---
+
+## Task 6.5 — Incomplete Floyd–Warshall _(Bonus)_
+
+The bug: the outer loop runs $k = 1, \dots, 1002$, so vertices $1003, 1004, 1005, 1006$ are **never used as intermediates**. Direct edges incident to them still count (initial values from lines 4–6), but no path can route _through_ them.
+
+Useful facts about the graph:
+
+- The chain $1{-}2{-}3{-}\dots{-}999{-}1000{-}1002{-}1003$ uses only weight-1 edges except the last ($1002{-}1003$ has weight 2).
+- Distance $1 \to 1000$ along the chain $= 999$ (using only intermediates $\le 1000$).
+- The "back side" vertices $1001, 1004, 1005, 1006$ are reachable from $1$ only via $1003$ or via the direct edges $1{-}1005,(7000)$ and $1{-}1006,(3)$, then through $1006{-}1001,(1)$, $1006{-}1004,(2)$, etc. All these "back-side hubs" have index $> 1002$.
+
+Computing each entry — a path is admissible iff every **intermediate** vertex has index $\le 1002$:
+
+- **$\delta[1][1002]$:** chain $1 \to 2 \to \dots \to 1000 \to 1002$. All intermediates $\le 1000 \le 1002$. Weight $= 1{+}1{+}\dots{+}1,(\text{999 ones}) + 1 = \boxed{1000}$.
+    
+- **$\delta[1][1001]$:** Only edges into $1001$ are $1006{-}1001$ and $1001{-}1003$. To use either as the final step, the path's penultimate vertex (an intermediate from $1$'s side) must be $1006$ or $1003$ — but both are $>1002$. So no admissible path. $\boxed{+\infty}$.
+    
+- **$\delta[1][1005]$:** Edges into $1005$ are $1{-}1005,(7000)$ and $1005{-}1003,(2)$. The first is a direct edge (no intermediate). Going via $1003$ would need $1003$ as an intermediate — not allowed. So $\boxed{7000}$.
+    
+- **$\delta[2][4]$:** $2{-}3{-}4$, intermediate $3 \le 1002$. $\boxed{2}$.
+    
+- **$\delta[1003][1006]$:** Best admissible path: $1003 \to 1002 \to 1000 \to 999 \to \dots \to 1 \to 1006$. Intermediates $1002, 1000, 999, \dots, 1$ are all $\le 1002$. Cost $= 2 + 1 + 999 + 3 = \boxed{1005}$. (Going $1003{-}1004{-}1006$ or $1003{-}1005{-}1$ would need $1004$ or $1005$ as intermediate — not allowed.)
+    
+- **$\delta[1001][1005]$:** From $1001$, neighbors are $1006$ and $1003$, both $>1002$. So the very first step from $1001$ already requires a forbidden intermediate. $\boxed{+\infty}$.
+    
+- **$\delta[1003][1004]$:** Direct edge, weight $1$. $\boxed{1}$.
+    
+- **$\delta[1001][1004]$:** Same problem as above — $1001$'s only neighbors ($1006, 1003$) are forbidden as intermediates. $\boxed{+\infty}$.
+    
+
+**Summary:**
+
+|Cell|Value|
+|---|---|
+|$\delta[1][1002]$|$1000$|
+|$\delta[1][1001]$|$+\infty$|
+|$\delta[1][1005]$|$7000$|
+|$\delta[2][4]$|$2$|
+|$\delta[1003][1006]$|$1005$|
+|$\delta[1001][1005]$|$+\infty$|
+|$\delta[1003][1004]$|$1$|
+|$\delta[1001][1004]$|$+\infty$|
+
+---
+
+## Task 6.6 — Minimum Spanning Tree _(Bonus)_
+
+### (a) MST of the given graph
+
+Edges with weights I read from the figure:
+
+$a{-}b:13$, $a{-}c:25$, $a{-}s:?$ (no edge in fig), $s{-}b:60$, $s{-}d:12$, $s{-}e:30$, $b{-}f:6$, $d{-}c:9$, $d{-}h:5$, $e{-}f:11$, $e{-}h:10$, $f{-}h:1$, $c{-}g:15$, $g{-}h:7$.
+
+Sort edges ascending and run **Kruskal**:
+
+|Edge|w|Take?|Reason|
+|---|---|---|---|
+|$f{-}h$|1|✅|first edge|
+|$d{-}h$|5|✅|connects ${d}$ to ${f,h}$|
+|$b{-}f$|6|✅|connects ${b}$ to component|
+|$g{-}h$|7|✅|connects ${g}$|
+|$d{-}c$|9|✅|connects ${c}$|
+|$e{-}h$|10|✅|connects ${e}$|
+|$e{-}f$|11|❌|$e$ and $f$ already same component|
+|$s{-}d$|12|✅|connects ${s}$|
+|$a{-}b$|13|✅|connects ${a}$ — last needed edge ($n-1 = 8$ taken)|
+|rest||❌|tree complete|
+
+**MST edges:** ${f{-}h, d{-}h, b{-}f, g{-}h, d{-}c, e{-}h, s{-}d, a{-}b}$. **Total weight:** $1 + 5 + 6 + 7 + 9 + 10 + 12 + 13 = 63$.
+
+### (b) Minimal spanning subgraph that isn't a tree
+
+If some edges have **negative** weight, a minimal spanning subgraph may include extra edges to drive the total cost down.
+
+**Example:** Triangle ${u, v, w}$ with weights $w(u,v) = -1$, $w(v,w) = -1$, $w(u,w) = -1$.
+
+- Any tree (2 edges): total cost $-2$.
+- The full triangle (3 edges): total cost $-3$, still spanning and connected, and _lower_ total weight.
+
+So the minimal spanning subgraph is the whole triangle — which contains a cycle and therefore is **not a tree**.
+
+```
+        u
+       / \
+      -1   -1
+     /       \
+    v ── -1 ── w
+```
+
+---
+
+## Task 6.7 — Salt and Pepper _(Bonus)_
+
+Model: build an undirected graph $G$ with one vertex per person and an edge between every pair of friends. Two friends "can cook together" iff one has salt and the other pepper — i.e. they get **different** labels. So we need a **2-coloring** of $G$, which exists iff $G$ is **bipartite**.
+
+### (a) Connected graph
+
+Run **BFS** from any vertex $s$. Assign $s$ colour `SALT`. For every vertex $v$ extracted from the queue and every neighbour $w$:
+
+- If $w$ has no colour yet: give it the opposite colour of $v$, set $\mathrm{parent}[w] = v$, enqueue.
+- If $w$ already has a colour: check that $\mathrm{colour}[w] \ne \mathrm{colour}[v]$. If equal, output **"not possible"** (an odd cycle was found) and stop.
+
+If BFS finishes with no conflict, the colouring is a valid salt/pepper assignment.
+
+Running time: BFS visits each vertex and edge $O(1)$ times → $O(n + k)$. ✅
+
+### (b) Disconnected graph
+
+Loop over all vertices $1, \dots, n$. For each uncoloured vertex, start a fresh BFS from it with colour `SALT`, applying the same rule as above. This processes every connected component independently.
+
+```text
+for v = 1 to n:
+    if colour[v] is unset:
+        BFS_bipartite_check(v)   # as in (a)
+```
+
+**Is the total running time $O(n + k)$?** Yes — the outer `for` loop itself costs $O(n)$. Each vertex and each edge is touched by exactly one BFS (the one for its component), so the BFS work summed over components is $O(n + k)$. Total: $O(n + k)$. ✅
+
+---
+
+## Task 6.8 — Is it true …? (Graphs) _(Bonus)_
+
+### (a) Does every connected graph with $n-1$ edges have no cycles?
+
+**Yes — it's true.** A connected graph on $n$ vertices needs at least $n-1$ edges. If a connected graph had both $n-1$ edges _and_ a cycle, removing one edge of the cycle would yield a connected graph with $n-2$ edges — impossible. So a connected graph with exactly $n-1$ edges is acyclic, i.e. a **tree**.
+
+> Equivalent characterisation from the cheatsheet: _a tree is a connected undirected graph without cycles_ and has exactly $n-1$ edges.
+
+### (b) Maximum number of edges (no parallel edges)
+
+i. **Directed graph, self-loops allowed:** every ordered pair $(u, v)$ — including $u = v$ — can be an edge. That's $n^2$ pairs, so at most $\boxed{n^2}$ edges.
+
+ii. **Directed graph, no self-loops:** $n^2 - n = n(n-1)$ ordered pairs with $u \ne v$. Max $\boxed{n(n-1)}$ edges.
+
+iii. **Undirected graph, no self-loops:** unordered pairs of distinct vertices, that's $\binom{n}{2} = \boxed{\dfrac{n(n-1)}{2}}$ edges.
+
+---
+
+## Task 6.9 — Floyd–Warshall vs Dijkstra _(Bonus)_
+
+Given times:
+
+- Floyd–Warshall: $\Theta(n^3 + m)$
+- Dijkstra from every vertex: $\Theta(mn \log m + n^2)$
+
+### (a) $m = \Theta(1)$
+
+- Floyd–Warshall: $\Theta(n^3 + 1) = \boxed{\Theta(n^3)}$
+- $n$ × Dijkstra: $\Theta(1 \cdot n \cdot \log 1 + n^2) = \Theta(0 + n^2) = \boxed{\Theta(n^2)}$
+
+➡ With very few edges, $n$ Dijkstra runs win.
+
+### (b) $m = \Theta(n^4)$
+
+Now $n = \Theta(m^{1/4})$, so $n^3 = \Theta(m^{3/4})$ and $n^2 = \Theta(m^{1/2})$.
+
+- Floyd–Warshall: $\Theta(n^3 + m) = \Theta(m^{3/4} + m) = \boxed{\Theta(m)}$
+- $n$ × Dijkstra: $\Theta(mn \log m + n^2) = \Theta(m \cdot m^{1/4} \log m + m^{1/2}) = \boxed{\Theta(m^{5/4} \log m)}$
+
+➡ With a very dense (parallel-edged) graph, Floyd–Warshall wins.
+
+---
+
+## Task 6.10 — Dijkstra with a Normal Queue _(Bonus)_
+
+The graph is a chain of "diamonds": at each _hub_ $0, 3, 6, 9, \dots$ there is a top route (two edges of weight $2$, total $4$) and a bottom route (two edges of weight $1$, total $2$). So the _correct_ shortest distance from $s = 0$ to the $k$-th hub is $2k$ (using only the cheap bottom path).
+
+**Why a normal queue (FIFO) is disastrous here.** With a normal queue, vertices come out in BFS order — _roughly by hop-count, not by distance._ Each time a hub $h_k$ is dequeued with a _new, better_ tentative distance, the algorithm relaxes its outgoing edges and pushes its successors again. Because the check `dist[w] > dist[v] + c` succeeds whenever a smaller distance arrives, every hub gets re-enqueued and re-processed many times: once for the top route reaching it, once for the bottom route, and then the _improvements_ propagate all the way down the chain again.
+
+More precisely, after the algorithm discovers a shorter route to hub $h_k$, it re-pushes $h_k$, which causes $h_{k+1}$ to be re-pushed with a better distance, which causes $h_{k+2}$ to be re-pushed, etc. Each hub can be reached with two different tentative values from the previous diamond, and each improvement cascades. The number of queue insertions per hub roughly **doubles** down the chain, giving an **exponential** blow-up of about $\Theta(2^{n/3})$ insertions in the worst case.
+
+A **priority queue** prevents this: a hub is extracted only when its distance is final, so each vertex is processed once and each edge is relaxed once — total $O((n + m) \log n)$ instead of exponential.
+
+---
+
+## Task 6.11 — Output Cheapest Paths via Floyd–Warshall _(Advanced)_
+
+### (a) Extending Floyd–Warshall, $O(n)$ output per pair
+
+Keep an auxiliary table $\mathrm{next}[u][v]$ that stores the **next vertex on a cheapest path from $u$ to $v$**.
+
+Initialisation: for every edge $(v, w, c)$ set $\mathrm{next}[v][w] = w$ and $\mathrm{next}[w][v] = v$. Set $\mathrm{next}[i][i] = i$.
+
+Modify the inner relaxation:
+
+```text
+if δ[v][k] + δ[k][w] < δ[v][w]:
+    δ[v][w]    = δ[v][k] + δ[k][w]
+    next[v][w] = next[v][k]     # first step toward k is also first step toward w
+```
+
+To print the path from $u$ to $v$ in $O(\text{length}) \le O(n)$:
+
+```text
+print u
+while u ≠ v:
+    u = next[u][v]
+    print u
+```
+
+### (b) Reconstructing a path from $\delta$ alone, in $O(n^2)$
+
+We don't have the graph or `next`; we only have the table $\delta$. Edges $(x, y)$ are exactly the pairs where $\delta[x][y]$ equals the original edge weight — but we don't even know which pairs are edges, since some $\delta[x][y]$ might equal a longer shortcut weight.
+
+**Idea:** a vertex $w$ is the next step on a shortest path from $u$ to $v$ iff $$\delta[u][w] + \delta[w][v] = \delta[u][v] \quad \text{and} \quad \delta[u][w] \text{ is the weight of an edge.}$$
+
+We can identify edges as follows: $(u, w)$ is an edge iff there is **no** vertex $x \ne u, w$ with $\delta[u][x] + \delta[x][w] = \delta[u][w]$. (Otherwise the $\delta[u][w]$ value would be realised by a 2-step shortcut, meaning the path is not a single edge.) Checking this for one pair takes $O(n)$.
+
+**Algorithm** (printing edges along a shortest path from $u$ to $v$):
+
+```text
+while u ≠ v:
+    for each candidate w ≠ u:
+        if δ[u][w] + δ[w][v] == δ[u][v]:
+            # check that (u, w) is a real edge: no detour realises δ[u][w]
+            is_edge ← true
+            for each x ≠ u, w:
+                if δ[u][x] + δ[x][w] == δ[u][w] and δ[u][x] > 0:
+                    is_edge ← false; break
+            if is_edge:
+                print edge (u, w)
+                u ← w
+                break
+```
+
+**Running time.** The outer `while` runs at most $n-1$ times (the path has at most $n-1$ edges). Each iteration scans $O(n)$ candidates $w$, and for each candidate the edge check costs $O(n)$. That's $O(n^2)$ per iteration and $O(n^3)$ overall — too slow.
+
+**Speed-up to $O(n^2)$.** Precompute, once, an $n \times n$ boolean table $\mathrm{isEdge}[x][y]$ using the criterion above. That precomputation costs $O(n^3)$ — but if we are willing to pay it once and answer many queries, each individual query then runs in $O(n^2)$: $n-1$ steps, each scanning $O(n)$ candidates with an $O(1)$ edge lookup.
+
+If we want a _single_ query in $O(n^2)$ without the $O(n^3)$ precomputation: at each step from $u$, pick $w$ minimising $\delta[u][w]$ among vertices with $\delta[u][w] + \delta[w][v] = \delta[u][v]$. The smallest such positive $\delta[u][w]$ must correspond to a true edge (otherwise it would be a sum of two smaller positive values, contradicting minimality). Finding the minimum takes $O(n)$ per step, $n-1$ steps total → $O(n^2)$. ✅
+
+```text
+while u ≠ v:
+    w* ← argmin_{w ≠ u, δ[u][w] + δ[w][v] = δ[u][v]} δ[u][w]
+    print edge (u, w*)
+    u ← w*
+```
