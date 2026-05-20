@@ -918,7 +918,7 @@ Trace:
 - Extract **h** (d=2): nothing new
 - Extract **g** (d=3): done
 
-||s|a|b|c|d|e|f|g|h|
+    ||s|a|b|c|d|e|f|g|h|
 |---|---|---|---|---|---|---|---|---|---|
 |**distance**|0|1|1|2|1|1|2|3|2|
 |**parent**|NONE|s|s|d|s|s|b|c|e|
