@@ -1,0 +1,32 @@
+Package: ChessSimulator
+Title: Chess Engine with R6 Classes, Rcpp AI, and Shiny Dashboard
+Version: 0.1.0
+Authors@R:
+    person(given  = "Ondrej",
+           family = "Marvan",
+           role   = c("aut", "cre"),
+           email  = "REPLACE_WITH_YOUR_REAL_EMAIL@example.com",
+           comment = c(student_id = "477001"))
+Description: A chess simulator built as the final project for Advanced
+    Programming in R (WNE UW). Demonstrates four advanced R techniques:
+    R6 object-oriented programming with inheritance and polymorphism;
+    Rcpp/C++ integration for performance-critical minimax search with
+    alpha-beta pruning; an interactive 'shiny' dashboard for playing
+    games and running tournaments; and standard R package structure
+    with 'roxygen2' documentation.
+License: GPL-2
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Depends:
+    R (>= 4.0.0)
+Imports:
+    R6,
+    Rcpp (>= 1.0.0),
+    shiny,
+    shinydashboard
+LinkingTo:
+    Rcpp
+Suggests:
+    rbenchmark,
+    testthat (>= 3.0.0)
