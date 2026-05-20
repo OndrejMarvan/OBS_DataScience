@@ -1029,6 +1029,9 @@ Trace (`*` = removed, `→` = relaxation):
 
 **Edges on cheapest paths from $s$** (the shortest-path tree): $s{-}a$, $s{-}d$, $d{-}c$, $d{-}e$, $e{-}f$, $f{-}b$, $f{-}h$, $h{-}g$.
 
+
+Keep the Priority queue and will be easy, professor said. 
+
 ---
 
 ## Task 6.5 — Incomplete Floyd–Warshall _(Bonus)_
