@@ -252,13 +252,13 @@ To solve this, we use models that split the data into separate processes.
 
 ## 5. Model Selection Guide
 
-|**Model**|**When to use**|**Intuition / Key Feature**|
-|---|---|---|
-|**Poisson**|Mean $\approx$ variance; independent events.|Basic choice for simple count data. Random arrivals with a constant rate.|
-|**Negative Binomial**|Variance $>$ mean (overdispersion).|Directly models overdispersion; acts like a Poisson model with extra variability.|
-|**ZIP**|Excess zeros beyond what Poisson expects.|Zeros come from two sources (structural always-zeros + the count model itself).|
-|**ZINB**|Excess zeros **and** overdispersion.|Same concept as ZIP but adds flexible variance to handle the extra spread.|
-|**Hurdle**|Zero vs. positive outcomes are separate processes.|First cross the hurdle to leave zero; the positive counts use a truncated model where no zeros are allowed.|
+| **Model**             | **When to use**                                    | **Intuition / Key Feature**                                                                                 |
+| --------------------- | -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| **Poisson**           | Mean $\approx$ variance; independent events.       | Basic choice for simple count data. Random arrivals with a constant rate.                                   |
+| **Negative Binomial** | Variance $>$ mean (overdispersion).                | Directly models overdispersion; acts like a Poisson model with extra variability.                           |
+| **ZIP**               | Excess zeros beyond what Poisson expects.          | Zeros come from two sources (structural always-zeros + the count model itself).                             |
+| **ZINB**              | Excess zeros **and** overdispersion.               | Same concept as ZIP but adds flexible variance to handle the extra spread.                                  |
+| **Hurdle**            | Zero vs. positive outcomes are separate processes. | First cross the hurdle to leave zero; the positive counts use a truncated model where no zeros are allowed. |
 
 
 ## Lab 7 (09.04.2026)
@@ -366,7 +366,7 @@ stationerity, non-stationerity
 Augmented dec in the test and what are the other tests (KPSS a PP tests) for stationerity 
 
 
-## Lab 2 (14.05.2026)
+## Lab 2 (14.05.2026) - different than expected topic (cointegration)
 What to expect in the test: 
 - Check if cointegrated or not from the screenshot
 - 
