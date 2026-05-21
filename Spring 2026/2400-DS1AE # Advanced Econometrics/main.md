@@ -369,4 +369,8 @@ Augmented dec in the test and what are the other tests (KPSS a PP tests) for sta
 ## Lab 2 (14.05.2026) - different than expected topic (cointegration)
 What to expect in the test: 
 - Check if cointegrated or not from the screenshot
-- 
+
+
+
+## Lab 13 (21.05.2026)
+Will give us 2 questions regarding slide 30 out of 32 in the presentaiton
