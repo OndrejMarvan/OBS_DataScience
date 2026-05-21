@@ -138,3 +138,47 @@ build(path)
 | `_PACKAGE` sentinel        | `R/ChessSimulator-package.R`                      |
 | `@useDynLib` + `@importFrom Rcpp evalCpp` | `R/ChessSimulator-package.R`       |
 | testthat tests             | `tests/testthat/test-classes.R`                   |
+
+How to run: 
+
+# 1. Make sure everything is installed (one-time)
+options(repos = c(CRAN = "https://cloud.r-project.org"))
+install.packages(c("R6", "Rcpp", "shiny", "shinydashboard",
+                   "devtools", "roxygen2", "testthat"))
+
+# 2. Set the package path
+pkg <- "/home/ondrej-marvan/Documents/GitHub/OBS_DataScience/OBS_DataScience/Spring 2026/2400-DS1APR Advanced Programming in R/ChessSimulator"
+
+# 3. Do a full dry run — compile, load, test
+setwd(pkg)
+devtools::load_all()
+
+# 4. Test all four parts work
+b <- Board$new()
+chess_evaluate(b$encode_for_engine())   # should return ~0
+
+g <- play_game(make_player("random", "A", "white"),
+               make_player("random", "B", "black"))
+g$get_status()                           # should say a result
+
+launch_dashboard()                       # or shiny::runApp("inst/shiny/app.R")
+# Click around, make sure it works, then close it
+
+---
+# === 1. Set path (adjust if different on your laptop) ===
+pkg <- "/home/ondrej-marvan/Documents/GitHub/OBS_DataScience/OBS_DataScience/Spring 2026/2400-DS1APR Advanced Programming in R/ChessSimulator"
+setwd(pkg)
+
+# === 2. Load the package (compiles C++, loads R files) ===
+devtools::load_all()
+
+# === 3. Quick game so they see it actually plays chess ===
+g <- play_game(
+  make_player("random", "Alpha", "white"),
+  make_player("random", "Beta",  "black")
+)
+g$get_status()
+g$get_result_reason()
+
+# === 4. Launch the dashboard ===
+shiny::runApp("inst/shiny/app.R")

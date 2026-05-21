@@ -5,7 +5,7 @@ Authors@R:
     person(given  = "Ondrej",
            family = "Marvan",
            role   = c("aut", "cre"),
-           email  = "REPLACE_WITH_YOUR_REAL_EMAIL@example.com",
+           email  = "o.marvan@student.uw.edu.pl",
            comment = c(student_id = "477001"))
 Description: A chess simulator built as the final project for Advanced
     Programming in R (WNE UW). Demonstrates four advanced R techniques:
