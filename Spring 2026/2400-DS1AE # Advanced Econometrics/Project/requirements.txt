@@ -1,0 +1,16 @@
+# R package requirements
+# Install automatically by running 00_setup.R
+
+tidyverse    # data wrangling and ggplot2
+readr        # CSV import
+readxl       # XLS import (NBP 2005-2011 files)
+lubridate    # date handling
+tseries      # ADF unit root test (adf.test)
+urca         # unit root and cointegration (ur.df, ur.kpss, ca.jo)
+vars         # VAR and VECM models
+ARDL         # ARDL bounds test (ardl, bounds_f_test)
+forecast     # ARIMA modelling (auto.arima, forecast)
+lmtest       # diagnostic tests (bgtest, bptest)
+sandwich     # robust standard errors
+ggthemes     # ggplot2 themes
+patchwork    # combining multiple plots
