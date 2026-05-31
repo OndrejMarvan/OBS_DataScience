@@ -38,11 +38,11 @@ If the cumulative water balance is **negative**, the garden is in a water defici
 
 Each source demonstrates a different scraping technique, which the course requires:
 
-| Source | Why I chose it | Tool demonstrated |
-|---|---|---|
-| **IMGW** | Official Polish government weather data, free to use, directory-based archive perfect for crawling | **Scrapy** + **regex** |
-| **Open-Meteo** | Clean JSON API with ET₀ already pre-calculated using FAO Penman-Monteith | **Requests** |
-| **Meteostat** | JavaScript-rendered page that requires a real browser to load | **Selenium** + **BeautifulSoup** |
+| Source         | Why I chose it                                                                                     | Tool demonstrated                |
+| -------------- | -------------------------------------------------------------------------------------------------- | -------------------------------- |
+| **IMGW**       | Official Polish government weather data, free to use, directory-based archive perfect for crawling | **Scrapy** + **regex**           |
+| **Open-Meteo** | Clean JSON API with ET₀ already pre-calculated using FAO Penman-Monteith                           | **Requests**                     |
+| **Meteostat**  | JavaScript-rendered page that requires a real browser to load                                      | **Selenium** + **BeautifulSoup** |
 
 ---
 
