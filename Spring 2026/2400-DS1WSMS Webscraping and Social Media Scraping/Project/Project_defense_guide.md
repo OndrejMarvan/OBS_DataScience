@@ -111,7 +111,7 @@ Real evapotranspiration depends on what's actually growing (a cactus loses less 
 
 ### 3b. Open-Meteo (archive-api.open-meteo.com)
 
-**What it is:** An open-source weather API run by Patrick Zippenfenig (Switzerland). It aggregates data from multiple government weather services (NOAA, ECMWF, DWD, etc.) and serves it via a clean JSON API.
+**What it is:** An open-source weather API run by **Patrick Zippenfenig** (Switzerland). It aggregates data from multiple government weather services (NOAA, ECMWF, DWD, etc.) and serves it via a clean JSON API.
 
 **What I scraped:** Daily weather variables for my exact coordinates (52.135°N, 20.939°E), from January 1, 2025 to yesterday. Variables: temperature, precipitation, wind, solar radiation, and **ET₀** (already calculated).
 
