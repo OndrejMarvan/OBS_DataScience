@@ -10,6 +10,7 @@ urca         # unit root and cointegration (ur.df, ur.kpss, ca.jo)
 vars         # VAR and VECM models
 ARDL         # ARDL bounds test (ardl, bounds_f_test)
 forecast     # ARIMA modelling (auto.arima, forecast)
+jsonlite     # parse NBP API JSON responses
 lmtest       # diagnostic tests (bgtest, bptest)
 sandwich     # robust standard errors
 ggthemes     # ggplot2 themes

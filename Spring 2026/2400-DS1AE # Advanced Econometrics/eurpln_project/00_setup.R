@@ -1,7 +1,7 @@
 # ==============================================================================
 # 00_setup.R
 # EUR/PLN Exchange Rate & Interest Rate Differential — Advanced Econometrics
-# Author: Ondřej [Surname]
+# Author: Ondřej Marvan
 # ==============================================================================
 
 # ── Packages ──────────────────────────────────────────────────────────────────
@@ -9,11 +9,13 @@ required_packages <- c(
   "tidyverse",   # data wrangling & ggplot2
   "readr",       # CSV import
   "lubridate",   # date handling
-  "tseries",     # ADF test (adf.test)
-  "urca",        # unit root & cointegration (ur.df, ur.kpss, ca.jo)
+  "tseries",     # ADF test (adf.test), Phillips-Ouliaris, Jarque-Bera
+  "urca",        # unit root & cointegration (ur.df, ur.kpss, ca.jo, ur.za)
   "vars",        # VAR / VECM models
   "ARDL",        # ARDL bounds test (ardl, bounds_f_test)
   "forecast",    # ARIMA (auto.arima, forecast)
+  "jsonlite",    # parse NBP API JSON
+  "strucchange", # CUSUM structural stability test
   "lmtest",      # diagnostic tests (bgtest, bptest)
   "sandwich",    # robust standard errors
   "ggthemes",    # plot themes
@@ -32,6 +34,12 @@ invisible(lapply(required_packages, library, character.only = TRUE))
 # ── Global settings ───────────────────────────────────────────────────────────
 options(scipen = 999)          # suppress scientific notation
 Sys.setlocale("LC_TIME", "C") # consistent date parsing across OS
+
+# Resolve common namespace conflicts (dplyr verbs get masked by MASS/stats,
+# which are pulled in by vars/forecast). Force the dplyr versions.
+select <- dplyr::select
+filter <- dplyr::filter
+lag    <- dplyr::lag
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
 # Place raw CSV files in the data/ subfolder before running 01_data.R

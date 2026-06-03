@@ -1,0 +1,5 @@
+Place the two manually-downloaded CSVs here before running 01_data.R:
+  - nbp_rate.csv   (NBP reference rate archive)
+  - ecb_rate.csv   (ECB Data Portal export)
+EUR/PLN and Brent are fetched automatically by 01_data.R.
+(brent.csv is only needed as a fallback if stooq.com is unreachable.)
