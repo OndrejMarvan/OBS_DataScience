@@ -414,11 +414,24 @@ Household’s medical insurance determinants
 11.Modelling the football match result. The match may end with a draw, win or defeat. © Classical regression © Logit/Probit © **Ordered choice model** © Unordered choice model 
 - cannot be Logit/probit or Tbit because we have more than 2 options
 
-12. Household’s alcohol expenditures. The amount spent might be zero, or positive, however, it cannot be negative. © Classical regression © ARIMA © Logit/probit © Tobit 
+12. Household’s alcohol expenditures. The amount spent might be zero, or positive, however, it cannot be negative. © Classical regression © ARIMA © Logit/probit © **Tobit** 
 	
 
 13. What determines the choice of the field of study at the university? © Logit/Probit © ADL © Ordered choice model © Unordered choice model 
 
-14. Patients were offered three alternatives to cure the disease they had. The options were: a standard medicine, a new medicine that had just entered the market, or no medicine at all. © Logit/Probit © Ordered choice model © Unordered choice model © Count data model 
+14. Patients were offered three alternatives to cure the disease they had. The options were: a standard medicine, a new medicine that had just entered the market, or no medicine at all. © Logit/Probit © Ordered choice model © **Unordered choice model** © Count data model 
+	- unordered if we believe there is no natural order. 
 
-15. The effect of smoking on lung cancer © Logit/Probit © Panel data model © Tobit © Ordered choice model 16. Why do people decide to buy a German car? © Logit/Probit © Ordered choice model © Unordered choice model © Negative binomial 17. Why do Poles decide to buy imported used cars? © Count data model © Negative binomial © Logit/Probit © Tobit 18. Who spends their holidays in Thailand? © Logit © ARIMA © Panel data model © Classical regression 19. A clinical study on the response to chemotherapy: progressive disease, no change, partial remission, complete remission © Logit/Probit © Ordered choice model © Unordered choice model © Count data model 20. Mental impairment study. The impairment is measured as well, mild, moderate, or impaired. The study relates the impairment with the number and severity of important life events and socioeconomic status. © Logit/Probit © Ordered choice model © Unordered choice model © Count data model 21. Do you want to work at a bank after your studies? © Ordered choice model © Logit/Probit © Unordered choice model © Tobit
+15. The effect of smoking on lung cancer © Logit/Probit © Panel data model © Tobit © Ordered choice model 
+
+16. Why do people decide to buy a German car? © Logit/Probit © Ordered choice model © Unordered choice model © Negative binomial 
+
+17. Why do Poles decide to buy imported used cars? © Count data model © Negative binomial © Logit/Probit © Tobit 
+
+18. Who spends their holidays in Thailand? © Logit © ARIMA © Panel data model © Classical regression 
+
+19. A clinical study on the response to chemotherapy: progressive disease, no change, partial remission, complete remission © Logit/Probit © Ordered choice model © Unordered choice model © Count data model 
+
+20. Mental impairment study. The impairment is measured as well, mild, moderate, or impaired. The study relates the impairment with the number and severity of important life events and socioeconomic status. © Logit/Probit © Ordered choice model © Unordered choice model © Count data model 
+
+21. Do you want to work at a bank after your studies? © Ordered choice model © Logit/Probit © Unordered choice model © Tobit
