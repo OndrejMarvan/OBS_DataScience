@@ -422,7 +422,7 @@ Household’s medical insurance determinants
 14. Patients were offered three alternatives to cure the disease they had. The options were: a standard medicine, a new medicine that had just entered the market, or no medicine at all. © Logit/Probit © Ordered choice model © **Unordered choice model** © Count data model 
 	- unordered if we believe there is no natural order. 
 
-15. The effect of smoking on lung cancer © Logit/Probit © Panel data model © Tobit © Ordered choice model 
+15. The effect of smoking on lung cancer © Logit/Probit © **Panel data model** © Tobit © Ordered choice model 
 
 16. Why do people decide to buy a German car? © Logit/Probit © Ordered choice model © Unordered choice model © Negative binomial 
 
