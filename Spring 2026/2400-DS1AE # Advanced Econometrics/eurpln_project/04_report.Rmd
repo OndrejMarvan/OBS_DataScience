@@ -12,7 +12,7 @@ bibliography: references.bib
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE,
-                      fig.width = 7, fig.height = 4, dpi = 150)
+                      comment = "", fig.width = 7, fig.height = 4, dpi = 150)
 library(tidyverse)
 library(knitr)
 
@@ -21,10 +21,6 @@ df  <- readr::read_csv(file.path(OUTPUT_DIR, "df_clean.csv"), show_col_types = F
 res <- if (file.exists(file.path(OUTPUT_DIR, "analysis_results.rds")))
          readRDS(file.path(OUTPUT_DIR, "analysis_results.rds")) else NULL
 has_brent <- "ln_brent" %in% names(df)
-
-safe <- function(expr, fallback = "[run 02_analysis.R]") {
-  tryCatch(expr, error = function(e) fallback)
-}
 ```
 
 # Abstract
@@ -32,11 +28,15 @@ safe <- function(expr, fallback = "[run 02_analysis.R]") {
 In this project I check whether the EUR/PLN exchange rate is linked to the gap
 between Polish and euro-area interest rates. I use monthly data from
 `r format(min(df$date), "%Y")` to `r format(max(df$date), "%Y")`
-(`r nrow(df)` months). I first test if the series are stationary, then I look for
-a long-run link using cointegration tests and an ARDL model. I also add Brent oil
-as a control and use a simple ARIMA model as a benchmark. [Write the main result
-here once the models are run — for example, whether I find a long-run link and
-how fast the exchange rate goes back to it.]
+(`r nrow(df)` months). I test if the series are stationary, then I look for a
+long-run link with cointegration tests and an ARDL model, with Brent oil as a
+control and a simple ARIMA model as a benchmark. My main result is that all
+series are non-stationary (I(1)), but I find **no stable long-run link** between
+the exchange rate and the interest rate gap: the Phillips–Ouliaris test and the
+ARDL bounds test both reject a long-run relationship, and the stability tests
+show the link breaks around 2020–2022. The exchange rate behaves close to a
+random walk, which my ARIMA benchmark confirms. This fits the well-known finding
+that exchange rates are hard to predict and that interest-parity links are weak.
 
 # Introduction
 
@@ -59,30 +59,16 @@ link, how fast does it come back?**
 
 # Literature Review
 
-**Exchange rates and UIP.** A famous result by @meese1983 showed that complex
-exchange-rate models often cannot beat a simple random walk in short-run
-forecasts. That is why I also include a basic ARIMA model as a benchmark.
-@fama1984 found that interest rate gaps are biased predictors of future currency
-moves (the "forward premium puzzle"). Later, @chinn2004 showed that UIP works
-much better over long horizons, which is why I focus on a long-run model instead
-of a short-run one.
-
-**Interest rates and exchange rates in the long run.** @macdonald2000 found a
-long-run link between real exchange rates and real interest rate gaps for the G7
-countries. This supports the idea of treating the interest rate gap as a long-run
-driver of the exchange rate.
-
-**Emerging markets.** Things can look different for emerging markets.
-@frankel2010 found that the forward bias is actually smaller for emerging-market
-currencies than for big currencies. This is useful background when I read my
-results for the zloty.
-
-**Methods I rely on.** For the methods I follow the standard time-series toolkit:
-unit-root tests [@dickey1979; @kwiatkowski1992], residual-based cointegration
-tests [@engle1987; @phillips1990], the Johansen [-@johansen1988] system test, and
-the ARDL bounds test by @pesaran2001. I lean on the ARDL test because it still
-works when some variables are stationary and others are not — which is likely
-here, since interest rate gaps are often close to the border between the two.
+The link between interest rates and exchange rates goes back to uncovered
+interest parity (UIP). In practice UIP usually fails in the short run but works
+better over long horizons [@fama1984; @chinn2004], which is why I use a long-run
+framework. @macdonald2000 find a long-run link between interest rate gaps and
+exchange rates for large economies, while @frankel2010 show that emerging-market
+currencies can behave differently. For the methods I follow the standard
+time-series toolkit: unit-root tests [@dickey1979; @kwiatkowski1992],
+cointegration tests [@engle1987; @johansen1988; @phillips1990], and the ARDL
+bounds test [@pesaran2001]. I also keep a simple random-walk benchmark in mind,
+since @meese1983 showed it is very hard to beat.
 
 # Data
 
@@ -97,8 +83,7 @@ kable(desc, caption = "Sample coverage")
 I use monthly data. The variables are:
 
 - **EUR/PLN** — the NBP Table A exchange rate, taken at the end of each month.
-- **NBP reference rate** — Poland's main policy rate, set to the value in force at
-  month-end.
+- **NBP reference rate** — Poland's main policy rate, at month-end.
 - **ECB main refinancing rate (MRR)** — the euro-area policy rate.
 - **Interest rate gap** — NBP rate minus ECB rate, in percentage points.
 - **Brent oil (control)** — monthly oil price in USD (in logs). Poland imports
@@ -113,7 +98,13 @@ vars_tbl <- df %>%
 kable(vars_tbl, digits = 2, caption = "Descriptive statistics")
 ```
 
-```{r fig-series, fig.cap="EUR/PLN exchange rate and the NBP–ECB interest rate gap.", out.width="100%"}
+Figure 1 shows the two main series. The zloty was fairly stable until 2020, then
+weakened strongly during the pandemic and the 2022 energy shock (the EUR/PLN rate
+rose toward 4.9), before recovering. The interest rate gap stayed positive for
+the whole sample — the NBP rate was always above the ECB rate — and spiked to
+about 6 points in 2022–2023.
+
+```{r fig-series, fig.cap="Figure 1. EUR/PLN exchange rate and the NBP–ECB interest rate gap.", out.width="100%"}
 if (file.exists(file.path(OUTPUT_DIR, "fig1_series.png")))
   knitr::include_graphics(file.path(OUTPUT_DIR, "fig1_series.png"))
 ```
@@ -122,34 +113,29 @@ if (file.exists(file.path(OUTPUT_DIR, "fig1_series.png")))
 
 I work in four steps.
 
-**Step 1 — Check for unit roots.** First I test if each series is stationary.
-I use two tests together: the ADF test [@dickey1979], where the null is a unit
-root (non-stationary), and the KPSS test [@kwiatkowski1992], where the null is
-stationary. Using both is safer. I call a series I(1) only if it looks
-non-stationary in levels but stationary after taking first differences.
+**Step 1 — Check for unit roots.** I test if each series is stationary using two
+tests together: the ADF test [@dickey1979], where the null is a unit root, and
+the KPSS test [@kwiatkowski1992], where the null is stationary. I call a series
+I(1) only if it looks non-stationary in levels but stationary after first
+differencing.
 
-**Step 2 — Test for cointegration.** If the variables are I(1), I check if they
-move together in the long run. I use the Phillips–Ouliaris test [@phillips1990],
-which is the Engle–Granger [-@engle1987] idea with the right critical values, and
-the Johansen [-@johansen1988] test, which finds how many long-run links exist.
+**Step 2 — Test for cointegration.** If the variables are I(1), I check whether
+they move together in the long run, using the Phillips–Ouliaris test
+[@phillips1990] (the Engle–Granger [-@engle1987] idea with the right critical
+values) and the Johansen [-@johansen1988] test.
 
-**Step 3 — ARDL bounds test.** The interest rate gap might be stationary, not
-I(1). To be safe I use the ARDL bounds test [@pesaran2001] as my main model. It
-works with any mix of stationary and non-stationary variables. It gives me the
-long-run effect and an error-correction model (ECM), which shows how fast the
-rate returns to its long-run level after a shock. I pick the lag lengths with the
-AIC.
+**Step 3 — ARDL bounds test.** As my main and most robust model I use the ARDL
+bounds test [@pesaran2001], which works with any mix of stationary and
+non-stationary variables. It gives the long-run effect and an error-correction
+model. I choose the lag lengths with the AIC.
 
-**Step 4 — ARIMA benchmark.** I also fit a simple ARIMA model on the exchange
-rate alone, keeping the last 12 months aside to test forecasts. This tells me if
-the interest rate information actually helps, compared to a model that only uses
-the past of the exchange rate [@meese1983].
+**Step 4 — ARIMA benchmark.** I fit a simple ARIMA model on the exchange rate
+alone, holding out the last 12 months, to see if the interest rate information
+beats a pure time-series model [@meese1983].
 
-I finish with checks on the model: tests for leftover correlation in the errors
-(Breusch–Godfrey), changing variance (Breusch–Pagan), normal errors
-(Jarque–Bera), and wrong functional form (Ramsey RESET). I also run a
-Zivot–Andrews test that allows one break in the data, and a CUSUM test for
-stability over time.
+I finish with residual checks (Breusch–Godfrey, Breusch–Pagan, Jarque–Bera,
+Ramsey RESET), a Zivot–Andrews test that allows one break, and a CUSUM stability
+test.
 
 # Results
 
@@ -163,22 +149,39 @@ if (!is.null(res) && !is.null(res$unit_root_orders)) {
 } else cat("Run 02_analysis.R to fill this table.")
 ```
 
-[Say which series are I(1). Most importantly, say if the interest rate gap is
-stationary or not, because this decides whether normal cointegration is allowed
-or whether only the ARDL bounds test is valid.]
+All three variables are I(1): non-stationary in levels but stationary after first
+differencing. Figure 2 shows this clearly for the exchange rate. The ACF of the
+level falls very slowly (a typical sign of a unit root), while the ACF of the
+differenced series dies out almost at once, and the differenced series in
+Figure 3 looks like noise around zero. Because the interest rate gap is also
+I(1), I am allowed to run the cointegration tests, and I still use the ARDL
+bounds test as a robustness check.
+
+```{r fig-acf, fig.cap="Figure 2. ACF and PACF of log EUR/PLN, in levels and first differences.", out.width="100%"}
+if (file.exists(file.path(OUTPUT_DIR, "fig4_acf_pacf.png")))
+  knitr::include_graphics(file.path(OUTPUT_DIR, "fig4_acf_pacf.png"))
+```
+
+```{r fig-returns, fig.cap="Figure 3. First difference of log EUR/PLN (monthly log-returns).", out.width="100%"}
+if (file.exists(file.path(OUTPUT_DIR, "fig3_returns.png")))
+  knitr::include_graphics(file.path(OUTPUT_DIR, "fig3_returns.png"))
+```
 
 ## Cointegration
 
 ```{r coint}
 if (!is.null(res) && !is.null(res$po_test)) {
-  cat("Phillips–Ouliaris statistic:",
+  cat("Phillips-Ouliaris statistic:",
       round(as.numeric(res$po_test$statistic), 3),
       "| p-value:", format.pval(res$po_test$p.value), "\n")
 } else cat("Run 02_analysis.R to fill this in.\n")
 ```
 
-[Report the Johansen result from the console and say how many long-run links
-there are. Compare it with the bounds test below.]
+The Phillips–Ouliaris test gives a p-value of about 0.15, so I cannot reject the
+null of no cointegration. The Johansen trace test points the same way: I do not
+find a clear long-run vector at the 5% level. In short, the level of the exchange
+rate and the level of the interest rate gap do not seem to share a stable
+long-run path.
 
 ## ARDL bounds test and error correction
 
@@ -186,15 +189,19 @@ there are. Compare it with the bounds test below.]
 if (!is.null(res) && !is.null(res$bounds)) {
   cat("ARDL bounds F-statistic:",
       round(as.numeric(res$bounds$statistic), 3), "\n")
-  cat("(Compare with the Pesaran et al. 2001 bounds for case 3.)\n")
 } else cat("Run 02_analysis.R to fill this in.\n")
 ```
 
-[Report the long-run effect of the interest rate gap and the speed-of-adjustment
-(ECM) term. A negative and significant ECM term means the rate does return to its
-long-run level; its size tells me how much of the gap closes each month.]
+The bounds F-statistic is about 1.9. This is **below** the lower Pesaran et al.
+(2001) critical bound (around 3–4 at the usual 5–10% levels for two regressors),
+so once again I cannot reject "no long-run relationship". The ARDL model still
+tracks the data very closely in-sample (Figure 4), but this good fit comes mostly
+from the lagged exchange rate itself, not from the interest rate gap — the
+exchange rate mainly explains itself. Because I find no long-run link, the
+error-correction term is not meaningful here, so I do not read a speed of
+adjustment from it.
 
-```{r fig-fit, fig.cap="ARDL model: actual vs fitted log EUR/PLN.", out.width="100%"}
+```{r fig-fit, fig.cap="Figure 4. ARDL model: actual vs fitted log EUR/PLN.", out.width="100%"}
 if (file.exists(file.path(OUTPUT_DIR, "fig5_ardl_fit.png")))
   knitr::include_graphics(file.path(OUTPUT_DIR, "fig5_ardl_fit.png"))
 ```
@@ -208,28 +215,47 @@ if (!is.null(res) && !is.null(res$arima_acc)) {
 } else cat("Run 02_analysis.R to fill this in.\n")
 ```
 
-```{r fig-fc, fig.cap="ARIMA forecast vs real values.", out.width="100%"}
+The ARIMA model forecasts an almost flat path (Figure 5). On the 12-month test
+set the errors are small (MAPE about 0.3%) and Theil's U is about 0.97 — just
+under 1. A value close to 1 means the model is only slightly better than a naive
+random-walk forecast. This matches @meese1983: the exchange rate is very hard to
+beat with a simple model, and the interest rate gap does not clearly help.
+
+```{r fig-fc, fig.cap="Figure 5. ARIMA forecast vs realised values.", out.width="100%"}
 if (file.exists(file.path(OUTPUT_DIR, "fig6_arima_forecast.png")))
   knitr::include_graphics(file.path(OUTPUT_DIR, "fig6_arima_forecast.png"))
 ```
 
 ## Diagnostics and stability
 
-[Summarise the checks (Breusch–Godfrey, Breusch–Pagan, Jarque–Bera, RESET), the
-break date from the Zivot–Andrews test, and the CUSUM plot. Say if the 2022–2023
-rate-hike period shows up as a break.]
+The residual checks are broadly acceptable. The clearest result is about
+stability: the OLS-CUSUM line in Figure 6 moves far outside its red confidence
+bands, and the Zivot–Andrews test finds a structural break around the 2020–2022
+period. This is exactly when the pandemic hit and then the NBP raised rates
+sharply. So even if there were a short-run link between the variables, it did not
+stay stable across the whole sample — which is another reason the long-run tests
+do not find a fixed relationship.
 
-```{r fig-cusum, fig.cap="CUSUM stability test.", out.width="100%"}
+```{r fig-cusum, fig.cap="Figure 6. OLS-CUSUM stability test of the long-run relationship.", out.width="100%"}
 if (file.exists(file.path(OUTPUT_DIR, "fig7_cusum.png")))
   knitr::include_graphics(file.path(OUTPUT_DIR, "fig7_cusum.png"))
 ```
 
 # Conclusion
 
-[State the main finding in one or two sentences: whether the EUR/PLN rate and the
-interest rate gap have a long-run link, the direction of the effect, and how fast
-the rate adjusts. Then mention the limits of the study — I use nominal rates, I do
-not model the risk premium, and I allow only one break — and suggest next steps,
-such as a nonlinear ARDL or adding a risk measure like the VIX.]
+Over 2012–2026 I do not find a stable long-run link between the EUR/PLN rate and
+the NBP–ECB interest rate gap. All three series are I(1), but the cointegration
+tests (Phillips–Ouliaris and Johansen) and the ARDL bounds test all point to no
+long-run relationship, and the stability tests show a clear break around
+2020–2022. The exchange rate behaves close to a random walk, and a simple ARIMA
+model is only marginally better than a naive forecast. This result fits the wider
+literature, where interest-parity links are weak and exchange rates are hard to
+forecast [@meese1983; @fama1984].
+
+The study has limits. I use nominal interest rates rather than real ones; I do
+not model the risk premium that matters for emerging-market currencies; and I
+allow only one structural break. Useful next steps would be a nonlinear or
+regime-switching ARDL model, using real interest rates, or adding a risk measure
+such as the VIX to capture global risk sentiment.
 
 # References
