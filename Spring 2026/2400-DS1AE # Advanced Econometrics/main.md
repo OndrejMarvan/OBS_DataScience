@@ -374,3 +374,8 @@ What to expect in the test:
 
 ## Lab 13 (21.05.2026)
 Will give us 2 questions regarding slide 30 out of 32 in the presentaiton
+
+
+
+# Exam Preparation
+## L1
