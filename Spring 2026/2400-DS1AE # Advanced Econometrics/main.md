@@ -379,3 +379,28 @@ Will give us 2 questions regarding slide 30 out of 32 in the presentaiton
 
 # Exam Preparation
 ## L1
+Note: If you can excusse the model than use it. It  depends a lot on data we have. 
+Car colour choice determinants 
+© Regression (OLS) © Logit/Probit © Ordered choice model © **Unordered choice mode**
+- because we cannot order them in a natural way
+
+he number of plane accidents across countries over the last 20 years. © Negative binomial © **Panel data model** © Tobit © ARIMA
+- Pdm for count data (out of scope of the course)
+
+Consider determinants of the number of children in Polish marriages. 
+© **Count data model** © Ordered choice model © Unordered choice model © Logit/Probit
+- data are integers (1, 2, 3,...)
+
+What determines the choice of the field of study at the university? 
+© Logit/Probit © ADL © Ordered choice model © **Unordered choice model**
+
+Modelling the number of doctor visits © Regression (OLS) © Logit/Probit © Ordered choice model © Unordered choice model  © **Count data model**
+
+Household’s medical insurance determinants 
+© **Classical regression** © Duration analysis © Logit/probit © Tobit 
+
+7.Doctor visit satisfaction survey. Options: very satisfied, satisfied, neutral, dissatisfied, strongly dissatisfied 
+© Logit/Probit © Ordered choice model © Unordered choice model © Negative binomial 
+
+8.Opinion on teenage birth control 
+© Unordered choice model © Ordered choice model © Logit/probit © Count data model
