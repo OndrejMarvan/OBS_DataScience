@@ -422,9 +422,9 @@ Household’s medical insurance determinants
 14. Patients were offered three alternatives to cure the disease they had. The options were: a standard medicine, a new medicine that had just entered the market, or no medicine at all. © Logit/Probit © Ordered choice model © **Unordered choice model** © Count data model 
 	- unordered if we believe there is no natural order. 
 
-15. The effect of smoking on lung cancer © Logit/Probit © **Panel data model** © Tobit © Ordered choice model 
+15. The effect of smoking on lung cancer © Logit/Probit © **Panel data model** © **Tobit** © **Ordered choice model** 
 
-16. Why do people decide to buy a German car? © Logit/Probit © Ordered choice model © Unordered choice model © Negative binomial 
+16. Why do people decide to buy a German car? © Logit/Probit © Ordered choice model © **Unordered choice model** © Negative binomial 
 
 17. Why do Poles decide to buy imported used cars? © Count data model © Negative binomial © Logit/Probit © Tobit 
 
@@ -435,3 +435,6 @@ Household’s medical insurance determinants
 20. Mental impairment study. The impairment is measured as well, mild, moderate, or impaired. The study relates the impairment with the number and severity of important life events and socioeconomic status. © Logit/Probit © Ordered choice model © Unordered choice model © Count data model 
 
 21. Do you want to work at a bank after your studies? © Ordered choice model © Logit/Probit © Unordered choice model © Tobit
+
+Presentation: 
+
