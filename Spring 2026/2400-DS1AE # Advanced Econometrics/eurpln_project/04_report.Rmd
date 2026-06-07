@@ -33,8 +33,8 @@ long-run link with cointegration tests and an ARDL model, with Brent oil as a
 control and a simple ARIMA model as a benchmark. My main result is that all
 series are non-stationary (I(1)), but I find **no stable long-run link** between
 the exchange rate and the interest rate gap: the Phillips–Ouliaris test and the
-ARDL bounds test both reject a long-run relationship, and the stability tests
-show the link breaks around 2020–2022. The exchange rate behaves close to a
+ARDL bounds test both point to no long-run relationship, and the stability tests
+show the link is not stable around 2020–2022. The exchange rate behaves close to a
 random walk, which my ARIMA benchmark confirms. This fits the well-known finding
 that exchange rates are hard to predict and that interest-parity links are weak.
 
@@ -178,10 +178,10 @@ if (!is.null(res) && !is.null(res$po_test)) {
 ```
 
 The Phillips–Ouliaris test gives a p-value of about 0.15, so I cannot reject the
-null of no cointegration. The Johansen trace test points the same way: I do not
-find a clear long-run vector at the 5% level. In short, the level of the exchange
-rate and the level of the interest rate gap do not seem to share a stable
-long-run path.
+null of no cointegration. The Johansen trace test gives the same overall message
+and does not point to a stable long-run relationship either. In short, the level
+of the exchange rate and the level of the interest rate gap do not seem to share
+a stable long-run path.
 
 ## ARDL bounds test and error correction
 
