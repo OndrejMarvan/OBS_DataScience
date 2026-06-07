@@ -78,7 +78,7 @@ The organising idea of the whole course: **the nature of the dependent variable 
 
 ---
 
-# §2 — Classical Linear Regression Model & OLS *(Lab 01 foundations)*
+# §2 — Classical Linear Regression Model (CLRM) & OLS (Ordinary least squares) *(Lab 01 foundations)*
 
 ### Model and estimator
 $$y_i = \beta_0 + \beta_1 x_{1i} + \dots + \beta_k x_{ki} + \varepsilon_i, \qquad \hat{\beta} = (X'X)^{-1}X'y.$$
