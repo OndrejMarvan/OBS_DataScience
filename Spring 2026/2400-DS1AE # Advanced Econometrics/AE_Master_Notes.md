@@ -59,19 +59,19 @@ The organising idea of the whole course: **the nature of the dependent variable 
 
 ### The map (this is the page-7 slide exercise, and the meta-skill behind every exam)
 
-| Dependent variable / situation | Model | Topic |
-|---|---|---|
-| Continuous, well-behaved | OLS | §2 / L1 |
-| Binary $y\in\{0,1\}$ | **Logit / Probit** (ML-estimated) | L3 |
-| Ordered categories | **Ordered logit / probit** | L4 |
-| Unordered categories | **Multinomial / Conditional logit** | L5 |
-| Count $y\in\{0,1,2,\dots\}$ | **Poisson / NegBin** (+ ZIP/ZINB) | L6 |
-| Censored / corner $y\in[0,\infty)$ | **Tobit** | L7 |
-| Panel ($i,t$) | **Fixed / Random effects** | L1–2, L15 |
-| One series, forecasting | **ARMA / ARIMA** | L12 |
-| Dynamics / lags | **DL / ARDL** | L11 |
-| Non-stationary series sharing a long-run path | **Cointegration / ECM** | L13 |
-| Endogenous regressor | **Instrumental variables** | L14 |
+| Dependent variable / situation                | Model                               | Topic     |
+| --------------------------------------------- | ----------------------------------- | --------- |
+| Continuous, well-behaved                      | OLS                                 | §2 / L1   |
+| Binary $y\in\{0,1\}$                          | **Logit / Probit** (ML-estimated)   | L3        |
+| Ordered categories                            | **Ordered logit / probit**          | L4        |
+| Unordered categories                          | **Multinomial / Conditional logit** | L5        |
+| Count $y\in\{0,1,2,\dots\}$                   | **Poisson / NegBin** (+ ZIP/ZINB)   | L6        |
+| Censored / corner $y\in[0,\infty)$            | **Tobit**                           | L7        |
+| Panel ($i,t$)                                 | **Fixed / Random effects**          | L1–2, L15 |
+| One series, forecasting                       | **ARMA / ARIMA**                    | L12       |
+| Dynamics / lags                               | **DL / ARDL**                       | L11       |
+| Non-stationary series sharing a long-run path | **Cointegration / ECM**             | L13       |
+| Endogenous regressor                          | **Instrumental variables**          | L14       |
 
 > [!tip] Exam reminder
 > You may bring **one handwritten A4 sheet**. Put this map, the interpretation rules (§3), the diagnostic-test decision rules (§5), and the recurring mock-exam tricks (Hausman recompute, clean-BG augmentation, KPSS direction, $(1-\rho)$ multiplier) on it.
