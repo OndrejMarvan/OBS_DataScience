@@ -172,7 +172,7 @@ When homoskedasticity/independence fails, recompute SEs (coefficients stay the s
 ### Ex 1 — Wages with interactions (`cps_small.csv`, log–level)
 $\ln(\text{WAGE}) = 0.957 + 0.102\,\text{educ} - 0.256\,\text{female} - 0.184\,\text{black} + 0.065\,(\text{female}\times\text{black})$. $N=1000$, $R^2=0.273$, $F=93.4^{***}$.
 - **educ** $0.102^{***}$: each extra year of schooling raises wage by $\approx 10.2\%$ (exact $(e^{0.102}-1)=10.7\%$).
-- **female** $-0.256^{***}$: women earn $\approx 25.6\%$ less (exact $-22.6\%$), ceteris paribus.
+- **female** $-0.256^{***}$: women earn $\approx 25.6\%$ less (exact $-22.6\%$), ceteris paribus (effect of one variable on another).
 - **black** $-0.184^{*}$: blacks earn $\approx 18.4\%$ less (exact $-16.8\%$).
 - **female×black** $0.065$ (**ns**): no extra wage gap for black women beyond the additive female + black effects — the interaction adds nothing.
 - $F$ highly significant ⇒ regressors **jointly** significant; $R^2=0.27$ is normal for a wage equation.
