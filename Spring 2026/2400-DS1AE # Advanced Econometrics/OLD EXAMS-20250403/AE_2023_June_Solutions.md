@@ -26,7 +26,7 @@ In a probit, coefficients describe the effect of a regressor on the **latent ind
 | tenure | $-0.0030$ | $-0.03$ | $0.974$ | Not significant (essentially zero). |
 | (Intercept) | $0.4024$ | $0.79$ | $0.429$ | Not significant. |
 
-A positive coefficient shifts the latent index up and therefore raises $P(\text{complain}=1)$; a negative one lowers it. The **size** of e.g. $\beta_{\text{age}}=-0.0336$ is not a probability change.
+??? A positive coefficient shifts the latent index up and therefore raises $P(\text{complain}=1)$; a negative one lowers it. The **size** of e.g. $\beta_{\text{age}}=-0.0336$ is not a probability change.
 
 ### b) Interpretation of marginal effects
 
