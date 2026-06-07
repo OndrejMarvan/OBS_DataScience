@@ -89,7 +89,7 @@ Because the dependent variable is **censored** (all true GPAs below $2.0$ are re
 - On the **full** sample, treating the piled-up $2.0$ values as genuine observations flattens the fitted line.
 - On the **uncensored** sub-sample only, dropping the $1206$ censored cases induces **sample-selection bias**.
 
-Tobit uses the full likelihood — a normal density for uncensored observations and the censoring probability $\Phi\!\big((2 - x'\beta)/\sigma\big)$ for the censored ones — and recovers consistent estimates.
+**Tobit uses the full likelihood** — a normal density for uncensored observations and the censoring probability $\Phi\!\big((2 - x'\beta)/\sigma\big)$ for the censored ones — and recovers consistent estimates.
 
 ### b) Corner solution or (data) censoring?
 
