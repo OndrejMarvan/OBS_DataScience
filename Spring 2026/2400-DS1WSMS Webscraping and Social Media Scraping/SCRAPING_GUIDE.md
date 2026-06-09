@@ -231,24 +231,24 @@ Both let you query elements from a parsed HTML tree. They're alternative query l
 
 ### CSS Selectors (what I used in Scrapy + BS4)
 
-| Selector | Matches |
-|---|---|
-| `a` | All `<a>` tags |
-| `.classname` | Elements with `class="classname"` |
-| `#idname` | Element with `id="idname"` |
-| `div.class` | `<div>` tags with class |
-| `div > a` | `<a>` that's a *direct* child of `<div>` |
-| `div a` | `<a>` that's a *descendant* of `<div>` (any depth) |
-| `div + p` | `<p>` immediately following `<div>` (adjacent sibling) |
-| `div ~ p` | `<p>` siblings after `<div>` (general sibling) |
-| `a[href]` | `<a>` tags with href attribute |
-| `a[href="/path"]` | exact match |
-| `a[href^="https"]` | href starts with "https" |
-| `a[href$=".pdf"]` | href ends with ".pdf" |
-| `a[href*="meteo"]` | href contains "meteo" |
-| `li:first-child` | First child element |
-| `li:nth-child(2)` | Second child |
-| `li:last-child` | Last child |
+| Selector           | Matches                                                |
+| ------------------ | ------------------------------------------------------ |
+| `a`                | All `<a>` tags                                         |
+| `.classname`       | Elements with `class="classname"`                      |
+| `#idname`          | Element with `id="idname"`                             |
+| `div.class`        | `<div>` tags with class                                |
+| `div > a`          | `<a>` that's a *direct* child of `<div>`               |
+| `div a`            | `<a>` that's a *descendant* of `<div>` (any depth)     |
+| `div + p`          | `<p>` immediately following `<div>` (adjacent sibling) |
+| `div ~ p`          | `<p>` siblings after `<div>` (general sibling)         |
+| `a[href]`          | `<a>` tags with href attribute                         |
+| `a[href="/path"]`  | exact match                                            |
+| `a[href^="https"]` | href starts with "https"                               |
+| `a[href$=".pdf"]`  | href ends with ".pdf"                                  |
+| `a[href*="meteo"]` | href contains "meteo"                                  |
+| `li:first-child`   | First child element                                    |
+| `li:nth-child(2)`  | Second child                                           |
+| `li:last-child`    | Last child                                             |
 
 **Scrapy extensions:**
 - `a::text` — extract text content
@@ -256,21 +256,21 @@ Both let you query elements from a parsed HTML tree. They're alternative query l
 
 ### XPath (what I used with lxml)
 
-| XPath | Matches |
-|---|---|
-| `//a` | All `<a>` anywhere |
-| `/html/body/div` | Strict path from root |
-| `//div[@class='container']` | div with specific class |
-| `//*[@id='main']` | any tag with id="main" |
-| `//a[contains(@href, '/')]` | href contains "/" |
-| `//a[starts-with(@href, 'http')]` | href starts with "http" |
-| `//a[text()='Link']` | tag whose text is "Link" |
-| `//div//a` | `<a>` inside `<div>` (any depth) |
-| `//div/a` | `<a>` directly inside `<div>` |
-| `//ul/li[1]` | First `<li>` in `<ul>` (1-indexed!) |
-| `//ul/li[last()]` | Last `<li>` |
-| `//a/@href` | href values (not the elements) |
-| `//a/text()` | text content |
+| XPath                             | Matches                             |
+| --------------------------------- | ----------------------------------- |
+| `//a`                             | All `<a>` anywhere                  |
+| `/html/body/div`                  | Strict path from root               |
+| `//div[@class='container']`       | div with specific class             |
+| `//*[@id='main']`                 | any tag with id="main"              |
+| `//a[contains(@href, '/')]`       | href contains "/"                   |
+| `//a[starts-with(@href, 'http')]` | href starts with "http"             |
+| `//a[text()='Link']`              | tag whose text is "Link"            |
+| `//div//a`                        | `<a>` inside `<div>` (any depth)    |
+| `//div/a`                         | `<a>` directly inside `<div>`       |
+| `//ul/li[1]`                      | First `<li>` in `<ul>` (1-indexed!) |
+| `//ul/li[last()]`                 | Last `<li>`                         |
+| `//a/@href`                       | href values (not the elements)      |
+| `//a/text()`                      | text content                        |
 
 ### When to use which?
 
