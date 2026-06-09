@@ -817,19 +817,19 @@ Scrapy automatically serializes yielded Items into JSON. Easy to consume later.
 
 ### The metacharacters
 
-| Symbol | Meaning |
-|---|---|
-| `.` | Any single character (except newline) |
-| `\d` | Digit (0-9) |
-| `\D` | Not a digit |
-| `\w` | Word character (letter, digit, underscore) |
-| `\W` | Not a word character |
-| `\s` | Whitespace (space, tab, newline) |
-| `\S` | Not whitespace |
-| `\b` | Word boundary (zero-width) |
-| `^` | Start of string (or line with re.MULTILINE) |
-| `$` | End of string (or line) |
-| `\` | Escape the next character |
+| Symbol | Meaning                                     |
+| ------ | ------------------------------------------- |
+| `.`    | Any single character (except newline)       |
+| `\d`   | Digit (0-9)                                 |
+| `\D`   | Not a digit                                 |
+| `\w`   | Word character (letter, digit, underscore)  |
+| `\W`   | Not a word character                        |
+| `\s`   | Whitespace (space, tab, newline)            |
+| `\S`   | Not whitespace                              |
+| `\b`   | Word boundary (zero-width)                  |
+| `^`    | Start of string (or line with re.MULTILINE) |
+| `$`    | End of string (or line)                     |
+| `\`    | Escape the next character                   |
 
 ### Quantifiers
 
