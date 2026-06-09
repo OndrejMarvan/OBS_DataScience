@@ -113,26 +113,26 @@ Headers are key:value metadata sent with requests/responses.
 
 **Common request headers I should know:**
 
-| Header | Purpose |
-|---|---|
-| `User-Agent` | Identifies the client (browser, bot, etc.) |
-| `Accept` | What content types client wants |
-| `Accept-Language` | Preferred language |
-| `Accept-Encoding` | Compression support (gzip, br) |
-| `Cookie` | Session/state data |
-| `Referer` | Page that linked here |
-| `Authorization` | Credentials |
+| Header            | Purpose                                    |
+| ----------------- | ------------------------------------------ |
+| `User-Agent`      | Identifies the client (browser, bot, etc.) |
+| `Accept`          | What content types client wants            |
+| `Accept-Language` | Preferred language                         |
+| `Accept-Encoding` | Compression support (gzip, br)             |
+| `Cookie`          | Session/state data                         |
+| `Referer`         | Page that linked here                      |
+| `Authorization`   | Credentials                                |
 
 **Common response headers:**
 
-| Header | Purpose |
-|---|---|
-| `Content-Type` | MIME type (e.g., `text/html`, `application/json`) |
-| `Content-Length` | Size in bytes |
-| `Content-Encoding` | Compression used |
-| `Set-Cookie` | Tells client to store cookie |
-| `Cache-Control` | How to cache the response |
-| `Server` | Server software (Apache, nginx) |
+| Header             | Purpose                                           |
+| ------------------ | ------------------------------------------------- |
+| `Content-Type`     | MIME type (e.g., `text/html`, `application/json`) |
+| `Content-Length`   | Size in bytes                                     |
+| `Content-Encoding` | Compression used                                  |
+| `Set-Cookie`       | Tells client to store cookie                      |
+| `Cache-Control`    | How to cache the response                         |
+| `Server`           | Server software (Apache, nginx)                   |
 
 ### My custom User-Agent
 
