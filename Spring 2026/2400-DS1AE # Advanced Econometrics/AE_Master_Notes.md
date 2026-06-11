@@ -228,14 +228,14 @@ Pooled OLS, $y_{it} = \alpha + x_{it}'\beta + u_{it}$, ignores the panel structu
 
 ### Fixed Effects (within) vs Random Effects
 
-| | **Fixed Effects (within)** | **Random Effects** |
-|---|---|---|
-| $u_i$ treated as | fixed parameters | random, $\text{IID}(0,\sigma_u^2)$ |
-| Key assumption | $u_i$ **may correlate** with $X_{it}$ | $u_i$ **independent** of $X_{it}$ and $\varepsilon_{it}$ ($\mathrm{Cov}(u_i,x_{it})=0$) |
-| Use when | the $N$ entities are a specific, non-random set (OECD countries, US states, named firms); inference conditional on them | the $N$ entities are a random sample from a big population (household surveys) |
-| Time-invariant regressors | **cannot be estimated** — perfectly collinear with $u_i$, so they drop out | **can** be estimated |
-| Efficiency / df | uses more parameters | more parsimonious, preserves df, more efficient *if its assumption holds* |
-| R/Python call | `model = "within"` | `model = "random"` |
+|                           | **Fixed Effects (within)**                                                                                              | **Random Effects**                                                                      |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| $u_i$ treated as          | fixed parameters                                                                                                        | random, $\text{IID}(0,\sigma_u^2)$                                                      |
+| Key assumption            | $u_i$ **may correlate** with $X_{it}$                                                                                   | $u_i$ **independent** of $X_{it}$ and $\varepsilon_{it}$ ($\mathrm{Cov}(u_i,x_{it})=0$) |
+| Use when                  | the $N$ entities are a specific, non-random set (OECD countries, US states, named firms); inference conditional on them | the $N$ entities are a random sample from a big population (household surveys)          |
+| Time-invariant regressors | **cannot be estimated** — perfectly collinear with $u_i$, so they drop out                                              | **can** be estimated                                                                    |
+| Efficiency / df           | uses more parameters                                                                                                    | more parsimonious, preserves df, more efficient *if its assumption holds*               |
+| R/Python call             | `model = "within"`                                                                                                      | `model = "random"`                                                                      |
 
 > [!important] Why `Sex` was dropped in the exam FE model
 > The within estimator demeans each entity, wiping out anything that doesn't change over time. A lecturer's sex (or a "post-communist country" dummy) is time-invariant ⇒ perfectly collinear with $u_i$ ⇒ FE **cannot** estimate it. RE can.
