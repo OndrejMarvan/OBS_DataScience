@@ -150,18 +150,18 @@ The regressors split into two types, which is exactly what the `|` syntax encode
 ### a) Multinomial logit or conditional logit?
 **Conditional logit.** The model includes **alternative-specific attributes** (`ic`, `oc` — the cost of *each* system, including the non-chosen ones). A pure multinomial logit uses only chooser characteristics; here the presence of alternative-varying cost data is what defines a conditional (McFadden) logit. (In `mlogit` terminology this mixed specification — generic + alternative-specific terms — is the conditional/"mixed" logit.)
 
-### 2) Interpret parameters (signs only)
+### b) Interpret parameters (signs only)
 - **`ic` $= -0.00153$ (*, neg.):** a higher **installation cost** of an alternative **lowers** the probability of choosing it — economically sensible.
 - **`oc` $= -0.00699$ (***, neg.):** a higher **operating cost** of an alternative **lowers** its choice probability — sensible and strongly significant.
 - **`income` / `agehed` interactions:** mostly insignificant; signs are relative to the `ec` baseline (e.g. `agehed:er` negative and significant — older directors are less likely to pick electric-room over electric-central).
 
 Both cost coefficients carry the expected **negative** sign: cost deters choice.
 
-### What other variables could be used
+### c) What other variables could be used
 - Already in the dataset but unused: **`rooms`** (hospital size) and **`region`** (climate proxy — coastal/mountain/valley) — both individual-specific.
 - Additional alternative attributes: energy efficiency, maintenance/repair cost, fuel-price exposure, reliability, emissions/environmental rating, expected system lifetime.
 
-### Diagnostic tests to perform
+### d) Diagnostic tests to perform
 - **Likelihood-ratio test** of overall significance (shown: $\chi^2 = 41.47$, $p < 0.001$ — jointly significant, though McFadden $R^2 = 0.02$ signals weak fit).
 - **IIA (Independence of Irrelevant Alternatives)** tests — the key maintained assumption of conditional/multinomial logit: **Hausman–McFadden** and **Small–Hsiao** tests (re-estimate dropping an alternative and check coefficient stability). If IIA is violated, move to a **nested logit** or **mixed/random-parameters logit**.
 
