@@ -147,10 +147,10 @@ The regressors split into two types, which is exactly what the `|` syntax encode
 - **Alternative-specific attributes** (vary across the 5 alternatives): `ic` (installation cost) and `oc` (operating cost) — entered with **generic** coefficients (one each).
 - **Individual/case-specific characteristics** (vary across hospitals, not alternatives): `income`, `agehed` — entered with **alternative-specific** coefficients (one per non-reference alternative).
 
-### Multinomial logit or conditional logit?
+### a) Multinomial logit or conditional logit?
 **Conditional logit.** The model includes **alternative-specific attributes** (`ic`, `oc` — the cost of *each* system, including the non-chosen ones). A pure multinomial logit uses only chooser characteristics; here the presence of alternative-varying cost data is what defines a conditional (McFadden) logit. (In `mlogit` terminology this mixed specification — generic + alternative-specific terms — is the conditional/"mixed" logit.)
 
-### Interpret parameters (signs only)
+### 2) Interpret parameters (signs only)
 - **`ic` $= -0.00153$ (*, neg.):** a higher **installation cost** of an alternative **lowers** the probability of choosing it — economically sensible.
 - **`oc` $= -0.00699$ (***, neg.):** a higher **operating cost** of an alternative **lowers** its choice probability — sensible and strongly significant.
 - **`income` / `agehed` interactions:** mostly insignificant; signs are relative to the `ec` baseline (e.g. `agehed:er` negative and significant — older directors are less likely to pick electric-room over electric-central).

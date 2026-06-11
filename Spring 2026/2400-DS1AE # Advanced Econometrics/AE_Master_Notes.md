@@ -333,13 +333,13 @@ On the exam these are usually pre-computed (e.g. `logitmfx` / `probitmfx` output
 
 ### Goodness of fit (no real $R^2$ under MLE)
 
-| Tool | What it tests / measures | Read it |
-|---|---|---|
-| **Likelihood-ratio (LR) test** | joint significance of all slopes (OLS $F$-test analogue) | $LR = -2(\ln L_{\text{restricted}} - \ln L_{\text{full}})\sim\chi^2_q$; reject ⇒ jointly significant |
-| **McFadden pseudo-$R^2$** | relative log-likelihood improvement | $1 - \dfrac{\ln L_{\text{full}}}{\ln L_{\text{null}}}$; **low** ($\sim0.2$–$0.4$ already "good") |
-| **Hit rate / confusion matrix** | classification accuracy at a cutoff (usually 0.5) | % correctly classified |
-| **Hosmer–Lemeshow** | calibration across deciles of $\hat p$ | $H_0$: good fit ⇒ **want $p>0.05$** |
-| **ROC / AUC** | sensitivity vs 1−specificity trade-off | AUC from 0.5 (useless) to 1.0 (perfect) |
+| Tool                            | What it tests / measures                                 | Read it                                                                                              |
+| ------------------------------- | -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| **Likelihood-ratio (LR) test**  | joint significance of all slopes (OLS $F$-test analogue) | $LR = -2(\ln L_{\text{restricted}} - \ln L_{\text{full}})\sim\chi^2_q$; reject ⇒ jointly significant |
+| **McFadden pseudo-$R^2$**       | relative log-likelihood improvement                      | $1 - \dfrac{\ln L_{\text{full}}}{\ln L_{\text{null}}}$; **low** ($\sim0.2$–$0.4$ already "good")     |
+| **Hit rate / confusion matrix** | classification accuracy at a cutoff (usually 0.5)        | % correctly classified                                                                               |
+| **Hosmer–Lemeshow**             | calibration across deciles of $\hat p$                   | $H_0$: good fit ⇒ **want $p>0.05$**                                                                  |
+| **ROC / AUC**                   | sensitivity vs 1−specificity trade-off                   | AUC from 0.5 (useless) to 1.0 (perfect)                                                              |
 
 > [!warning] Direction traps in the GOF battery
 > - **LR test:** reject $H_0$ ⇒ variables *are* jointly significant (you *want* a small $p$). Himalayan: $\chi^2=64.8$, $df=4$, $p\approx10^{-13}$.
