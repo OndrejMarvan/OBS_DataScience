@@ -59,26 +59,26 @@ The organising idea of the whole course: **the nature of the dependent variable 
 
 ### The map (this is the page-7 slide exercise, and the meta-skill behind every exam)
 
-| Dependent variable / situation                | Model                               | Topic     |
-| --------------------------------------------- | ----------------------------------- | --------- |
-| Continuous, well-behaved                      | OLS                                 | §2 / L1   |
-| Binary $y\in\{0,1\}$                          | **Logit / Probit** (ML-estimated)   | L3        |
-| Ordered categories                            | **Ordered logit / probit**          | L4        |
-| Unordered categories                          | **Multinomial / Conditional logit** | L5        |
-| Count $y\in\{0,1,2,\dots\}$                   | **Poisson / NegBin** (+ ZIP/ZINB)   | L6        |
-| Censored / corner $y\in[0,\infty)$            | **Tobit**                           | L7        |
-| Panel ($i,t$)                                 | **Fixed / Random effects**          | L1–2, L15 |
-| One series, forecasting                       | **ARMA / ARIMA**                    | L12       |
-| Dynamics / lags                               | **DL / ARDL**                       | L11       |
-| Non-stationary series sharing a long-run path | **Cointegration / ECM**             | L13       |
-| Endogenous regressor                          | **Instrumental variables**          | L14       |
+| Dependent variable / situation | Model | Topic |
+|---|---|---|
+| Continuous, well-behaved | OLS | §2 / L1 |
+| Binary $y\in\{0,1\}$ | **Logit / Probit** (ML-estimated) | L3 |
+| Ordered categories | **Ordered logit / probit** | L4 |
+| Unordered categories | **Multinomial / Conditional logit** | L5 |
+| Count $y\in\{0,1,2,\dots\}$ | **Poisson / NegBin** (+ ZIP/ZINB) | L6 |
+| Censored / corner $y\in[0,\infty)$ | **Tobit** | L7 |
+| Panel ($i,t$) | **Fixed / Random effects** | L1–2, L15 |
+| One series, forecasting | **ARMA / ARIMA** | L12 |
+| Dynamics / lags | **DL / ARDL** | L11 |
+| Non-stationary series sharing a long-run path | **Cointegration / ECM** | L13 |
+| Endogenous regressor | **Instrumental variables** | L14 |
 
 > [!tip] Exam reminder
 > You may bring **one handwritten A4 sheet**. Put this map, the interpretation rules (§3), the diagnostic-test decision rules (§5), and the recurring mock-exam tricks (Hausman recompute, clean-BG augmentation, KPSS direction, $(1-\rho)$ multiplier) on it.
 
 ---
 
-# §2 — Classical Linear Regression Model (CLRM) & OLS (Ordinary least squares) *(Lab 01 foundations)*
+# §2 — Classical Linear Regression Model & OLS *(Lab 01 foundations)*
 
 ### Model and estimator
 $$y_i = \beta_0 + \beta_1 x_{1i} + \dots + \beta_k x_{ki} + \varepsilon_i, \qquad \hat{\beta} = (X'X)^{-1}X'y.$$
@@ -172,7 +172,7 @@ When homoskedasticity/independence fails, recompute SEs (coefficients stay the s
 ### Ex 1 — Wages with interactions (`cps_small.csv`, log–level)
 $\ln(\text{WAGE}) = 0.957 + 0.102\,\text{educ} - 0.256\,\text{female} - 0.184\,\text{black} + 0.065\,(\text{female}\times\text{black})$. $N=1000$, $R^2=0.273$, $F=93.4^{***}$.
 - **educ** $0.102^{***}$: each extra year of schooling raises wage by $\approx 10.2\%$ (exact $(e^{0.102}-1)=10.7\%$).
-- **female** $-0.256^{***}$: women earn $\approx 25.6\%$ less (exact $-22.6\%$), ceteris paribus (effect of one variable on another).
+- **female** $-0.256^{***}$: women earn $\approx 25.6\%$ less (exact $-22.6\%$), ceteris paribus.
 - **black** $-0.184^{*}$: blacks earn $\approx 18.4\%$ less (exact $-16.8\%$).
 - **female×black** $0.065$ (**ns**): no extra wage gap for black women beyond the additive female + black effects — the interaction adds nothing.
 - $F$ highly significant ⇒ regressors **jointly** significant; $R^2=0.27$ is normal for a wage equation.
@@ -228,14 +228,14 @@ Pooled OLS, $y_{it} = \alpha + x_{it}'\beta + u_{it}$, ignores the panel structu
 
 ### Fixed Effects (within) vs Random Effects
 
-|                           | **Fixed Effects (within)**                                                                                              | **Random Effects**                                                                      |
-| ------------------------- | ----------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| $u_i$ treated as          | fixed parameters                                                                                                        | random, $\text{IID}(0,\sigma_u^2)$                                                      |
-| Key assumption            | $u_i$ **may correlate** with $X_{it}$                                                                                   | $u_i$ **independent** of $X_{it}$ and $\varepsilon_{it}$ ($\mathrm{Cov}(u_i,x_{it})=0$) |
-| Use when                  | the $N$ entities are a specific, non-random set (OECD countries, US states, named firms); inference conditional on them | the $N$ entities are a random sample from a big population (household surveys)          |
-| Time-invariant regressors | **cannot be estimated** — perfectly collinear with $u_i$, so they drop out                                              | **can** be estimated                                                                    |
-| Efficiency / df           | uses more parameters                                                                                                    | more parsimonious, preserves df, more efficient *if its assumption holds*               |
-| R/Python call             | `model = "within"`                                                                                                      | `model = "random"`                                                                      |
+| | **Fixed Effects (within)** | **Random Effects** |
+|---|---|---|
+| $u_i$ treated as | fixed parameters | random, $\text{IID}(0,\sigma_u^2)$ |
+| Key assumption | $u_i$ **may correlate** with $X_{it}$ | $u_i$ **independent** of $X_{it}$ and $\varepsilon_{it}$ ($\mathrm{Cov}(u_i,x_{it})=0$) |
+| Use when | the $N$ entities are a specific, non-random set (OECD countries, US states, named firms); inference conditional on them | the $N$ entities are a random sample from a big population (household surveys) |
+| Time-invariant regressors | **cannot be estimated** — perfectly collinear with $u_i$, so they drop out | **can** be estimated |
+| Efficiency / df | uses more parameters | more parsimonious, preserves df, more efficient *if its assumption holds* |
+| R/Python call | `model = "within"` | `model = "random"` |
 
 > [!important] Why `Sex` was dropped in the exam FE model
 > The within estimator demeans each entity, wiping out anything that doesn't change over time. A lecturer's sex (or a "post-communist country" dummy) is time-invariant ⇒ perfectly collinear with $u_i$ ⇒ FE **cannot** estimate it. RE can.
