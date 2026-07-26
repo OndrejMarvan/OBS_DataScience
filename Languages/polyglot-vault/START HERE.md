@@ -1,5 +1,9 @@
 # 🌍 Polyglot Vault — Multilingual Learning System
 
+> **👉 For daily use, go to [[🏠 HOME]] — that's your dashboard.**
+> This file is the reference manual; HOME is where you actually work.
+> New here? Read [[The Fluency Method — How to Use This Vault]] once, then live in [[🏠 HOME]].
+
 Welcome to your cross-linguistic learning vault. This system is built on the principle of **associative transfer** — using what you already know in one language to accelerate learning in others.
 
 ## Your Language Profile
@@ -46,8 +50,8 @@ Welcome to your cross-linguistic learning vault. This system is built on the pri
 
 ### Quick Start
 1. Install recommended plugins
-2. Open `curriculum/A1/A1 - Overview.md`
-3. Start working through topics
+2. Open [[🏠 HOME]] and pick your language path
+3. Follow the daily loop in [[The Fluency Method — How to Use This Vault]]
 4. Create vocabulary notes using the word template
 5. Review with spaced repetition daily
 

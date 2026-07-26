@@ -53,44 +53,44 @@ Understand and use familiar everyday expressions and very basic phrases. Introdu
 - **Words:** ~40
 
 ### Unit 7 — City and Directions
-- [[A1-07 City and Directions]]
+- [[A1-07-10 City Shopping Weather Hobbies|A1-07 City and Directions]]
 - Places in a city (shop, station, school, hospital)
 - Basic directions (left, right, straight)
 - Prepositions of place
 - **Words:** ~50
 
 ### Unit 8 — Shopping and Money
-- [[A1-08 Shopping and Money]]
+- [[A1-07-10 City Shopping Weather Hobbies|A1-08 Shopping and Money]]
 - Buying things, prices, sizes
 - Colors
 - **Words:** ~50
 
 ### Unit 9 — Weather and Seasons
-- [[A1-09 Weather and Seasons]]
+- [[A1-07-10 City Shopping Weather Hobbies|A1-09 Weather and Seasons]]
 - Weather descriptions
 - Seasons, basic nature
 - **Words:** ~40
 
 ### Unit 10 — Hobbies and Free Time
-- [[A1-10 Hobbies and Free Time]]
+- [[A1-07-10 City Shopping Weather Hobbies|A1-10 Hobbies and Free Time]]
 - Sports, activities, likes/dislikes
 - **Words:** ~40
 
 ## Grammar — A1
 
 ### Core Grammar Points
-1. [[A1-G01 Personal Pronouns]] — ja, ty, on/ona/ono, my, wy, oni/one
-2. [[A1-G02 Verb Być (to be)]] — present tense conjugation
-3. [[A1-G03 Verb Mieć (to have)]] — present tense
-4. [[A1-G04 Present Tense Regular Verbs]] — -ać, -ić/-yć, -ować conjugation groups
-5. [[A1-G05 Gender of Nouns]] — masculine, feminine, neuter recognition
-6. [[A1-G06 Nominative Case]] — basic subject forms
-7. [[A1-G07 Accusative Case Intro]] — direct objects (basic)
-8. [[A1-G08 Basic Adjective Agreement]] — gender/number matching
-9. [[A1-G09 Negation]] — nie + verb
-10. [[A1-G10 Basic Questions]] — czy, co, kto, gdzie, kiedy, jak
-11. [[A1-G11 Demonstratives]] — ten, ta, to, ci, te
-12. [[A1-G12 Possessives]] — mój, twój, jego, jej, nasz, wasz, ich
+1. [[Pronouns Comparison|Personal Pronouns]] — ja, ty, on/ona/ono, my, wy, oni/one
+2. Verb Być (to be) — present tense conjugation
+3. [[Verb Conjugation Comparison|Verb Mít/Mieć (to have)]] — present tense
+4. [[Verb Conjugation Comparison|Present Tense Regular Verbs]] — -ać, -ić/-yć, -ować conjugation groups
+5. Gender of Nouns — masculine, feminine, neuter recognition
+6. [[Cases - Cross-Linguistic Comparison|Nominative Case]] — basic subject forms
+7. [[Cases - Cross-Linguistic Comparison|Accusative Case Intro]] — direct objects (basic)
+8. [[Adjective Comparison|Basic Adjective Agreement]] — gender/number matching
+9. [[Negation Comparison|Negation]] — nie + verb
+10. Basic Questions — czy, co, kto, gdzie, kiedy, jak
+11. Demonstratives — ten, ta, to, ci, te
+12. [[Pronouns Comparison|Possessives]] — mój, twój, jego, jej, nasz, wasz, ich
 
 ### Cross-linguistic transfer notes for A1
 > **From Czech:** Nearly everything transfers. Verb conjugation groups are almost identical. Cases work the same way conceptually. Word order is free (SVO default) in both.

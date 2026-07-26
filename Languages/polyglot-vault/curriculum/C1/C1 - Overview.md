@@ -15,56 +15,56 @@ Understand a wide range of demanding, longer texts, and recognize implicit meani
 ## Topics & Vocabulary Themes
 
 ### Unit 41 — Diplomacy and International Relations
-- [[C1-01 Diplomacy]]
+- [[C1-01-10 All Units|C1-01 Diplomacy]]
 - **Words:** ~100
 
 ### Unit 42 — Philosophy and Ethics (Advanced)
-- [[C1-02 Ethics]]
+- [[C1-01-10 All Units|C1-02 Ethics]]
 - **Words:** ~90
 
 ### Unit 43 — Sociology and Demographics
-- [[C1-03 Sociology]]
+- [[C1-01-10 All Units|C1-03 Sociology]]
 - **Words:** ~90
 
 ### Unit 44 — Ecology and Climate (Advanced)
-- [[C1-04 Ecology Advanced]]
+- [[C1-01-10 All Units|C1-04 Ecology Advanced]]
 - **Words:** ~80
 
 ### Unit 45 — Media and Journalism
-- [[C1-05 Journalism]]
+- [[C1-01-10 All Units|C1-05 Journalism]]
 - **Words:** ~80
 
 ### Unit 46 — Architecture and Urban Planning
-- [[C1-06 Architecture]]
+- [[C1-01-10 All Units|C1-06 Architecture]]
 - **Words:** ~70
 
 ### Unit 47 — Humor, Irony, Cultural Nuance
-- [[C1-07 Humor and Nuance]]
+- [[C1-01-10 All Units|C1-07 Humor and Nuance]]
 - **Words:** ~80
 
 ### Unit 48 — Academic and Scientific Writing
-- [[C1-08 Academic Writing]]
+- [[C1-01-10 All Units|C1-08 Academic Writing]]
 - **Words:** ~90
 
 ### Unit 49 — Figurative Language and Rhetoric
-- [[C1-09 Rhetoric]]
+- [[C1-01-10 All Units|C1-09 Rhetoric]]
 - **Words:** ~80
 
 ### Unit 50 — Regional Varieties and Dialects
-- [[C1-10 Dialects and Varieties]]
+- [[C1-01-10 All Units|C1-10 Dialects and Varieties]]
 - **Words:** ~70
 
 ## Grammar — C1
 
 ### Core Grammar Points
-1. [[C1-G01 Stylistic Inversion]] — literary and rhetorical word order
-2. [[C1-G02 Advanced Passive and Impersonal]] — -no/-to constructions
-3. [[C1-G03 Archaic and Literary Forms]] — recognizing older grammatical forms
-4. [[C1-G04 Discourse Markers]] — otóż, mianowicie, zresztą, bądź co bądź
-5. [[C1-G05 Hedging and Modality]] — nuanced expression of certainty, doubt, possibility
-6. [[C1-G06 Advanced Relative Clauses]] — complex embedding, free relatives
-7. [[C1-G07 Cleft Sentences and Focus]] — to + relative clause for emphasis
-8. [[C1-G08 Register Switching]] — moving between formal, informal, colloquial fluently
+1. Stylistic Inversion — literary and rhetorical word order
+2. Advanced Passive and Impersonal — -no/-to constructions
+3. Archaic and Literary Forms — recognizing older grammatical forms
+4. Discourse Markers — otóż, mianowicie, zresztą, bądź co bądź
+5. Hedging and Modality — nuanced expression of certainty, doubt, possibility
+6. Advanced Relative Clauses — complex embedding, free relatives
+7. Cleft Sentences and Focus — to + relative clause for emphasis
+8. Register Switching — moving between formal, informal, colloquial fluently
 
 ### Cross-linguistic transfer notes for C1
 > At C1 you're working on **style, nuance, and cultural fluency** — this is where languages diverge the most but also where your multilingual brain gives you the richest associations.
