@@ -59,12 +59,12 @@ ML is well-suited when:
 
 ### Types of ML
 
-| Type | Data | Goal |
-|---|---|---|
-| **Supervised** | Labeled (X, y) pairs | Learn $f: X \to Y$ |
-| **Unsupervised** | Unlabeled X | Find hidden structure |
-| **Semi-supervised** | Small labeled + large unlabeled | Combine both worlds |
-| **Reinforcement** | Agent–environment, reward signal | Maximize cumulative reward |
+| Type                | Data                             | Goal                       |
+| ------------------- | -------------------------------- | -------------------------- |
+| **Supervised**      | Labeled (X, y) pairs             | Learn $f: X \to Y$         |
+| **Unsupervised**    | Unlabeled X                      | Find hidden structure      |
+| **Semi-supervised** | Small labeled + large unlabeled  | Combine both worlds        |
+| **Reinforcement**   | Agent–environment, reward signal | Maximize cumulative reward |
 
 **Supervised** splits into:
 - **Regression** — continuous target (predict tomorrow's stock return, house price)
