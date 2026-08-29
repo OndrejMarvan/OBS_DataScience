@@ -130,9 +130,82 @@ Prediction error has two parts:
 
 ### Types of variables
 
-- **Numeric** — continuous, discrete
-- **Categorical** — nominal (no order), ordinal (ordered)
-- **Binary** — special case of nominal with 2 levels
+Understanding variable types is fundamental in statistics and data analysis, as it determines which analytical methods, visualizations, and statistical tests are appropriate.
+
+### 1. Numeric (Quantitative) Variables
+
+Numeric variables represent measurable quantities and can be subjected to mathematical operations (addition, averaging, etc.).
+
+#### Continuous
+
+Variables that can take any value within a range, including fractions and decimals. Theoretically, there are infinite possible values between any two points.
+
+- **Examples**: height (172.5 cm), temperature (23.7°C), price (€45.99), time (12.34 seconds)
+- **Key property**: Can be meaningfully divided into smaller and smaller units
+- **Common analysis**: mean, standard deviation, correlation, regression
+
+#### Discrete
+
+Variables that can only take specific, countable values — typically whole numbers. There are gaps between possible values.
+
+- **Examples**: number of children (0, 1, 2, 3...), number of trades executed, number of website visits
+- **Key property**: Cannot take fractional values in a meaningful way (you can't have 2.5 children)
+- **Common analysis**: mean can still be calculated, but distributions are often modeled differently (e.g., Poisson distribution)
+
+---
+
+### 2. Categorical (Qualitative) Variables
+
+Categorical variables represent groups or categories rather than measurable quantities. They cannot be meaningfully averaged.
+
+#### Nominal
+
+Categories with **no inherent order or ranking**. Categories are simply different from one another.
+
+- **Examples**: eye color (blue, green, brown), country of residence, payment method (cash, card, transfer), instrument type (EUA, Gold, Bitcoin)
+- **Key property**: You cannot say one category is "greater than" another
+- **Common analysis**: mode, frequency counts, chi-square tests
+
+#### Ordinal
+
+Categories with a **meaningful order or ranking**, but the distance between categories is not necessarily equal or measurable.
+
+- **Examples**: education level (high school < bachelor's < master's < PhD), customer satisfaction (poor, fair, good, excellent), credit rating (AAA, AA, A, BBB...)
+- **Key property**: Order matters, but you can't say the "distance" between categories is equal (the gap between "poor" and "fair" isn't necessarily the same as between "good" and "excellent")
+- **Common analysis**: median, mode, rank-based tests (e.g., Spearman correlation)
+
+---
+
+### 3. Binary Variables
+
+A **special case of nominal variables** with exactly two possible categories (levels).
+
+- **Examples**: yes/no, true/false, pass/fail, male/female, default/no default on a loan, buy/sell signal
+- **Key property**: Often coded numerically as 0 and 1 for statistical modeling purposes (this doesn't make it numeric — it's still categorical)
+- **Common analysis**: proportions, logistic regression, chi-square tests
+
+---
+
+### Summary Table
+
+|Type|Subtype|Order?|Example|Can Average?|
+|---|---|---|---|---|
+|Numeric|Continuous|N/A|Height, price|Yes|
+|Numeric|Discrete|N/A|Number of trades|Yes (with caution)|
+|Categorical|Nominal|No|Eye color, currency|No|
+|Categorical|Ordinal|Yes|Education level|No (use median)|
+|Binary|—|No|Yes/No|No (use proportion)|
+
+---
+
+### Why This Matters
+
+Choosing the correct variable type affects:
+
+- **Which statistical test to use** (e.g., t-test for numeric data vs. chi-square for categorical)
+- **Which visualization is appropriate** (histogram for continuous, bar chart for categorical)
+- **How to handle the variable in machine learning models** (one-hot encoding for nominal, ordinal encoding for ordinal)
+- **Which measure of central tendency makes sense** (mean for numeric, mode for nominal, median for ordinal)
 
 ---
 
