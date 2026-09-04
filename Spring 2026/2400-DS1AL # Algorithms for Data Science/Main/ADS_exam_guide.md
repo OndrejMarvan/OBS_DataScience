@@ -1,1118 +1,779 @@
-# Algorithms for Data Science — Exam Guide (explained from scratch)
+# Algorithms for Data Science — Exam Guide (June 2026 format)
 
-This version assumes you know almost nothing about the topic. Every task is explained from the
-beginning: what the thing *is*, why anyone cares, then exactly what to write on the paper.
-
-Built from your lab materials, the lecture slides, and the eight June 2025 past exams (Groups A–H).
+Rebuilt from the **June 2026 papers (Groups A and B, with solutions)** and the **practice exam**.
+The June 2025 papers you had earlier are a different, older format — ignore them.
 
 ---
 
-## The one thing to understand before anything else
+## 0. What changed, and why it matters
 
-All eight past exams are **the same 13 questions with different numbers**. Task 3 is always the
-Master theorem. Task 6 is always Dijkstra. Task 12 is always the broken invariant. Nothing else
-appears.
+The 2025 papers and the 2026 papers are different exams. Groups A and B of June 2026 are
+**structurally identical to each other** — same 13 tasks, same point split, only the numbers differ.
+That is your blueprint.
 
-So you are not learning "algorithms". You are learning **13 specific procedures**. That is a much
-smaller job, and it's why this is doable in the time you have.
+| | June 2025 (old) | **June 2026 (yours)** |
+|---|---|---|
+| Duration | 90 min | **2 hours** |
+| Points | 60 + 4 | **180** |
+| Aids | one page allowed | **"No aids allowed"** ← verify this |
+| Floyd–Warshall stopped early | 5 pts | **gone** |
+| Broken loop invariant | 4 pts | **gone** |
+| Draw graph from matrix | 5 pts | **gone** |
+| Kruskal / MST | — | **20 pts** |
+| Gradient descent | — | **15 pts** |
+| Sorting traces + lower bound | — | **15 pts** |
+| DP table | — | **15 pts** |
+| Hash tables | — | **10 pts** |
 
-**90 minutes. 13 tasks. 60 points + 4 bonus.**
+### ⚠ The height convention flipped
 
-| # | What it asks | Pts | How hard once you know the trick |
+Your **lab sheets** define height as the number of **nodes** (leaf = 1, NONE = 0).
+The **June 2026 exam** states, in the question itself: **"height of a leaf = 0"**, and Group B adds
+**"height of empty subtree = −1"**. That's edge-counting — every answer is one smaller.
+
+**Rule for the day: use whatever convention the question prints.** Both papers state it explicitly
+in task 6(c). Read that line before you write any numbers. If nothing is stated, say which
+convention you're using and be consistent.
+
+---
+
+## 1. The blueprint — 13 tasks, 180 points
+
+| # | Task | Pts | What it actually asks |
 |---|---|---|---|
-| 1 | Fill blanks in a Python function (multiple choice) | 5 | Medium |
-| 2 | Read a recurrence off some code, or fill code to match a recurrence | 4 | Medium |
-| 3 | Master theorem: give c, the case, the answer | 4 | **Very easy** |
-| 4 | Simplify three ugly expressions | 6 | **Very easy** |
-| 5 | Draw an array as a tree, find the broken bit, fix it | 5 | **Easy** |
-| 6 | Run Dijkstra's algorithm by hand, fill a table | 9 | Easy but slow |
-| 7 | Draw a graph from a table of 0s and 1s | 5 | Medium |
-| 8 | Add numbers to a tree | 4 | **Very easy** |
-| 9 | Pick the right data structure and justify it | 4 | Medium |
-| 10 | Measure heights in a tree, check a balance rule | 5 | Easy but fiddly |
-| 11 | Run Floyd–Warshall partially, fill in 5 cells | 5 | **One trick** |
-| 12 | Fix one wrong number in an equation | 4 | **One trick** |
-| 13 | Bonus: theory about hard problems | +4 | Hard, skip |
+| 1 | Asymptotic notation | 10 | Simplify 3 Θ expressions + give the complexity of a code fragment |
+| 2 | Recurrences | 15 | (a) write T(n) from pseudocode; (b),(c) two Master theorem problems |
+| 3 | Sorting | 15 | (a) pick a sort + justify; (b) trace MergeSort or QuickSort; (c) the Ω(n log n) argument |
+| 4 | DP: stair climbing | 15 | Base cases, why the recurrence holds, fill the table, final answer, complexity |
+| 5 | Graphs | 20 | Dijkstra step-by-step table, shortest path, complexity, BFS comparison |
+| 6 | Heaps & BSTs | 15 | Find the heap violation + fix; insert into a BST; check AVL |
+| 7 | MST — Kruskal | 20 | Sort edges, add/reject table with components, draw MST, weight, complexity |
+| 8 | P and NP | 15 | Define P/NP/NP-complete, classify 5 problems, tick correct statements |
+| 9 | Data structures | 15 | Three scenarios, choose from a list of 8 |
+| 10 | Hash tables | 10 | Insert with chaining, worst case, hash vs AVL comparison table |
+| 11 | Algorithm structure | 15 | Fill 5 blanks in BFS/Dijkstra pseudocode + put 7 scrambled steps in order |
+| 12 | Gradient descent | 15 | Update rule, learning rate, convexity, two numeric steps |
+| 13 | Algorithm design | 10 | Fill 5 blanks in a skeleton, complexity, run it on an example |
 
-**Tasks 3, 4, 5, 8, 12 alone are 23 points and are the easiest things on the paper.** Start there.
+**Where the easy points are.** Tasks 5, 7, 10, 11 and 12 are **80 points** and almost entirely
+mechanical or memorised. Task 4 is another 15 for arithmetic. That's **95 of 180** with no real
+difficulty — that alone is a comfortable pass.
+
+**Recommended order of attack:** 12 → 10 → 7 → 5 → 4 → 11 → 1 → 2 → 6 → 3 → 9 → 8 → 13.
+Gradient descent first because it's 15 points of pure recall and takes five minutes.
 
 ---
 
-## Your schedule
+## 2. Task 12 — Gradient descent (15 pts) — do this first
 
-| When | Time | Do |
+Identical in both papers. Pure recall, four parts.
+
+### (a) The update rule
+
+> **θ_{t+1} = θ_t − η · ∇L(θ_t)**
+
+Define every symbol, because that's where the marks are: **θ_t** = the current parameters,
+**η > 0** = the learning rate, **∇L(θ_t)** = the gradient of the loss at the current parameters.
+
+**Why the minus sign:** the gradient points in the direction of **steepest increase** of L. We want
+to *decrease* the loss, so we step in the opposite direction. For a small enough η this is guaranteed
+to reduce the loss locally.
+
+### (b) Learning rate
+
+- **Too small:** training crawls; you need very many iterations to approach a minimum.
+- **Too large:** the step overshoots the minimum; the loss oscillates or diverges.
+
+### (c) Convexity
+
+- **Convex** = the graph lies at or below the chord joining any two of its points. Equivalently:
+  **it has no local minimum other than the global one.**
+- On a convex landscape, gradient descent **always** finds the global minimum regardless of the
+  starting point, because every local minimum is the global one.
+- On a **non-convex** landscape it can get stuck in a local minimum.
+
+The picture with one smooth bowl is convex; the one with two dips is not.
+
+### (d) The numeric part
+
+Both papers use **L(w) = (w − a)²**, so **∇L(w) = 2(w − a)**. Then just apply
+w_{t+1} = w_t − η · 2(w_t − a).
+
+**Group A:** L(w) = (w − 3)², η = 0.5, w₀ = 0.
+w₁ = 0 − 0.5·2(0 − 3) = 0 + 3 = **3**. w₂ = 3 − 0.5·2(3 − 3) = **3**.
+Minimum at w* = 3. It arrives in **one step** — with η = 0.5 the step size exactly matches the
+curvature of this quadratic.
+
+**Group B:** L(w) = (w − 5)², η = 0.25, w₀ = 1.
+w₁ = 1 − 0.25·2(1 − 5) = 1 + 2 = **3**. w₂ = 3 − 0.25·2(3 − 5) = 3 + 1 = **4**.
+Minimum at w* = 5. It **converges but never quite arrives**: the distance halves each step
+(4 → 2 → 1 → …), so convergence is geometric and asymptotic.
+
+**Worth memorising for a variant:** for L(w) = (w − a)² the update is
+w_{t+1} = w_t − 2η(w_t − a), so the distance to a is multiplied by **(1 − 2η)** each step.
+η = 0.5 → lands exactly. η < 0.5 → converges gradually. η > 1 → diverges.
+
+Also know: **batch** GD uses all n examples per step (stable, expensive); **SGD** uses one (cheap,
+noisy); **mini-batch** is the practical compromise. Backpropagation is the chain rule applied layer
+by layer.
+
+---
+
+## 3. Task 10 — Hash tables (10 pts)
+
+### (a) Insert with separate chaining
+
+h(k) = k mod 7, table size 7, each slot holds a linked list. Just compute each remainder and append
+in insertion order.
+
+**Group A:** keys 5, 12, 8, 3, 15, 10.
+5 mod 7 = 5 · 12 mod 7 = 5 · 8 mod 7 = 1 · 3 mod 7 = 3 · 15 mod 7 = 1 · 10 mod 7 = 3
+
+| Slot | Chain |
+|---|---|
+| 0 | — |
+| 1 | 8 → 15 |
+| 2 | — |
+| 3 | 3 → 10 |
+| 4 | — |
+| 5 | 5 → 12 |
+| 6 | — |
+
+**Group B:** keys 6, 13, 2, 9, 20, 4 → slot 2: 2 → 9 · slot 4: 4 · slot 6: 6 → 13 → 20.
+
+Draw **all seven slots including the empty ones** — the table is the answer.
+
+### (b) Worst case
+
+**Θ(n)**, when all n keys land in the same slot, giving one chain of length n. Happens with
+adversarial input tailored to the hash function, or when all keys are congruent modulo the table size.
+
+### (c) The comparison table — memorise it
+
+| Operation | Hash table | AVL tree |
 |---|---|---|
-| Now | 15 min | Read this section and §1. Then **sleep** — it's the middle of the night. |
-| Friday, before work | 60 min | §3 and §4. Two easiest tasks, 10 points. |
-| Friday evening, block 1 | 75 min | §6 Dijkstra. Biggest single task (9 pts). |
-| Friday evening, block 2 | 75 min | §5, §8, §10 — the three tree tasks (14 pts). |
-| Friday evening, block 3 | 60 min | §11 and §12. Two tricks, 9 points. |
-| Friday evening, block 4 | 45 min | §2 and §9. |
-| **Stop by 23:00** | | Sleep. Seriously. |
-| Saturday 06:00–07:30 | 90 min | Sit Group E or F as a timed mock, then read §15. |
+| Search | O(1) expected | O(log n) |
+| Insert | O(1) amortised | O(log n) |
+| Delete | O(1) expected | O(log n) |
+| Sorted output of all keys | O(n log n) — must sort first | **O(n)** — in-order traversal |
+
+**Hash table's advantage:** O(1) average operations.
+**AVL's advantage:** sorted output in O(n), and **O(log n) worst case** for everything.
 
 ---
 
-## 1. Vocabulary you need before the rest makes sense
+## 4. Task 7 — Minimum spanning tree, Kruskal (20 pts)
 
-Read this once slowly. Everything later depends on it.
+The largest task on the paper and one of the easiest. Five parts.
 
-**Algorithm.** A recipe. A finite list of steps that turns an input into a correct output.
+### The algorithm
 
-**n.** The size of the input. If the input is a list of 1000 numbers, n = 1000. Everything in this
-course is expressed in terms of n.
+**Repeatedly take the cheapest remaining edge that doesn't create a cycle**, until you have n − 1
+edges. Cycle-checking uses **find–union**: an edge is rejected exactly when both endpoints are
+already in the same component.
 
-**Running time.** *Not* seconds. It's the number of basic steps the algorithm takes, written as a
-function of n. We care how that number **grows** as n gets bigger, because that's what determines
-whether your program still works when the data gets large.
+### (a) Sort the edges — 3 pts
 
-**Why we ignore constants.** An algorithm taking 5n steps and one taking 100n steps are both
-"linear" — double the input, double the work. An algorithm taking n² steps is fundamentally
-different — double the input, *quadruple* the work. That difference matters; the 5-vs-100 doesn't.
-So we throw constants away.
+List all edges by weight, non-decreasing. Write the weight beside each. Ties can go in any order but
+pick one and stick to it.
 
-**Θ, O, Ω (theta, big-O, omega).** Three ways of saying "roughly how fast does this grow":
-- **O(g)** = "grows *no faster than* g". An **upper** bound, a ceiling.
-- **Ω(g)** = "grows *at least as fast as* g". A **lower** bound, a floor.
-- **Θ(g)** = both at once = "grows *exactly like* g". This is the one you usually want.
+### (b) The add/reject table — 10 pts, the bulk of the marks
 
-Think of it as: O is "at most", Ω is "at least", Θ is "exactly".
+For each edge in order, write **Add** or **Reject** and the **components after that step**.
 
-**The growth ladder.** Memorise this order, slowest-growing to fastest:
+**Group A** — edges 3-4(1), 1-3(2), 2-3(3), 5-6(3), 3-5(4), 2-4(5), 1-2(6):
 
-```
-1  <  log n  <  √n  <  n  <  n log n  <  n²  <  n³  <  2ⁿ  <  4ⁿ  <  n!
-```
-
-Concretely, for n = 1,000,000: log n ≈ 20, √n = 1000, n = a million, n² = a trillion, 2ⁿ is a number
-with 300,000 digits. That's why the ladder matters.
-
-**log n.** "How many times can I halve n before reaching 1?" For n = 8 that's 3 (8→4→2→1), so
-log₂8 = 3. **In this course `log` always means log₂.** It shows up whenever an algorithm repeatedly
-halves something — which is why it grows so slowly.
-
-**Recursion.** A function that calls itself on a smaller version of the problem, until the problem is
-small enough to answer directly.
-
-**Recurrence.** An equation describing a recursive algorithm's running time in terms of itself.
-`T(n) = 2T(n/2) + Θ(n)` reads: "to handle n items, I make **2** recursive calls each on **half** the
-data, plus **n** units of other work." The Master theorem (§3) solves these.
-
-**Data structure.** A way of organising data in memory. Different arrangements make different
-operations fast. That's the whole subject of tasks 5, 8, 9 and 10.
-
-**Graph.** Dots connected by lines. Dots = **vertices** (or nodes), lines = **edges**. Used to model
-road networks, social networks, anything with relationships. Edges can have **weights** (a cost,
-distance, or time). Tasks 6, 7 and 11 are all about graphs.
-
-**Tree.** A special graph with no loops, drawn hanging downward from a single top node.
-- **root** — the top node.
-- **child / parent** — a node directly below / above another.
-- **leaf** — a node with no children.
-- **subtree of v** — v plus everything hanging below it.
-
-**⚠️ Height, this course's definition.** The height of a node = **the number of nodes** on the
-longest downward path starting at that node, **counting the node itself**. So:
-- a leaf has height **1** (not 0)
-- a missing child ("NONE") has height **0**
-- **height(v) = 1 + max(height of left child, height of right child)**
-
-Most textbooks count *edges* instead, giving answers one smaller. **The exam uses the node-counting
-definition.** This is the single most common way to lose 5 points on task 10.
-
----
-
-## 2. Course conventions (free marks)
-
-- `log` always means log₂. "Running time" always means the **worst case**.
-- `a[2..n]` means an array with positions 2 through n, so it holds **n − 1** items.
-- `for i = 1 to n` **includes** i = n.
-- **When a node has several neighbours, process them in alphabetical order.** Stated explicitly on
-  the exam; it changes your answer in task 6.
-
----
-
-## 3. Task 3 — Master theorem (4 points, the easiest on the paper)
-
-### What this is about
-
-You're given a recurrence like `T(n) = 64·T(n/2) + Θ(n⁶)` and asked what it works out to. The Master
-theorem is a lookup table that answers this in about 40 seconds. You don't need to understand *why*
-it works.
-
-### Reading the recurrence
-
-Every one of these has the shape **T(n) = a·T(n/b) + Θ(n^d)**:
-
-- **a** = how many recursive calls you make
-- **b** = how much smaller each call's input is (n/b)
-- **d** = the power of n in the extra, non-recursive work
-
-For `T(n) = 64·T(n/2) + Θ(n⁶)`: a = 64, b = 2, d = 6.
-
-### The rule
-
-Compute **c = log_b a**. Then compare d with c:
-
-| If | Case | Answer |
-|---|---|---|
-| d < c | **A** | Θ(n^c) |
-| d = c | **B** | Θ(n^c log n) |
-| d > c | **C** | Θ(n^d) |
-
-The intuition, if it helps: c measures how much work the recursion generates, d measures the work
-done outside it. Whichever is bigger wins. If they tie, you get an extra log n factor.
-
-### How to compute c without a calculator
-
-**c = log_b a means: what power of b gives you a?**
-
-- a = 64, b = 2 → 2^? = 64 → 2⁶ = 64 → **c = 6**
-- a = 8, b = 2 → 2³ = 8 → **c = 3**
-- a = 9, b = 3 → 3² = 9 → **c = 2**
-- a = 100⁴, b = 100 → **c = 4**
-
-Handy powers of 2: 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024 → exponents 1 to 10.
-
-**The exam disguises a.** They write it as a product or power instead of a plain number:
-`T(n) = 100³·100·T(n/100)`. First simplify: 100³ · 100 = 100⁴. So a = 100⁴, b = 100, c = 4.
-
-### Worked example 1 (Group A)
-
-> T(n) = 64·T(n/2) + Θ(n⁶)
-
-1. a = 64, b = 2, d = 6.
-2. 2^? = 64 → **c = 6**.
-3. d = 6 and c = 6, so **d = c** → **Case B**.
-4. Case B says Θ(n^c log n) → **T(n) = Θ(n⁶ log n)**.
-
-### Worked example 2 (Group C)
-
-> T(n) = 100³·100·T(n/100) + Θ(n³)
-
-1. a = 100³·100 = 100⁴. b = 100. d = 3.
-2. 100^? = 100⁴ → **c = 4**.
-3. d = 3 < c = 4 → **Case A**.
-4. Case A says Θ(n^c) → **T(n) = Θ(n⁴)**.
-
-### Traps
-
-- **Simplify a first.** They will always disguise it.
-- **Floors and ceilings don't matter.** T(n) = aT(⌈n/b⌉) + f(n) is treated identically.
-- **The Master theorem never applies to T(n − 1).** It only handles *division* (n/b), not
-  subtraction. If you ever see T(n−1), it's a different question. (It won't be in task 3.)
-- For Case C the paper tells you to assume the extra "regularity condition" holds. Ignore it.
-
----
-
-## 4. Task 4 — Simplify three expressions (6 points, 2 each)
-
-### What this is about
-
-You get something like `Θ(9(log₂n)³ + 7log₂(n⁵) + 2)` and must write the simplest equivalent. Three
-of these, 2 points each.
-
-### The method — three steps, always the same
-
-**Step 1: Delete all constant factors.** A number multiplying a term contributes nothing to growth.
-`9(log n)³` → `(log n)³`. A term that's *just* a constant, however big, becomes `1`.
-Even `1000^1000^1000` is **Θ(1)** — it's enormous, but it doesn't grow with n.
-
-**Step 2: Simplify each term into a clean shape** (see the conversion table below).
-
-**Step 3: Keep only the fastest-growing term.** Delete everything else. Use the ladder:
-
-```
-1  <  log n  <  (log n)^k  <  √n  <  n  <  n log n  <  n²  <  n³  <  2ⁿ  <  4ⁿ
-```
-
-Two named rules from your cheatsheet:
-- **LOG < POL** — any power of a logarithm loses to any positive power of n. Even `(log n)^1000`
-  loses to `√n`. (It doesn't *look* true for small n — but for n ≥ 65537, log₂n < n^{1/4}.)
-- **POL < EXP** — any polynomial loses to any exponential. Even `n^100` loses to `1.0001ⁿ`.
-
-### The conversion table (step 2)
-
-| If you see | Rewrite as | Why |
-|---|---|---|
-| n^a · n^b | n^{a+b} | multiplying powers adds exponents |
-| n^{3/6 + 3/6} | n¹ = n | add the fractions: 3/6+3/6 = 1 |
-| (n^a)^b | n^{ab} | |
-| log(n^k) | k·log n → **Θ(log n)** | the exponent comes out front |
-| log(5n) | log 5 + log n → **Θ(log n)** | log of a product is a sum |
-| **log₃(9ⁿ)** | **2n** | the exponent n comes out: n·log₃9 = 2n. **This is linear, not logarithmic.** |
-| 2^{2 log₂ n} | n² | because 2^{log₂n} = n, then squared |
-| (10^{log₁₀ n})^{10} | n^{10} | same idea: 10^{log₁₀n} = n |
-| (2^{n/10})² | 2^{n/5} | multiply the exponents |
-| (2n)²/n | 4n | expand and cancel |
-| n^{3−3} or 2^{n−n} | 1 | exponent is zero, so it's just 1 |
-| 4ⁿ vs 2ⁿ | **4ⁿ is much bigger** | 4ⁿ = 2^{2n} |
-
-The identity behind several of these is **a = b^{log_b a}** — "b raised to the log-base-b of a gives
-back a". So `2^{log₂ n} = n`, `10^{log₁₀ n} = n`. Whenever you see a base and a log with the same
-base, they cancel.
-
-### Two mistakes that cost marks
-
-**1. Never simplify 4ⁿ to 2ⁿ, or 2^{5n} to 2ⁿ.**
-Log bases don't matter — Θ(log₅ n) = Θ(log₂ n) = Θ(log n), because changing log base only multiplies
-by a constant. **Exponential bases absolutely do matter.** 4ⁿ = 2^{2n}, which is 2ⁿ *squared*. That
-is not a constant factor.
-
-**2. With several variables, keep every term that isn't beaten by another.**
-`Θ(mk + n²)` is a perfectly good final answer. mk and n² are unrelated, so neither can be deleted.
-
-### Worked examples from the real papers
-
-**(a) Θ(9(log₂n)³ + 7log₂(n⁵) + 2)**
-- Constants out: (log₂n)³ + log₂(n⁵) + 1
-- Convert: log₂(n⁵) = 5log₂n → constant out → log₂n. So: (log₂n)³ + log₂n + 1
-- Fastest: (log n)³ beats log n beats 1.
-- **Answer: Θ((log₂ n)³)**
-
-**(b) Θ(9√n + (n^{3/6+3/6})/7 + 1)**
-- Constants out: √n + n^{3/6+3/6} + 1
-- Convert: 3/6 + 3/6 = 1, so that term is n¹ = n.  → √n + n + 1
-- Fastest: n beats √n beats 1.
-- **Answer: Θ(n)**
-
-**(c) Θ(22·n⁶ + 36·2ⁿ + 3·4ⁿ)**
-- Constants out: n⁶ + 2ⁿ + 4ⁿ
-- Fastest: 4ⁿ. (Exponential beats polynomial; 4ⁿ beats 2ⁿ.)
-- **Answer: Θ(4ⁿ)** — *not* Θ(2ⁿ).
-
-**More, from other groups:**
-
-| Expression | Answer | The key move |
-|---|---|---|
-| Θ(4n³ + 12n²log n + 2n³) | Θ(n³) | n³ beats n² log n |
-| Θ(2n^{3−3} + 5 + 2^{n−n}·4) | **Θ(1)** | every exponent is 0 — it's all constants |
-| Θ((10^{log₁₀n})^{10} + (2^{n/10})²) | Θ(2^{n/5}) | n^{10} vs an exponential → exponential wins |
-| Θ(3n + 4 + n^{5/10+5/10}/2) | Θ(n) | 5/10+5/10 = 1 |
-| Θ(29n²⁰ + 2·11ⁿ + 40·10ⁿ) | Θ(11ⁿ) | bigger base wins |
-| Θ(3(log₂n)⁵ + 5 + log₂(n⁶)) | Θ((log₂n)⁵) | log(n⁶) is only Θ(log n) |
-
----
-
-## 5. Task 5 — The heap (5 points)
-
-### What a heap is
-
-A **heap** is a way of storing numbers in a tree so that the biggest one is always at the top.
-
-The rule — the **heap invariant** — is: **every parent is ≥ both of its children.** That's it. Equal
-values are allowed (95 above 95 is fine). Note it says nothing about left vs right; siblings can be
-in any order.
-
-Why it's useful: "give me the largest item" is instant — it's the root. That's what makes heapsort
-and priority queues work.
-
-### Array ↔ tree
-
-A heap is stored as a plain array, and the tree shape is implied by the positions. With 1-based
-indexing:
-
-- the **children** of position i are at **2i** and **2i+1**
-- the **parent** of position i is at **⌊i/2⌋** (divide by 2, round down)
-
-So for 21 elements the levels are:
-
-```
-level 1:  index 1
-level 2:  indices 2–3
-level 3:  indices 4–7
-level 4:  indices 8–15
-level 5:  indices 16–21
-```
-
-### What the exam asks
-
-You get a 21-element array and must:
-1. draw it as a tree,
-2. mark the **one** parent–child edge that breaks the rule,
-3. give **j** (an index) and a **new value for a[j]** that fixes it — decreased as much as possible.
-
-### The procedure
-
-1. **Draw the tree, writing the index above each value.** Don't try to do this in your head.
-2. **Check every parent.** For a 21-element array, only indices 1–10 have children (since 2×11 = 22
-   is past the end). For each, compare against its two children.
-3. **j is the index of the CHILD**, not the parent. The child is too big, so the child is what you
-   shrink. (Easy to get backwards under pressure.)
-4. **Choose the new value.** It must satisfy two conditions:
-   - **≤ the parent's value** (otherwise you haven't fixed the violation)
-   - **≥ both of j's own children** (otherwise you've created a *new* violation below)
-
-   The exam wants the smallest legal value, which is exactly **max(a[2j], a[2j+1])** — the larger of
-   j's two children.
-
-### Full worked example (Group A)
-
-> a = ⟨105, 90, 100, 60, 85, 95, 40, 65, 25, 80, 45, 95, 75, 35, 30, 50, 55, 20, 15, 65, 70⟩
-
-The tree:
-
-```
-                        [1]105
-              [2]90                [3]100
-        [4]60      [5]85      [6]95      [7]40
-   [8]65 [9]25 [10]80 [11]45 [12]95 [13]75 [14]35 [15]30
-[16]50 [17]55 [18]20 [19]15 [20]65 [21]70
-```
-
-Now check each parent:
-
-| Parent | Value | Children | OK? |
+| Step | Edge | Action | Components after |
 |---|---|---|---|
-| 1 | 105 | 90, 100 | ✓ |
-| 2 | 90 | 60, 85 | ✓ |
-| 3 | 100 | 95, 40 | ✓ |
-| **4** | **60** | **65**, 25 | ✗ **65 > 60** |
-| 5 | 85 | 80, 45 | ✓ |
-| 6 | 95 | 95, 75 | ✓ (equal is fine) |
-| 7 | 40 | 35, 30 | ✓ |
-| 8 | 65 | 50, 55 | ✓ |
-| 9 | 25 | 20, 15 | ✓ |
-| 10 | 80 | 65, 70 | ✓ |
+| 1 | 3-4 (1) | Add | {1}, {2}, {3,4}, {5}, {6} |
+| 2 | 1-3 (2) | Add | {1,3,4}, {2}, {5}, {6} |
+| 3 | 2-3 (3) | Add | {1,2,3,4}, {5}, {6} |
+| 4 | 5-6 (3) | Add | {1,2,3,4}, {5,6} |
+| 5 | 3-5 (4) | Add | {1,2,3,4,5,6} — MST complete |
+| 6 | 2-4 (5) | **Reject** | 2 and 4 already connected |
+| 7 | 1-2 (6) | **Reject** | 1 and 2 already connected |
 
-The broken edge is between index 4 (parent, 60) and index 8 (child, 65).
+**Group B** — 3-5(1), 2-3(2), 5-6(2), 1-2(3), 2-4(4), 1-3(5), 4-6(6): Add, Add, Add, Add, Add,
+Reject, Reject. Total weight **12**.
 
-**j = 8** — the child.
+**Two checks that catch errors:**
+1. You must end with exactly **n − 1 edges added** (5 edges for 6 vertices).
+2. Once all vertices are in one component, **every remaining edge is rejected** — no exceptions.
 
-Now, how low can a[8] go? Its own children are a[16] = 50 and a[17] = 55. It must stay ≥ 55 so it
-doesn't break the rule against its own children, and it must be ≤ 60 to fix the original problem.
-Legal range: **[55, 60]**. Smallest → **a[8] = 55**.
+### (c),(d) Draw the MST and give its weight — 5 pts
+Just the added edges. Group A total = 1+2+3+3+4 = **13**. Group B = 1+2+2+3+4 = **12**.
+
+### (e) Complexity — 2 pts
+**Θ(m log m)**, dominated by sorting the edges. (Find–union operations are near-constant,
+Θ(α(n)) amortised.)
 
 ---
 
-## 6. Task 6 — Dijkstra's algorithm (9 points, the biggest task)
+## 5. Task 5 — Graphs and Dijkstra (20 pts)
 
-### What the problem is
+Note: the 2026 graphs are **directed**. An edge 1→2 can be used only in that direction.
 
-You have a map: places (**vertices**) joined by roads (**edges**), each road with a cost. Starting at
-place **s**, find the **cheapest** route to every other place.
+### (a) The step table — 8 pts
 
-⚠️ **Cheapest is not the same as shortest.** "Shortest" means fewest roads. "Cheapest" means lowest
-total cost. A route with three cheap roads can beat one expensive road.
+They want a row per extraction: which vertex came out, and the distance array afterwards.
 
-### How Dijkstra works, in plain English
+**Method:** initialise d[s] = 0 and everything else ∞. Repeat: extract the **unvisited vertex with
+the smallest d**, then relax each of its **outgoing** edges — if d[v] + weight < d[w], update d[w].
 
-Keep a running "best known cost so far" label on every place. It starts at 0 for s and ∞ for
-everything else — ∞ meaning "no route found yet".
+**Group A** — edges 1→2(4), 1→3(2), 2→3(1), 2→4(5), 3→2(1), 3→4(8), 3→5(10), 4→5(2), 4→6(3), 5→6(1):
 
-Then repeat: **take the unfinished place with the smallest label, and declare it finished.** Its
-label is now guaranteed to be the true cheapest cost. From it, check every neighbour: does going
-through this place give the neighbour a cheaper route than what it currently has? If so, update the
-neighbour's label and record that we arrived from here.
+| Step | Extracted | d[1] | d[2] | d[3] | d[4] | d[5] | d[6] |
+|---|---|---|---|---|---|---|---|
+| 0 | — | 0 | ∞ | ∞ | ∞ | ∞ | ∞ |
+| 1 | 1 (0) | 0 | 4 | 2 | ∞ | ∞ | ∞ |
+| 2 | 3 (2) | 0 | **3** | 2 | 10 | 12 | ∞ |
+| 3 | 2 (3) | 0 | 3 | 2 | **8** | 12 | ∞ |
+| 4 | 4 (8) | 0 | 3 | 2 | 8 | **10** | 11 |
+| 5 | 5 (10) | 0 | 3 | 2 | 8 | 10 | 11 *(10+1 = 11, no change)* |
+| 6 | 6 (11) | 0 | 3 | 2 | 8 | 10 | 11 |
 
-Why can you declare it finished? Because every other unfinished place already costs more to reach,
-and all costs are positive, so no detour through them could ever come back cheaper. **This is exactly
-why Dijkstra needs non-negative weights** — a negative edge would break that reasoning.
+Note step 2: vertex **3 is extracted before 2** even though 2 was reached first, because d[3] = 2 < 4.
+And going 1→3→2 costs 3, beating the direct edge of weight 4. That's the whole point of the question.
 
-### The two tables you fill in
+### (b) The shortest path — 5 pts
+Follow the parents back from the target. Group A: **1 → 3 → 2 → 4 → 6**, total 2+1+5+3 = **11**.
+Group B: **1 → 3 → 2 → 4 → 6**, total 3+2+2+4 = **11**.
+(Both papers happen to have the same path shape — the cheapest route ignores the direct edges.)
 
-- **dist[v]** — the cheapest total cost from s to v.
-- **parent[v]** — the place you arrived *from* on that cheapest route. `parent[s] = NONE` because you
-  never arrive at the start.
+### (c) Complexity — 4 pts
+**Θ((n + m) log n)** with a binary heap.
 
-Following parents backwards from any vertex reconstructs the whole route.
+### (d) BFS comparison — 3 pts
+BFS ignores weights and counts **hops**. Run it and give the hop distances, then give one
+disagreement.
 
-### The pseudocode's two odd bits
+Group A BFS: d = 0, 1, 1, 2, 2, 3 for vertices 1–6.
+**The disagreement:** BFS says d[2] = 1 (the direct edge 1→2 is one hop), Dijkstra says d[2] = 3
+(via 1→3→2, weight 2+1). BFS treats every edge as weight 1, so it is only correct on unweighted
+graphs.
 
-Your course's version looks strange. Don't be thrown:
+Group B BFS: d = 0, 1, 1, 2, 3, 3. Same disagreement at vertex 2: BFS 1 hop vs Dijkstra 5.
 
-```
-dist[..] = INF;  parent[..] = NONE;  dist[s] = 0
-q = new priority queue;  q.add(s, 0)
-while q not empty:
-    v = q.extractMax()
-    if v removed for the first time:              ← (1)
-        for every edge (v, w):
-            if dist[w] > dist[v] + c(v,w):
-                dist[w] = dist[v] + c(v,w)
-                parent[w] = v
-                q.add(w, −dist[w])                ← (2)
-```
+---
 
-**(2)** The queue hands back the *largest* priority, but they insert **negative** distances. Negating
-turns "largest" into "smallest", so it behaves as a normal smallest-first queue. It's a coding trick,
-nothing more.
+## 6. Task 4 — Dynamic programming, stair climbing (15 pts)
 
-**(1)** A vertex can be inserted several times as its label improves, so the old entries are stale.
-This line just skips them. Again, a coding detail — by hand, you simply pick the smallest unfinished
-label each time.
+n steps; each move climbs a fixed set of step sizes; count the distinct ways to reach step n.
 
-**Neither affects what you write on the paper.** By hand it's plain Dijkstra.
+### The general recurrence
 
-### The by-hand procedure
+If the allowed moves are of sizes s₁, s₂, …, then
+**dp[n] = dp[n − s₁] + dp[n − s₂] + …**
 
-1. Write `∞` next to every vertex on the drawing, and `0` next to s.
-2. Pick the **unticked vertex with the smallest number**. Tick it — it's now final.
-3. For each of its neighbours **in alphabetical order**: compute (ticked vertex's number) + (edge
-   cost). If that's **less** than the neighbour's current number, cross the old one out, write the
-   new one, and note the parent.
-4. Go back to step 2. Stop when everything is ticked.
-5. Copy your final numbers into the answer table.
+**Why it holds — say this explicitly, it's worth marks:** the *last* move to reach step n was either
+a step of size s₁ (leaving dp[n − s₁] ways to have got there) or of size s₂ (dp[n − s₂] ways). These
+cases are **disjoint and exhaustive**, so you add them.
 
-### Full worked trace (small example — do this once by hand)
+### Base cases
+**dp[0] = 1** — there is exactly one way to be at the start: don't move. (Not 0.)
+Then fill in the small cases by hand where a large step is impossible.
 
-Vertices s, a, b, c, d. Edges:
-`s–a = 4`, `s–b = 1`, `a–b = 2`, `a–c = 1`, `b–c = 5`, `b–d = 8`, `c–d = 3`.
+**Group A (steps of 1 or 2):** dp[0] = 1, dp[1] = 1. This is Fibonacci.
 
-| Step | Tick | Updates made | dist after this step |
-|---|---|---|---|
-| start | — | — | s=0, a=∞, b=∞, c=∞, d=∞ |
-| 1 | **s** (0) | a: 0+4 = 4 ✓ (parent s)<br>b: 0+1 = 1 ✓ (parent s) | s=0, a=4, b=1, c=∞, d=∞ |
-| 2 | **b** (1) | a: 1+2 = **3** < 4 ✓ (parent **b**)<br>c: 1+5 = 6 ✓ (parent b)<br>d: 1+8 = 9 ✓ (parent b) | s=0, a=3, b=1, c=6, d=9 |
-| 3 | **a** (3) | c: 3+1 = **4** < 6 ✓ (parent **a**) | s=0, a=3, b=1, c=4, d=9 |
-| 4 | **c** (4) | d: 4+3 = **7** < 9 ✓ (parent **c**) | s=0, a=3, b=1, c=4, d=7 |
-| 5 | **d** (7) | nothing left | done |
-
-Final answer:
-
-| | s | a | b | c | d |
-|---|---|---|---|---|---|
-| dist | 0 | 3 | 1 | 4 | 7 |
-| parent | NONE | b | s | a | c |
-
-Notice step 2: `a` was already labelled 4 via the direct road from s, but going s→b→a costs 1+2 = 3,
-which is cheaper. So the label **and the parent** both changed. That's the heart of the algorithm,
-and it's where people make mistakes — remember to update the parent whenever you update the distance.
-
-### The 30-second check that saves 9 points
-
-For **every** vertex w, verify:
-
-> **dist[w] = dist[parent[w]] + (cost of the edge from parent[w] to w)**
-
-Above: a → dist[b] + 2 = 1 + 2 = 3 ✓. c → dist[a] + 1 = 3 + 1 = 4 ✓. d → dist[c] + 3 = 4 + 3 = 7 ✓.
-
-If any row fails, you've made an arithmetic slip. Always do this.
-
-### Verifying against a real exam (Group A)
-
-| | a | b | c | d | e | f | g | h | s |
+| n | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
 |---|---|---|---|---|---|---|---|---|---|
-| dist | 20 | 1 | 3 | 7 | 13 | 16 | 14 | 10 | 0 |
-| parent | f | s | b | s | c | e | e | d | NONE |
+| dp | 1 | 1 | 2 | 3 | 5 | 8 | 13 | 21 | **34** |
 
-Check a few: dist[c] = dist[b] + 2 = 1 + 2 = 3 ✓. dist[e] = dist[c] + 10 = 13 ✓.
-dist[f] = dist[e] + 3 = 16 ✓. dist[a] = dist[f] + 4 = 20 ✓.
+**Group B (steps of 1 or 3):** dp[0] = 1, dp[1] = 1, **dp[2] = 1** (a 3-step is impossible, so only
+1+1). Then dp[n] = dp[n−1] + dp[n−3].
 
-### Also know for theory questions
-Dijkstra runs in **Θ((n + m) log n)** with a heap, where n = vertices, m = edges. It **requires
-non-negative weights**.
+| n | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
+|---|---|---|---|---|---|---|---|---|
+| dp | 1 | 1 | 1 | 2 | 3 | 4 | 6 | **9** |
 
----
+Check the 1-or-3 row: dp[3] = dp[2]+dp[0] = 1+1 = 2 · dp[4] = dp[3]+dp[1] = 2+1 = 3 ·
+dp[5] = 3+1 = 4 · dp[6] = 4+2 = 6 · dp[7] = 6+3 = 9 ✓
 
-## 7. Task 7 — Draw a graph from an adjacency matrix (5 points)
+### Complexity
+**Θ(n)** — each entry is computed once in a single left-to-right pass. (Space can be reduced to
+Θ(1) by keeping only the last few entries.)
 
-### What an adjacency matrix is
-
-A table with one row and one column per vertex. A **1** at row a, column c means "there's an edge
-between a and c". A **0** means no edge.
-
-For an **undirected** graph the table is symmetric (if a–c exists, so does c–a), so **read only the
-upper triangle** — otherwise you'll count every edge twice.
-
-### What "without edge crossings" means
-
-Draw the graph so no two edges cross each other. **Edges may be curves** — the exam says so
-explicitly. Any awkward edge can be swung as a wide arc around the outside of the whole picture,
-which is the escape hatch for almost every crossing.
-
-### The procedure
-
-1. **List the edges** from the upper triangle.
-2. **Count each vertex's degree** (how many edges touch it). High-degree vertices belong near the
-   middle; degree-1 vertices dangle harmlessly off the side.
-3. **Draw the obvious edges first**, then route the remaining ones as big arcs around the outside.
-
-### Worked example (Group A)
-
-```
-     a  b  c  d  e  f
-  a  0  1  1  1  1  0
-  b  1  0  0  0  0  0
-  c  1  0  0  1  0  1
-  d  1  0  1  0  1  1
-  e  1  0  0  1  0  1
-  f  0  0  1  1  1  0
-```
-
-Upper triangle gives: **a–b, a–c, a–d, a–e, c–d, c–f, d–e, d–f, e–f** (9 edges).
-
-Degrees: a = 4, d = 4, c = 3, e = 3, f = 3, **b = 1**.
-
-So b just hangs off a — it can never cause a crossing. The rest (a, c, d, e, f) form a denser cluster;
-put d and a centrally and arrange c, e, f around them.
-
-**The exam explicitly says: drawing every edge with some crossings scores better than leaving edges
-out.** So draw them all, then fix crossings by redrawing edges as arcs.
+**If they change the step sizes**, redo the base cases from scratch — that's where the trap is.
+For steps of 1 or 4: dp[0..3] = 1, 1, 1, 1, then dp[n] = dp[n−1] + dp[n−4].
 
 ---
 
-## 8. Task 8 — Insert keys into a binary search tree (4 points)
+## 7. Task 11 — Algorithm structure (15 pts)
 
-### What a BST is
+Two halves: fill blanks in pseudocode, then unscramble steps. Both are pure recall — **learn these
+two skeletons cold.**
 
-A **binary search tree** stores numbers in a tree so you can find any of them quickly. The rule — the
-**BST invariant** — is:
+### (a) Fill the blanks — 7 pts
 
-> For every node v: **everything in v's left subtree is smaller than v**, and **everything in v's
-> right subtree is larger than v.**
-
-"Everything in the subtree", not just the immediate children — the rule applies all the way down.
-
-Why it's useful: to find a number, compare it with the root. Smaller → go left. Larger → go right.
-Each comparison eliminates half the tree, so lookup takes about log n steps instead of n.
-
-### How insertion works
-
-To insert a key, do exactly what a search does: start at the root, go left if your key is smaller and
-right if it's larger. When you reach an empty spot, put it there.
-
-### The two rules the exam states
-
-1. **Do not restructure the existing tree.** No rebalancing, no moving nodes. Hang new nodes on.
-2. **A key that's already in the tree changes nothing.** (In a real dictionary you'd update the
-   stored value, but the shape stays identical.)
-
-### Full worked example (Group A)
-
-Starting tree: root **13**, with left child **8** and right child **19**; node **8** has a left child **3**.
-
+**BFS** (asked in Group A):
 ```
-        13
-       /  \
-      8    19
-     /
-    3
+dist[s] = 0                          ← (a) 0
+parent[s] = NONE
+q = new Queue
+q.add(s)
+while q not empty do
+    v = q.extractOldest()
+    for every edge (v, w) do
+        if dist[w] not yet computed then    ← (b)
+            dist[w] = dist[v] + 1           ← (c)
+            parent[w] = v                   ← (d)
+            q.add(w)                        ← (e) w
 ```
 
-Insert **10, 5, 9, 19, 16, 20** in that order:
+**Dijkstra** (asked in Group B):
+```
+dist[s] = 0                          ← (a) 0
+dist[u] = ∞ for all u ≠ s
+q = new PriorityQueue
+q.add(s, 0)
+while q not empty do
+    v = q.extractMin()
+    for every edge (v, w, c_vw) do
+        if dist[w] > dist[v] + c_vw then    ← (b)
+            dist[w] = dist[v] + c_vw        ← (c)
+            parent[w] = v                   ← (d)
+            q.add(w, dist[w])               ← (e)
+```
 
-| Key | Path taken | Result |
+The pattern is the same in both: **condition compares, body assigns, then push the neighbour.**
+BFS adds 1; Dijkstra adds the edge weight. BFS's test is "not yet seen"; Dijkstra's is "can I do
+better".
+
+### (b) Order the scrambled steps — 8 pts
+
+The logic is always: **initialise → prepare → main loop → loop body → return.**
+
+**Kruskal** (Group A): F(1) initialise empty MST → C(2) sort edges by weight → G(3) initialise
+find–union with n singletons → E(4) for each edge in sorted order → A(5) if Find(u) ≠ Find(v), add
+and Union → D(6) otherwise discard → B(7) return the MST.
+
+**BFS** (Group B): C(1) set all dist = ∞ → G(2) create the queue → A(3) set dist[s] = 0,
+parent[s] = NONE, add s → F(4) repeat until the queue is empty → D(5) extract the oldest vertex →
+E(6) process its neighbours → B(7) return dist and parent.
+
+Note in the BFS ordering that **F (the repeat/loop) comes before D and E**, because the loop
+statement encloses them. Getting that nesting right is the only real difficulty.
+
+---
+
+## 8. Task 1 — Asymptotic notation (10 pts)
+
+Three simplifications (2+2+3) plus one code fragment (3).
+
+### The simplifications
+
+Method unchanged: kill constant factors → convert → keep only the fastest-growing term.
+
+```
+1 < log n < (log n)^k < √n < n < n log n < n² < n³ < 2ⁿ < 3ⁿ < n!
+```
+
+| Seen in the papers | Answer | Key move |
 |---|---|---|
-| **10** | 10 < 13 → left to 8. 10 > 8 → right of 8 is empty. | 10 becomes 8's **right** child |
-| **5** | 5 < 13 → 8. 5 < 8 → 3. 5 > 3 → right of 3 empty. | 5 becomes 3's **right** child |
-| **9** | 9 < 13 → 8. 9 > 8 → 10. 9 < 10 → left of 10 empty. | 9 becomes 10's **left** child |
-| **19** | 19 > 13 → right child is 19. **Already there.** | **No change** |
-| **16** | 16 > 13 → 19. 16 < 19 → left of 19 empty. | 16 becomes 19's **left** child |
-| **20** | 20 > 13 → 19. 20 > 19 → right of 19 empty. | 20 becomes 19's **right** child |
+| Θ(5n³ + 100n² + log n) | Θ(n³) | — |
+| Θ(n log n⁴ + n²/1000) | Θ(n²) | log n⁴ = 4 log n, so term 1 is Θ(n log n) |
+| Θ(2ⁿ + n¹⁰⁰⁰) | Θ(2ⁿ) | exponential beats any polynomial |
+| Θ(4n² + 200n + log²n) | Θ(n²) | — |
+| Θ(√n · log n + √n) | Θ(√n log n) | factor out √n: √n(log n + 1) |
+| Θ(n! + 3ⁿ) | **Θ(n!)** | factorial beats any exponential |
+| Θ(10 log₁₀n + √n/100 + (√2)^{log n}·log n) | Θ(√n log n) | **(√2)^{log n} = 2^{(log n)/2} = √n** |
+| Θ(4n + log n + 1) | Θ(n) | — |
+| Θ(3n log n³ + 100n) | Θ(n log n) | log n³ = 3 log n |
 
-Final tree:
+Remember: **log base doesn't matter** inside Θ; **exponential base does** (3ⁿ ≠ 2ⁿ, n! > 3ⁿ).
 
-```
-            13
-          /    \
-        8        19
-       / \      /  \
-      3   10   16   20
-       \  /
-        5 9
-```
+### The code fragment — how to count loops
 
-### The check that catches every mistake
+| Pattern | Cost | Why |
+|---|---|---|
+| `for x = 1 to n` with a **constant-length** inner loop (e.g. `for y = x−10 to x+10`) | **Θ(n)** | the inner loop runs exactly 21 times — a constant |
+| `for i = 1 to n` / `for j = i to n` (triangular) | **Θ(n²)** | Σ(n − i + 1) = n(n+1)/2 |
+| `for x = 1 to 10n` / `while y ≥ x` counting down from 10n | **Θ(n²)** | same triangular sum |
+| `for i = 1 to n` / `while j ≤ n: j = j·2` (**doubling**) | **Θ(n log n)** | doubling means ⌊log₂n⌋+1 iterations |
+| three nested loops where the innermost is `for k = 1 to 10` | **Θ(n²)** | the constant loop contributes nothing |
 
-Read your finished tree **in-order** — for each node: everything left, then the node, then everything
-right. **The result must come out sorted.**
+**The two summation rules you need:**
+1 + 2 + … + n = n(n+1)/2 = **Θ(n²)**  ·  1 + 2 + 4 + … + 2ⁿ = 2^{n+1} − 1 = **Θ(2ⁿ)**
 
-Here: 3, 5, 8, 9, 10, 13, 16, 19, 20 ✓. Sorted, so the tree is valid. Ten seconds, always do it.
+**The tell for Θ(log n):** the loop variable is **multiplied or divided**, not incremented.
 
 ---
 
-## 9. Task 9 — Choose the right data structure (4 points)
+## 9. Task 2 — Recurrences (15 pts)
 
-### What's being asked
+### (a) Write T(n) from pseudocode — 5 pts
 
-A short scenario, then pick one of these ten and justify it:
+**Count the recursive calls exactly.** This is where they set the trap.
 
-array indexed by keys · AVL tree · find–union · hash table · heap/priority queue · sorted linked
-list · queue · stack · sorted array · unsorted array
+- `while i > n − 4` starting at `i = n`, decrementing → runs for i = n, n−1, n−2, n−3, stops at
+  n−4 → **exactly 4 calls** (a constant).
+- `while i ≤ n − 3` starting at `i = 1`, incrementing → runs for i = 1 … n−3 → **n − 3 calls**
+  (depends on n!).
+- `for j = 1 to 9` → **9 calls**.
+- The final `for k = 1 to n^d` loop gives **Θ(n^d)** non-recursive work.
 
-Across Groups A–H, essentially every option is the answer somewhere — so you need to recognise all
-of them, not just memorise one.
+**Group B:** 4 (while) + 12 (for) = 16 calls on ⌊n/15⌋, plus Θ(n⁸).
+→ **T(n) = 16·T(⌊n/15⌋) + Θ(n⁸)**
 
-### What each one is, briefly
+**Group A — the trap:** (n−3) (while) + 9 (for) = **n + 6** calls on ⌊n/6⌋, plus Θ(n⁵).
+→ **T(n) = (n + 6)·T(n/6) + Θ(n⁵)**
+⚠ **The branching factor depends on n, so the Master theorem does not apply.** Say that explicitly —
+it's the point of the question. The Master theorem needs a **constant** a.
 
-- **Array indexed by keys** — key 7 lives at position 7. Instant access, but you must allocate space
-  for every possible key. Only viable when keys come from a small known range.
-- **Unsorted array** — just dumped in. Adding is instant; finding means scanning everything.
-- **Sorted array** — kept in order, so you can binary-search it in log n. But inserting means shifting
-  everything, so it's for data that doesn't change.
-- **Sorted linked list** — kept in order, but you can't jump to the middle, so no binary search.
-  Removing a node you already hold a pointer to is instant.
-- **Hash table** — a function turns each key into an array position. **Fast on average (Θ(1)), but
-  Θ(n) in the worst case** if many keys collide. **This is the deciding property.**
-- **AVL tree** — a BST that keeps itself balanced, so operations are **Θ(log n) guaranteed, worst
-  case**. That guarantee is the entire selling point.
-- **Heap / priority queue** — always hands you the largest (or highest priority) item. **You cannot
-  look up an arbitrary key in it.**
-- **Stack** — last in, first out. Undo, backtracking, DFS.
-- **Queue** — first in, first out. Waiting lines, BFS.
-- **Find–union** — tracks which items are in the same group and merges groups. Used for connectivity
-  and for Kruskal's cycle test.
+### (b),(c) Master theorem — 5 pts each
+
+**T(n) = a·T(n/b) + Θ(n^d)**, **c = log_b a**:
+**d < c → Case A → Θ(n^c)** · **d = c → Case B → Θ(n^c log n)** · **d > c → Case C → Θ(n^d)**
+
+They want **a, b, f(n), c, the case letter, and the result**, with an explanation. Write all six.
+
+| Seen in the papers | c | Case | Result |
+|---|---|---|---|
+| 8T(n/2) + Θ(n²) | log₂8 = 3 | A | Θ(n³) |
+| 4T(n/2) + Θ(n²) | log₂4 = 2 | B | Θ(n² log n) |
+| 27T(n/3) + Θ(n²) | log₃27 = 3 | A | Θ(n³) |
+| 2T(n/2) + Θ(n) | log₂2 = 1 | B | Θ(n log n) |
+| 4T(⌈n/2⌉) + Θ(n²) *(practice)* | 2 | B | Θ(n² log n) |
+
+**c = the power of b that gives a.** Powers of 2: 2,4,8,16,32,64,128,256,512,1024 → 1…10.
+Powers of 3: 3,9,27,81 → 1…4.
+
+---
+
+## 10. Task 6 — Heaps and BSTs (15 pts)
+
+### (a) Heap violation — 5 pts
+
+12-element array shown as a complete binary tree. Children of i are **2i, 2i+1**; parent is
+**⌊i/2⌋**. Max-heap rule: **every parent ≥ both children**.
+
+**Note the 2026 wording is easier than the old papers:** it asks you to "fix by changing exactly one
+value", and the solution says **"any value ≤ the parent"**. In both papers the violating node is at
+**index 12**, which is a leaf (2·12 = 24 > 12), so there's no lower bound at all.
+
+Group A: A[12] = 75 > A[6] = 70 → index **12**, set it to anything ≤ 70 (e.g. 65).
+Group B: A[12] = 28 > A[6] = 20 → index **12**, set it to anything ≤ 20 (e.g. 18).
+
+⚠ If the violating node happens to **have children**, your new value must also stay **≥ both of
+them**. Check before answering.
+
+### (b) BST insertion — 5 pts
+From the root: left if smaller, right if larger, drop at the first empty spot. **Never restructure.**
+A key already present changes nothing.
+**Check: in-order traversal must come out sorted.**
+
+### (c) AVL check — 5 pts
+
+⚠ **Use the convention printed in the question** — in 2026 that's **leaf = 0** (and Group B adds
+empty subtree = **−1**).
+
+Compute every node's height bottom-up, then check **|h(left) − h(right)| ≤ 1** at every node.
+
+Group A's tree (root 15, children 9 and 22, four leaves): h(leaves) = 0, h(9) = h(22) = 1,
+h(15) = 2. All balance factors 0 → **AVL**.
+Group B's tree: h(2) = 0, h(3) = 1, h(8) = 0, h(5) = 2, h(12) = 0, h(15) = 1, h(10) = 3.
+Balance factors 1, 1, 1, 1 → all ≤ 1 → **AVL**.
+
+Both papers answer "yes". Don't let that make you careless — check every node anyway, and if one
+fails, name it.
+
+---
+
+## 11. Task 3 — Sorting (15 pts)
+
+### (a) Choose a sort — 5 pts
+
+The scenario is always **many elements, values in a bounded range** → **Counting Sort** (or Radix).
+
+Group A: 10⁶ integers with 1 ≤ A[i] ≤ n → counting array of size n → **Θ(n + k) = Θ(n)**.
+Group B: 10⁶ integers in [0, 999] → k = 1000 is a constant relative to n → **Θ(n)**.
+
+**Always add the punchline:** this beats any comparison-based sort, which needs Ω(n log n) — because
+counting sort doesn't compare elements at all.
+
+### (b) Trace a sort — 5 pts
+
+**MergeSort (Group A)** on ⟨5,2,8,3,9,1,7,4⟩ — show split levels then merge levels:
+```
+split  L0: 5 2 8 3 9 1 7 4
+       L1: 5 2 8 3 | 9 1 7 4
+       L2: 5 2 | 8 3 | 9 1 | 7 4
+       L3: 5 | 2 | 8 | 3 | 9 | 1 | 7 | 4
+merge  L2: 2 5 | 3 8 | 1 9 | 4 7
+       L1: 2 3 5 8 | 1 4 7 9
+       L0: 1 2 3 4 5 7 8 9
+```
+Halve until singletons, then merge pairwise. Write **both phases** — the marks are for showing the
+levels.
+
+**QuickSort (Group B)** on ⟨3,1,4,1,5,9,2,6⟩ with the **last element as pivot**: after partitioning,
+the pivot sits in its final position, everything ≤ it on the left, everything > it on the right.
+Pivot 6 → ⟨3,1,4,1,5,2 | 6 | 9⟩. Then recurse on each side, pivot 2 on the left → ⟨1,1 | 2 | 3,5,4⟩.
+*(The exact left-to-right arrangement within each side depends on the partition scheme — the marked
+solution shows a fully sorted left half, which Lomuto partitioning wouldn't quite produce. State
+your scheme and make sure the pivot is in place with the correct split.)*
+
+### (c) The lower bound argument — 5 pts
+
+Learn this as a paragraph:
+
+> Any comparison-based sorting algorithm can be drawn as a **decision tree**: each internal node is a
+> comparison, each leaf a distinct permutation of the input. To sort every input correctly, all **n!**
+> permutations must be reachable, so the tree has at least n! leaves. A binary tree with n! leaves has
+> height at least **log₂(n!) = Θ(n log n)** (Stirling). So every comparison-based algorithm needs
+> **Ω(n log n)** comparisons in the worst case, and MergeSort achieves it — hence MergeSort is optimal.
+
+**Variants:** "can we sort in O(n log log n)?" → **No**, since n log log n = o(n log n).
+"in O(n·α(n))?" → **No**, α (inverse Ackermann) grows far slower than log n.
+The answer is always no for any bound below n log n **for comparison-based sorting** — and always
+say "comparison-based", because counting sort is the exception.
+
+### Reference table
+
+| | Worst | Space | Stable |
+|---|---|---|---|
+| Insertion | n² (n if sorted) | 1 | Yes |
+| Merge | n log n | n | Yes |
+| Quick | **n²** (avg n log n) | log n | No |
+| Heap | n log n | 1 | No |
+| Counting | n + k | n + k | Yes |
+| Radix | d(n + k) | n + k | Yes |
+
+---
+
+## 12. Task 9 — Choosing a data structure (15 pts)
+
+Three scenarios, 5 points each, from a list of eight: unsorted array, sorted array, hash table,
+max-heap/priority queue, BST (unbalanced), AVL tree, find–union, queue.
 
 ### Decision key
 
-| Scenario says | Answer |
+| The scenario says | Answer |
 |---|---|
-| small known integer key range, one contiguous memory block, simple, **worst-case** guarantee | **Array indexed by keys** |
-| "always need the largest / highest priority", scheduling | **Heap / priority queue** |
-| "most recently added first", undo, backtracking | **Stack** |
-| "in the order they arrived", FIFO | **Queue** |
-| huge or unknown key space, fast **average** lookup, worst case not critical | **Hash table** |
-| **worst-case** O(log n) required, with inserts and deletes, ordered | **AVL tree** |
-| data is fixed, needs binary search or ordering | **Sorted array** |
-| only ever scanned, memory is the priority | **Unsorted array** |
-| merging groups, connectivity | **Find–union** |
-| ordered, needs O(1) removal at a known node, no random access | **Sorted linked list** |
+| "retrieve the highest priority", scheduling, triage | **Max-heap / priority queue** |
+| "same group?", merging groups, connectivity | **Find–union** |
+| "O(log n) **worst case**" + "**sorted output**" | **AVL tree** |
+| "O(1) **average**", no ordering ever needed | **Hash table** |
+| strictly first-in-first-out, only enqueue/dequeue | **Queue** |
+| static data, binary search, minimal memory | **Sorted array** |
+| only ever add, never search | **Unsorted array** |
 
-**The single sharpest distinction:** if the scenario says **"worst case"**, hash table is wrong (it's
-Θ(n) worst case) and AVL tree or array-indexed-by-keys is right. If it says **"on average"** or
-doesn't mention worst case, hash table becomes attractive.
+### Scenarios already seen (learn these four — they recur)
 
-### How to write the answer — four parts
+- **Emergency room, retrieve highest-priority patient in O(log n)** → **Max-heap.** extractMax and
+  insert both O(log n), space Θ(n). No sorted output or key search needed, so AVL/hash would be overkill.
+- **Social network friend groups, "are A and B in the same group?"** → **Find–union.** Union and Find
+  in Θ(α(n)) amortised, space Θ(n). Purpose-built for dynamic connectivity.
+- **Leaderboard / airline bookings: O(log n) insert, delete, search *and* sorted output in O(n)** →
+  **AVL tree.** Unbalanced BST degrades to O(n); a hash table can't produce sorted output.
+- **Compiler symbol table: O(1) average insert and lookup, no ordering** → **Hash table.**
 
-Marks are spread across all four. Write all four even if briefly.
+*(The practice exam adds: **bacteria merging on a petri dish** → find–union, same reasoning.)*
 
-1. **Name it.**
-2. **One sentence mapping it to the scenario.** ("The sensor IDs are integers in a small known range,
-   so they can index the array directly.")
-3. **Its complexity.** ("Θ(1) worst case for insert and lookup; Θ(M) memory where M is the largest
-   key, which is acceptable here since the range is small.")
-4. **Why the others lose** — group them rather than listing ten: *"Find–union, stack, queue and heap
-   don't support key-based lookup at all. AVL tree, hash table, sorted and unsorted arrays and sorted
-   linked lists are all slower in the worst case, and none uses less memory. Also, only the array
-   satisfies the requirement of a single contiguous memory block."*
-
-Part 4 is where most of the marks are, and it's the part people skip.
+### The answer format — four parts, all worth marks
+1. Name the structure. 2. Map it to the scenario. 3. **Time and space complexity.**
+4. **Why the other options are worse here.** Group them: "these can't do the required operation at
+all; those are slower; that one can't give sorted output."
 
 ---
 
-## 10. Task 10 — Heights and the AVL invariant (5 points)
+## 13. Task 8 — P and NP (15 pts)
 
-### Height, one more time
+### (a) Definitions — 5 pts. Write these almost verbatim.
 
-**Height of a node = the number of nodes on the longest downward path from it, counting itself.**
+- **P** — decision problems solvable by a deterministic algorithm in **polynomial time**.
+- **NP** — decision problems where a proposed solution (a **certificate**) can be **verified** in
+  polynomial time.
+- **NP-complete** — a problem X such that (1) **X ∈ NP** and (2) **every problem in NP reduces to X
+  in polynomial time** (i.e. X is NP-hard). The hardest problems in NP.
 
-- leaf → **1**
-- missing child (NONE) → **0**
-- **height(v) = 1 + max(height(left), height(right))**
+### (b) Classify five problems — 6 pts
 
-The exam prints this definition on the paper. It's still where people lose marks, because most other
-sources count edges and give answers one lower.
+**In P** (name the algorithm): sorting (merge sort, O(n log n)) · shortest path with non-negative
+weights (Dijkstra) · minimum spanning tree (Kruskal/Prim) · binary search · **bipartite / 2-colouring
+check** (BFS, O(n+m)) · connectivity (BFS).
 
-### What an AVL tree is
+**NP-complete:** Hamiltonian cycle · SAT (**the first, Cook–Levin 1971**) · knapsack (decision
+version) · independent set · vertex cover · graph colouring · TSP.
 
-A plain BST can go wrong. Insert 1, 2, 3, 4, 5 in order and you get a straight line downward — every
-search walks the whole thing, so it's as slow as a plain list.
+⚠ **2-colouring is in P; 3-colouring is NP-complete.** ⚠ **Shortest path is in P; Hamiltonian
+path is NP-complete.** The exam relies on these near-misses.
 
-An **AVL tree** prevents this with a balance rule:
+### (c) Tick the correct statements — 4 pts
 
-> **For every node, the heights of its two children differ by at most 1** (counting a missing child
-> as height 0).
+**True:**
+- If X is NP-complete and X ∈ P, then **P = NP** ✓
+- **P ⊆ NP** ✓
+- If X is NP-complete, every problem in NP reduces to X in polynomial time ✓
+- Every NP-complete problem reduces to any other NP-complete problem in polynomial time ✓
+- SAT is NP-complete / SAT was the first problem proven NP-complete ✓
 
-Enforce that everywhere and the tree can never be more than about log n tall, so everything stays
-Θ(log n) in the worst case.
+**False:**
+- NP-complete problems can be solved in polynomial time with parallel processors ✗
+- NP-complete problems cannot be solved exactly, only approximated ✗ *(they can — just not in
+  polynomial time in general)*
+- All NP problems require exponential time ✗ *(P ⊆ NP)*
+- Hamiltonian cycle is in P ✗
 
-### The procedure
+### The reduction pattern (practice exam, task 13)
 
-1. **Write the height next to every single node.** Start at the bottom — every leaf gets 1 — and work
-   upward using `1 + max(children)`. Don't do it in your head; write on the paper.
-2. **Read off the two heights asked for.**
-3. **Check AVL:** at every node, compare its two children's heights. If any pair differs by **2 or
-   more**, the answer is **no**.
-
-### Small worked example
-
-```
-            r
-          /   \
-         p     q
-        / \
-       x   y
-      /
-     z
-```
-
-Bottom up: z is a leaf → **1**. y is a leaf → **1**. q is a leaf → **1**.
-x has one child z (height 1) and one missing child (0) → 1 + max(1, 0) = **2**.
-p has children x (2) and y (1) → 1 + max(2, 1) = **3**.
-r has children p (3) and q (1) → 1 + max(3, 1) = **4**.
-
-AVL check: at x, children are 1 and 0 → differ by 1 ✓. At p, 2 and 1 → differ by 1 ✓.
-At **r**, 3 and 1 → **differ by 2** ✗. **Not AVL**, and the violation is at r.
-
-### Finding X and Y
-
-This part branches, so read the question carefully:
-
-- **If the tree violates AVL:**
-  **X** = the node where the violation sits (its children's heights differ by ≥ 2).
-  **Y** = a node where **adding one new child repairs** it. That means a node on the **shorter**
-  side, positioned so its new child raises that side's height by exactly 1 and closes the gap.
-- **If the tree satisfies AVL:**
-  **X** = a node where **adding a child would break** the rule.
-  **Y** = the node where that break would then **appear** — possibly an ancestor of X, and possibly
-  X itself.
-
-**Tie-breaking (stated on the paper):** several valid X → choose the **alphabetically smallest**.
-Then, with that X fixed, several valid Y → again alphabetically smallest.
-
-In Group A the answers are: height of bz = 5, height of root = 6, AVL = **no**, X = **ce**, Y = **cd**.
-Node ce's two subtrees differ by 2; adding a child beneath cd (on the shorter side) lifts it by one
-and restores balance.
-
-This task is fiddly but entirely mechanical. The only skill is annotating heights patiently.
+Given problem A (secretly in P) and B (secretly NP-complete):
+✓ A reduces to B · ✓ A is in P · ✓ unknown whether B reduces to A · ✓ unknown whether B is in P.
+Everything else false. **Anything in P reduces to anything**, which is why the first is free.
 
 ---
 
-## 11. Task 11 — Floyd–Warshall stopped early (5 points)
+## 14. Task 13 — Algorithm design (10 pts)
 
-### What Floyd–Warshall does
+A skeleton with five blanks, then complexity, then a trace. Both papers use a **single-pass scan**.
 
-Dijkstra finds cheapest routes **from one starting point**. Floyd–Warshall finds them **between every
-pair of places at once**, filling in a full n × n table δ.
-
+### Group A — longest strictly increasing run ("heat wave")
 ```
-δ[1..n][1..n] filled with +∞
-for i = 1 to n:  δ[i][i] = 0                   ← cost from a place to itself is 0
-foreach edge (v, w, c):  δ[v][w] = c;  δ[w][v] = c    ← direct edges
-for k = 1 to K:
-    foreach pair (v, w):
-        δ[v][w] = min(δ[v][w], δ[v][k] + δ[k][w])
+bestStart ← 1;  bestLen ← 1          (a) = 1
+currStart ← 1;  currLen ← 1          (a) = 1
+for i ← 2 to n do
+    if T[i] > T[i−1] then            (b)
+        currLen ← currLen + 1
+        if currLen > bestLen then
+            bestStart ← currStart    (c)
+            bestLen  ← currLen       (d)
+    else
+        currStart ← i                (e)
+        currLen ← 1
+return bestStart, bestLen
 ```
+Time **Θ(n)**, space **Θ(1)**.
+Trace on ⟨22,19,20,23,21,24,27,29⟩: runs are ⟨22⟩ (len 1), ⟨19,20,23⟩ (len 3, start 2),
+⟨21,24,27,29⟩ (len 4, start 5) → **start 5, length 4**.
 
-The idea: the outer loop walks through vertices one at a time, and at step k it asks, for every pair,
-"would routing **through vertex k** be cheaper than what I have?" After considering all n vertices,
-every route has been found.
+### Group B — cheapest window of k consecutive values ("express lane")
+```
+windowSum ← Σ(i=1..k) w[i]                     (a)
+bestStart ← 1;  bestSum ← windowSum
+for i ← 2 to n − k + 1 do
+    windowSum ← windowSum − w[i−1] + w[i+k−1]  (b)   ← sliding window
+    if windowSum < bestSum then                (c)
+        bestSum   ← windowSum                  (d)
+        bestStart ← i                          (e)
+return bestStart
+```
+Time **Θ(n)** — Θ(k) for the initial sum, then O(1) per slide. Space **Θ(1)**.
+Trace on ⟨3,1,4,1,5,9,2,6⟩ with k = 3: sums 8, 6, 10, 15, 16, 17 → **start 2, total 6**.
 
-### The invariant — the whole task
+**The sliding-window identity is the thing to memorise:**
+**new sum = old sum − (element leaving) + (element entering)** = `windowSum − w[i−1] + w[i+k−1]`.
 
-Memorise this sentence:
-
-> **After the outer loop has run k = 1 … K, δ[v][w] holds the cost of the cheapest route from v to w
-> that passes through *only vertices numbered 1…K along the way*. If no such route exists, δ[v][w] is
-> still +∞.**
-
-Two clarifications that matter:
-- "Along the way" means **internal** vertices only. **The endpoints v and w don't count** — they may
-  have any number.
-- If **no** route obeying that restriction exists, the answer is **INF**, even when the two places
-  are obviously connected in the real graph. The algorithm simply hasn't discovered it yet.
-
-The exam gives you a version where the loop stops at K < n, and asks what's in specific cells at
-that moment.
-
-### The procedure, per cell
-
-1. Is there a **direct edge** v–w? If so, that cost is already in the table.
-2. Otherwise, look for a route v → … → w where **every stop in the middle has a number ≤ K**.
-   Take the cheapest such route.
-3. If no such route exists → **INF**.
-
-### The trap, every single time
-
-The graph is built with a **hub vertex numbered above K** that connects to everything. It looks like a
-2-step shortcut between any two places — but it's **forbidden as an internal stop**. So you must go
-the long way round, or find nothing at all.
-
-### Full worked example (Group A)
-
-n = 18. Vertices 1–17 sit on a big ring (1–2–3–…–17–1). Vertex **18 is a hub joined to all 17**.
-Every edge costs 1. The loop stops at **K = 13**, so **only vertices 1–13 may be used as internal
-stops. Vertices 14, 15, 16, 17 and the hub 18 are forbidden in the middle.**
-
-| Cell | Answer | Why |
-|---|---|---|
-| δ[18][15] | **1** | There's a direct edge from the hub to 15. No internal stops needed at all — endpoints are always allowed. |
-| δ[2][12] | **10** | Go round the ring: 2→3→4→…→12. Internal stops are 3…11, all ≤ 13 ✓. That's 10 edges. (Via the hub it'd be 2, but 18 > 13 is forbidden.) |
-| δ[17][14] | **14** | 17→1→2→…→13→14. Internal stops 1…13, all allowed ✓. 14 edges. Note 17 and 14 are the *endpoints*, so their being > 13 is fine. |
-| δ[15][3] | **INF** | One way round needs 16 and 17 (both > 13). The other way needs 14 (> 13). Via the hub needs 18 (> 13). **No legal route.** |
-| δ[13][16] | **INF** | Needs 14 and 15, or 17, or the hub — all > 13. **No legal route.** |
-
-### A free check
-
-The exam states: **"there are exactly two fields where the answer is INF; if you write INF in more
-than two fields you get 0 for those fields."** So if you end up with three INFs, one is wrong — go
-back and look harder for a legal route.
+**If the variant differs** (longest non-decreasing run, maximum window, longest run of equal values),
+the skeleton is identical — only the comparison in (b)/(c) flips.
 
 ---
 
-## 12. Task 12 — Fix the broken invariant (4 points)
+## 15. Possible extras from the practice exam
 
-### What a loop invariant is
+These appear in the practice exam but not in Groups A or B. Low probability, cheap to skim.
 
-A statement about the variables that stays **true every time the loop condition is checked** — the
-same before the first iteration, after the first, after the second, and so on. It's how you prove a
-loop does what you claim.
+**Memory complexity.** Asked as "**extra** memory, not counting the input":
+merge sort **Θ(n)** · binary search **Θ(1)** · heapsort **Θ(1)** · Dijkstra **Θ(n + m)** (the dist
+table plus the priority queue — so Θ(n) on a sparse graph, **Θ(n²)** when m = Θ(n²)).
 
-Simple example: `i = 0; j = 0; while i ≠ n: i = i+1; j = j+2`.
-The invariant is **2i = j**. True at the start (0 = 0). And each iteration adds 1 to i and 2 to j, so
-if 2i = j held before, it still holds after. So when the loop finally exits at i = n, we know
-j = 2n — which is what we wanted to prove.
+**Composite running times.** Read them as "cost of one operation × number of operations":
+- build-heap then n removeMax → heapsort → **Θ(n log n)**
+- Floyd–Warshall (Θ(n³)) run inside a double loop → **Θ(n⁵)**
+- n insertions into a sorted array → finding the spot is O(log n) but **shifting is Θ(n)** → **Θ(n²)**
+- 100n² insertions into an AVL tree → the tree always has between n and ~100n² elements, and
+  log(100n² + n) = Θ(log n), so each add is Θ(log n) → **Θ(n² log n)**
 
-### What the exam asks
+**Sorting edges of a graph in O(n + m).** Answer: **Radix sort = two passes of counting sort** —
+first by target vertex, then by source. Stability makes the second pass preserve the first's order.
+(BFS is the wrong answer even though its running time matches.)
 
-You get a loop that updates two variables, plus a proposed invariant like **A·x + C·e = D** with three
-constants. **One of the three is wrong.** Change exactly one and give its correct value.
+**Real running time of Python vs C++.** Order by asymptotics first, then by language:
+removing from the **front** of a list/vector is Θ(n) per removal → Θ(n²) total; removing from the
+**back** is O(1) amortised → Θ(n). So both back-removal programs beat both front-removal ones, and
+within each pair C++ beats Python.
 
-This looks intimidating. It's two lines of algebra.
-
-### The method
-
-**Step 1 — find the per-iteration change.** Trace one pass through the loop body and net out what
-happens to each variable. Call these Δx and Δe.
-
-**Step 2 — the preservation equation.** For the invariant to survive an iteration, the left side must
-not change. Since x changes by Δx and e by Δe:
-
-> **A·Δx + C·Δe = 0**
-
-**Step 3 — the initialisation equation.** The invariant must hold before the first iteration, so plug
-in the starting values x₀ and e₀:
-
-> **A·x₀ + C·e₀ = D**
-
-**Step 4 — find the odd one out.** You now have two equations linking three constants. Test each
-constant by assuming the other two are right and checking whether they're consistent. **Exactly one
-pairing will be consistent** — and the constant left over is the broken one. The equations give you
-its correct value.
-
-### Worked example 1 (Group A)
-
+**Turning a memoised recursion into a DP.** Replace the dictionary with an array, add a loop over
+the subproblem index from smallest to largest, replace recursive calls with array lookups, drop the
+`if not in memo` guard, return the last entry:
 ```
-x = 4
-e = 0
-while x < b:
-    t = 4
-    x = x + t      → x increases by 4
-    e = e + t      → e increases by 4
-    x = x − 1      → x decreases by 1
-    e = e − 11     → e decreases by 11
+DP[0..n] = new array;  DP[0] = 0;  DP[1] = 0
+for p = 2 to n do
+    DP[p] = max(a[p] + DP[p−2], DP[p−1])
+return DP[n]
 ```
 
-Given: A = 7, C = 2, D = 28, invariant `A·x + C·e = D`.
-
-**Step 1.** Δx = +4 − 1 = **+3**. Δe = +4 − 11 = **−7**.
-
-**Step 2 (preservation).** A·3 + C·(−7) = 0. With A = 7: 21 − 7C = 0 → **C = 3**.
-
-**Step 3 (initialisation).** x₀ = 4, e₀ = 0. So A·4 + C·0 = D → 7·4 = 28 = D ✓ — the given D is
-already correct.
-
-**Step 4.** A and D agree with each other perfectly. C is the odd one out.
-
-**Answer: change C to 3.**
-
-### Worked example 2 (Group C)
-
-```
-u = 0
-l = 2
-while l ≤ h:
-    u = u + 4
-    r = 2
-    l = l − r      → l decreases by 2
-    u = u − r      → u decreases by 2
-    l = l + 8      → l increases by 8
-```
-
-Given: B = 15, A = 36, T = 24, invariant `B·l = A·u + T`.
-
-**Step 1.** Δu = +4 − 2 = **+2**. Δl = −2 + 8 = **+6**.
-
-**Step 2 (preservation).** Both sides must change by the same amount: B·Δl = A·Δu →
-6B = 2A → **A = 3B**.
-
-**Step 3 (initialisation).** l₀ = 2, u₀ = 0. So B·2 = A·0 + T → **T = 2B**.
-
-**Step 4 — test each:**
-- Assume **B = 15** is right → then A should be 45 (given 36 ✗) and T should be 30 (given 24 ✗).
-  *Both* others disagree, so B isn't the reliable one.
-- Assume **A = 36** is right → then B = 12, and T = 2B = 24 — **and the given T is 24 ✓**. Consistent.
-- Assume **T = 24** is right → B = 12, A = 36 — matches the given A ✓. Consistent.
-
-A and T agree with each other. B is the odd one out.
-
-**Answer: change B to 12.**
-
-### The tell
-
-**The constant to change is the one that contradicts both others, while those two agree with each
-other.** Once you see that, this task takes three minutes.
+**Draw a BST of height 3 on given keys that is not AVL** → make it a path (e.g. 40 → 10 → 30 → 20 or
+similar chain), then mark the node whose subtree heights differ by ≥ 2.
 
 ---
 
-## 13. Task 2 — Recurrence from code, or code from a recurrence (4 points)
-
-Two directions appear across the groups.
-
-### Direction 1: read T(n) = a·T(n/b) + Θ(n^d) off the code
-
-- **a = the total number of recursive calls**, counted across *all* the loops that make them.
-- **b** comes from the subproblem size, usually written `m = ⌈n/d⌉` — so b = that d. Watch for it
-  being computed rather than written (`d = 3·3` means b = 9).
-- **f(n) = the non-recursive work** — usually a loop whose bound was built up in stages.
-
-**Worked (Group A):**
-- `d = 3·3` = 9, and `m = ⌈n/d⌉` → **b = 9**.
-- `while i > n−9` starting at `i = n` and decrementing: runs for i = n, n−1, …, n−8 → **9 calls**.
-- `for i = 1 to 5` → **5 calls**. Total **a = 9 + 5 = 14**.
-- `p = n·n·n·n` = n⁴, then `for j = 1 to p·(n·n)` = n⁴·n² = n⁶ → **f(n) = Θ(n⁶)**.
-- The Copy_Sub_Array calls cost Θ(m) = Θ(n) each, 14 times → Θ(n), which is dwarfed by n⁶. Mention
-  it, then drop it.
-
-**Answer: T(n) = 14·T(⌈n/9⌉) + Θ(n⁶)**
-
-### Direction 2: fill blanks in the code so it matches a given recurrence
-
-Same equations, solved backwards.
-
-**Worked (Group C):** target `T(n) = 17T(⌈n/30⌉) + Θ(n⁸)`.
-- Code has `m = ⌈n/(6·d)⌉`. Need 6d = 30 → **d = 5**.
-- One loop makes 6 calls, another makes `?` → 6 + ? = 17 → **? = 11**.
-- Code has `w = 1; for j = 1 to ?: w = w·n` then `for k = 1 to w`. So w = n^?, and we need Θ(n⁸) →
-  **? = 8**.
-
----
-
-## 14. Task 1 — Complete the Python function (5 points)
-
-Multiple choice: 4–5 blank lines, ~15 labelled snippets to choose from. The functions come from the
-course's **programming assignments** ("the task is related to the first programming task"), so **your
-own submitted code is the best revision material** — dig it out.
-
-**Version seen in Groups A and B — binary search on a reverse-sorted array:**
-```python
-left = -1
-right = n - 1
-while left < right:                 # (G)
-    p = (left + right + 1) // 2     # (O)
-    if x > a[p]:                    # (A)
-        right = p - 1               # (I)
-    else:
-        left = p                    # (C)
-return left
-```
-The array runs largest-to-smallest, and we want the last position whose value is still ≥ x. The `+1`
-in the midpoint and `left = p` (not `p+1`) are what make it terminate correctly — that's the whole
-difficulty.
-
-**Version seen in Groups C–H — falling blocks:**
-```python
-heights = {}                        # (O)  ← a dict, not a list
-for i in range(n):
-    x = pos[i]
-    if x not in heights:            # (A)
-        heights[x] = 1              # (I)
-    else:
-        heights[x] += 1             # (C)
-    if heights[x] == h:             # (M)
-        return x
-```
-It must be a **dictionary**, because coordinates can be arbitrarily large — `[0] * max(pos)` would
-need impossible amounts of memory.
-
-**Technique when unsure:** pick a tiny concrete input and mentally run each candidate. Also use the
-structural hints — the paper tells you which lines start with `while` and which with `if`, which
-eliminates most options straight away.
-
----
-
-## 15. Task 13 — Bonus theory (+4, optional — skip unless you have time)
-
-Same shape every time: two decision problems A and B, then tick which statements are true.
-
-**A "decision problem" is one whose answer is just YES or NO.**
-**P** = problems solvable in a reasonable (polynomial) amount of time.
-**NP-complete** = the hardest problems in NP; nobody knows a fast algorithm for any of them, and
-finding one for a single NP-complete problem would give fast algorithms for all of them.
-**"A reduces to B"** = if you could solve B quickly, you could solve A quickly, by translating A's
-inputs into B's.
-
-**The pattern is always the same: A is secretly easy (in P), B is secretly NP-complete.**
-
-- **Recognising B:** it's a disguised classic. Knapsack ("maximise total value within a budget or
-  time limit" — dressed up as choosing lecture recordings), Hamiltonian cycle ("visit every room
-  exactly once"), SAT, vertex cover, graph colouring.
-- **Recognising A:** it turns out to be something BFS, sorting, or a greedy rule can solve. "Is there
-  an ordering of *some* users from Alice to Bob where consecutive users are friends?" is just
-  **connectivity** — build a graph and run BFS. Note "*some*, not necessarily all". **If it said
-  *all* users, it would be Hamiltonian path and therefore NP-complete.**
-
-**The four true statements, every time:**
-- ✅ A can be reduced to B in polynomial time (anything in P reduces to anything, trivially)
-- ✅ A is in P
-- ✅ It is unknown whether B can be reduced to A in polynomial time
-- ✅ It is unknown whether B is in P
-
-And the four false ones are the mirror images: "B reduces to A", "B is in P", "unknown whether A
-reduces to B", "unknown whether A is in P".
-
----
-
-## 16. Cram sheet — read at 07:45, nothing else
+## 16. Cram sheet
 
 ```
-90 min | 13 tasks | 60+4 pts | neighbours in ALPHABETICAL order | log = log2 | worst case
-HEIGHT = NUMBER OF NODES incl. itself. Leaf = 1. NONE = 0. h(v) = 1 + max(children).
+2 HOURS · 13 TASKS · 180 POINTS · CHECK WHETHER AIDS ARE ALLOWED
+⚠ HEIGHT: use the convention PRINTED IN THE QUESTION. 2026 says leaf = 0, empty = −1.
 
-T3 MASTER  T(n)=aT(n/b)+Θ(n^d).  c = the power of b that gives a.
-   d<c → Θ(n^c)   |   d=c → Θ(n^c log n)   |   d>c → Θ(n^d)
-   Simplify a first — they disguise it (100³·100 = 100⁴ → c = 4).
+ORDER: 12 → 10 → 7 → 5 → 4 → 11 → 1 → 2 → 6 → 3 → 9 → 8 → 13
 
-T4 SIMPLIFY  constants→1, convert, keep the fastest term.
-   1 < log n < (log n)^k < √n < n < n log n < n² < n³ < 2ⁿ < 4ⁿ
-   log(n^k)=k log n → Θ(log n)  |  log₃(9ⁿ) = 2n (LINEAR!)  |  2^{2log₂n} = n²
-   n^{3/6+3/6} = n  |  n^{3−3} = 1  |  huge constant = Θ(1)
-   NEVER turn 4ⁿ into 2ⁿ. Several variables → keep all unbeaten terms.
+T12 GRADIENT DESCENT (15)  θ_{t+1} = θ_t − η ∇L(θ_t)
+   gradient points to steepest INCREASE → step the other way
+   too small = slow · too large = overshoot/diverge
+   convex = no local min but the global one → GD always finds it
+   L=(w−a)² → ∇L=2(w−a); η=0.5 lands in one step
 
-T5 HEAP  children of i are 2i, 2i+1; parent ⌊i/2⌋. Parent ≥ both children (equal OK).
-   j = the CHILD's index.  New value = max(a[2j], a[2j+1]).
+T10 HASH (10)  k mod 7, separate chaining, draw ALL slots
+   worst Θ(n) all in one chain · hash O(1) avg / AVL O(log n) worst + sorted O(n)
 
-T6 DIJKSTRA  ∞ everywhere, 0 at s. Repeat: tick the smallest unticked, relax its
-   neighbours alphabetically. Update the PARENT whenever you update the distance.
-   FINAL CHECK: dist[w] == dist[parent[w]] + edge cost, for EVERY w.
+T7 KRUSKAL (20)  sort edges → cheapest that makes no cycle → find-union
+   must add exactly n−1 · after one component, reject everything · Θ(m log m)
 
-T7 GRAPH  read the upper triangle only. Draw ALL edges — arcs around the outside fix crossings.
-   Degree-1 vertices dangle off the side.
+T5 DIJKSTRA (20)  DIRECTED. extract smallest d, relax outgoing edges.
+   Θ((n+m) log n). BFS counts HOPS and disagrees wherever a cheap detour beats a heavy edge.
 
-T8 BST  left < node < right, all the way down. No restructuring. Existing key = no change.
-   CHECK: in-order traversal must come out sorted.
+T4 DP STAIRS (15)  dp[n]=dp[n−s1]+dp[n−s2] · dp[0]=1 · last move was either → disjoint
+   1-or-2 = Fibonacci · 1-or-3: 1,1,1,2,3,4,6,9 · Θ(n)
 
-T9 DATA STRUCTURE  "worst case" → NOT hash table (it's Θ(n) worst). AVL = guaranteed log n.
-   Small key range + contiguous memory → array indexed by keys. Heap can't do lookups.
-   Answer in 4 parts: name / how it fits / complexity / why every other option loses.
+T11 SKELETONS (15)  BFS: dist[v]+1, test "not yet computed", q.add(w)
+   Dijkstra: dist[v]+c, test dist[w] > dist[v]+c, q.add(w, dist[w])
+   ordering = init → prepare → LOOP → body → return (loop line before its body!)
 
-T10 AVL  write EVERY node's height, bottom-up. Violation = children differ by ≥ 2.
-   Violates → X = where it breaks, Y = where a new child repairs it (shorter side).
-   Satisfies → X = where a new child would break it, Y = where the break appears.
-   Ties → alphabetically smallest.
+T1 ASYMPTOTICS (10)  constant inner loop → Θ(n) · triangular → Θ(n²) · doubling → Θ(log n)
+   log(n^k)=k log n · (√2)^{log n}=√n · n! > 3ⁿ > 2ⁿ > n^k
 
-T11 FLOYD-WARSHALL stopped at K: cheapest route using ONLY vertices 1..K as INTERNAL stops.
-   Endpoints don't count. No legal route → INF. The hub is numbered > K → forbidden.
-   Exactly 2 INFs — use that as a check.
+T2 RECURRENCES (15)  count calls EXACTLY: while i>n−4 from n → 4 · while i≤n−3 from 1 → n−3
+   n-dependent branching → MASTER THEOREM DOES NOT APPLY (say it)
+   c=log_b a · d<c→A→n^c · d=c→B→n^c log n · d>c→C→n^d
 
-T12 INVARIANT  Δ per iteration. Preservation: A·Δx + C·Δe = 0. Init: A·x₀ + C·e₀ = D.
-   Two constants will agree with each other — change the third.
+T6 HEAP+BST (15)  children 2i,2i+1 · violation index = the CHILD · new value ≤ parent
+   (and ≥ its own children if it has any) · BST in-order must be sorted · |hL−hR| ≤ 1
 
-T13 BONUS  A is in P, B is NP-complete. TRUE: A reduces to B | A in P |
-   unknown if B reduces to A | unknown if B in P.
+T3 SORTING (15)  bounded range → counting sort Θ(n+k), beats Ω(n log n) by not comparing
+   decision tree: n! leaves → height ≥ log(n!) = Θ(n log n)
+   anything below n log n → NO for comparison-based
 
-ORDER TO ATTEMPT:  3, 4, 12, 8, 5  (quick wins, ~23 pts)
-                →  6, 11, 10       (bigger, mechanical, ~19 pts)
-                →  2, 9, 7  →  1  →  13
+T9 DATA STRUCTURES (15)  priority → heap · same group → find-union
+   worst-case log n + sorted output → AVL · O(1) avg, no order → hash · FIFO → queue
+   4 parts: name / fit / complexity / why the others lose
+
+T8 P-NP (15)  P = solvable poly · NP = verifiable poly · NP-c = in NP + all NP reduce to it
+   P: sort, Dijkstra, MST, binary search, 2-colouring, connectivity
+   NP-c: Hamiltonian, SAT (first, Cook-Levin), knapsack, independent set, 3-colouring
+   TRUE: X NP-c ∧ X∈P → P=NP · P⊆NP · all NP reduce to any NP-c · SAT is NP-c
+
+T13 DESIGN (10)  single pass, Θ(n) time Θ(1) space
+   sliding window: new = old − w[i−1] + w[i+k−1]
+   longest run: extend if T[i]>T[i−1], else currStart←i, currLen←1
 ```
 
 ---
 
-## 17. Saturday morning
+## 17. What to do with the time you have left
 
-Groups A and B are used as examples throughout this guide, so they're spoiled. **Keep Group E or F
-unopened** and sit it as a clean timed mock at 06:00.
-
-If you're short on time, do only tasks **3, 4, 5, 6, 11, 12** from one group — that's 33 points and
-about 30 minutes once you're fluent.
+1. **Verify the aids rule.** Both 2026 papers say no aids. Find out before you build a plan around a
+   cheatsheet.
+2. **Work the two 2026 papers.** They're the same exam twice with different numbers, and you have the
+   solutions. Do Group A properly, then Group B as a timed check.
+3. **Then the practice exam** — it's the widest sample of question shapes and covers the extras in §15.
+4. Memorise, in this order: the gradient descent block (§2), the two pseudocode skeletons (§7), the
+   decision-tree paragraph (§11c), the P/NP definitions (§13a). That's ~50 points of pure recall and
+   it's the cheapest studying available.
