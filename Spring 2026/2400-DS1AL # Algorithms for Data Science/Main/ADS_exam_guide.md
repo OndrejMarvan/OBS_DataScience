@@ -512,16 +512,16 @@ Three expressions to simplify (2+2+3 pts) plus one code fragment (3 pts).
 Three steps: **kill constant factors → convert each term into a clean shape → keep only the
 fastest-growing term.**
 
-| When you see | Write | Why |
-|---|---|---|
-| log(n^k) | k·log n → **Θ(log n)** | the exponent comes out front |
-| log(c·n) | log c + log n → **Θ(log n)** | log of a product is a sum |
-| (√2)^{log n} | 2^{(log n)/2} = **√n** | since 2^{log n} = n, halve the exponent |
-| √n·log n + √n | √n(log n + 1) = **Θ(√n log n)** | factor out |
-| n^a · n^b | n^{a+b} | exponents add |
-| n! against 3ⁿ | **n! wins** | factorial beats any exponential |
-| 2ⁿ against n^1000 | **2ⁿ wins** | exponential beats any polynomial |
-| a huge constant | Θ(1) | it doesn't grow with n |
+| When you see      | Write                           | Why                                     |
+| ----------------- | ------------------------------- | --------------------------------------- |
+| log(n^k)          | k·log n → **Θ(log n)**          | the exponent comes out front            |
+| log(c·n)          | log c + log n → **Θ(log n)**    | log of a product is a sum               |
+| (√2)^{log n}      | 2^{(log n)/2} = **√n**          | since 2^{log n} = n, halve the exponent |
+| √n·log n + √n     | √n(log n + 1) = **Θ(√n log n)** | factor out                              |
+| n^a · n^b         | n^{a+b}                         | exponents add                           |
+| n! against 3ⁿ     | **n! wins**                     | factorial beats any exponential         |
+| 2ⁿ against n^1000 | **2ⁿ wins**                     | exponential beats any polynomial        |
+| a huge constant   | Θ(1)                            | it doesn't grow with n                  |
 
 **Log bases don't matter** inside Θ — Θ(log₅n) = Θ(log₂n), because changing base multiplies by a
 constant. **Exponential bases absolutely do** — 3ⁿ is nothing like 2ⁿ.
