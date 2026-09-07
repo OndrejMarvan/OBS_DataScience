@@ -5,7 +5,7 @@ Authors@R:
     person(given  = "Ondrej",
            family = "Marvan",
            role   = c("aut", "cre"),
-           email  = "o.marvan@student.uw.edu.pl",
+           email  = "REPLACE_WITH_YOUR_REAL_EMAIL@example.com",
            comment = c(student_id = "477001"))
 Description: A chess simulator built as the final project for Advanced
     Programming in R (WNE UW). Demonstrates four advanced R techniques:
@@ -21,6 +21,7 @@ RoxygenNote: 7.3.2
 Depends:
     R (>= 4.0.0)
 Imports:
+    utils,
     R6,
     Rcpp (>= 1.0.0),
     shiny,

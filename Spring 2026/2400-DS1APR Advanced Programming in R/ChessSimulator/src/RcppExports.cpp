@@ -11,38 +11,51 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // chess_evaluate
-double chess_evaluate(NumericMatrix board_matrix);
+double chess_evaluate(IntegerMatrix board_matrix);
 RcppExport SEXP _ChessSimulator_chess_evaluate(SEXP board_matrixSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type board_matrix(board_matrixSEXP);
+    Rcpp::traits::input_parameter< IntegerMatrix >::type board_matrix(board_matrixSEXP);
     rcpp_result_gen = Rcpp::wrap(chess_evaluate(board_matrix));
     return rcpp_result_gen;
 END_RCPP
 }
 // chess_legal_moves
-IntegerMatrix chess_legal_moves(NumericMatrix board_matrix, int is_white_int);
+IntegerMatrix chess_legal_moves(IntegerMatrix board_matrix, int is_white_int);
 RcppExport SEXP _ChessSimulator_chess_legal_moves(SEXP board_matrixSEXP, SEXP is_white_intSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type board_matrix(board_matrixSEXP);
+    Rcpp::traits::input_parameter< IntegerMatrix >::type board_matrix(board_matrixSEXP);
     Rcpp::traits::input_parameter< int >::type is_white_int(is_white_intSEXP);
     rcpp_result_gen = Rcpp::wrap(chess_legal_moves(board_matrix, is_white_int));
     return rcpp_result_gen;
 END_RCPP
 }
 // chess_minimax
-IntegerVector chess_minimax(NumericMatrix board_matrix, int is_white_int, int depth);
+IntegerVector chess_minimax(IntegerMatrix board_matrix, int is_white_int, int depth);
 RcppExport SEXP _ChessSimulator_chess_minimax(SEXP board_matrixSEXP, SEXP is_white_intSEXP, SEXP depthSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type board_matrix(board_matrixSEXP);
+    Rcpp::traits::input_parameter< IntegerMatrix >::type board_matrix(board_matrixSEXP);
     Rcpp::traits::input_parameter< int >::type is_white_int(is_white_intSEXP);
     Rcpp::traits::input_parameter< int >::type depth(depthSEXP);
     rcpp_result_gen = Rcpp::wrap(chess_minimax(board_matrix, is_white_int, depth));
+    return rcpp_result_gen;
+END_RCPP
+}
+// chess_perft
+double chess_perft(IntegerMatrix board_matrix, int is_white_int, int depth);
+RcppExport SEXP _ChessSimulator_chess_perft(SEXP board_matrixSEXP, SEXP is_white_intSEXP, SEXP depthSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerMatrix >::type board_matrix(board_matrixSEXP);
+    Rcpp::traits::input_parameter< int >::type is_white_int(is_white_intSEXP);
+    Rcpp::traits::input_parameter< int >::type depth(depthSEXP);
+    rcpp_result_gen = Rcpp::wrap(chess_perft(board_matrix, is_white_int, depth));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -51,6 +64,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_ChessSimulator_chess_evaluate", (DL_FUNC) &_ChessSimulator_chess_evaluate, 1},
     {"_ChessSimulator_chess_legal_moves", (DL_FUNC) &_ChessSimulator_chess_legal_moves, 2},
     {"_ChessSimulator_chess_minimax", (DL_FUNC) &_ChessSimulator_chess_minimax, 3},
+    {"_ChessSimulator_chess_perft", (DL_FUNC) &_ChessSimulator_chess_perft, 3},
     {NULL, NULL, 0}
 };
 

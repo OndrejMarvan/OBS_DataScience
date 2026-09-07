@@ -10,29 +10,47 @@
 
 #' Create a chess player
 #'
-#' Factory function for creating \code{\link{RandomPlayer}} or
-#' \code{\link{MinimaxPlayer}} objects.
+#' Factory function for the three player types. Provides a cleaner API than
+#' calling the R6 constructors directly, and validates input in one place.
 #'
-#' @param strategy Character. \code{"random"} or \code{"minimax"}.
-#' @param name Character. Display name. Non-empty.
-#' @param colour Character. \code{"white"} or \code{"black"}.
-#' @param depth Positive integer. Minimax search depth. Default 3.
-#'   Ignored for random players.
+#' The three strategies form a clear ladder of strength:
+#' \describe{
+#'   \item{\code{"random"}}{Picks a random legal move. The baseline.}
+#'   \item{\code{"greedy"}}{Looks one ply ahead in pure R and grabs the most
+#'     material, preferring checks and taking mate when offered. Beats random
+#'     comfortably; loses to minimax because it never asks what the opponent
+#'     will do in reply.}
+#'   \item{\code{"minimax"}}{Delegates to the C++ engine: alpha-beta search
+#'     with move ordering and checkmate scoring.}
+#' }
 #'
-#' @return An R6 player object.
+#' @param strategy Character. \code{"random"}, \code{"greedy"} or
+#'   \code{"minimax"}.
+#' @param name Character. Display name, used in logs and leaderboards.
+#' @param colour Character. \code{"white"} or \code{"black"}. Tournaments
+#'   reassign this per game, so any valid value works there.
+#' @param depth Positive integer. Search depth for minimax; ignored by the
+#'   other strategies. 2 is fast, 3 is the default, 4 is stronger.
+#'
+#' @return A \code{\link{RandomPlayer}}, \code{\link{GreedyPlayer}} or
+#'   \code{\link{MinimaxPlayer}} object, all inheriting from
+#'   \code{\link{Player}}.
 #'
 #' @seealso \code{\link{play_game}}, \code{\link{run_tournament}}
 #'
 #' @examples
-#' p1 <- make_player("random",  "Bot_A", "white")
-#' p2 <- make_player("minimax", "Bot_B", "black", depth = 3)
+#' make_player("random",  "Bot_A", "white")
+#' make_player("greedy",  "Bot_B", "black")
+#' make_player("minimax", "Bot_C", "white", depth = 3)
 #'
 #' @export
-make_player <- function(strategy = c("random", "minimax"),
+make_player <- function(strategy = c("random", "greedy", "minimax"),
                         name,
                         colour = c("white", "black"),
                         depth  = 3L) {
 
+  # match.arg() validates against the allowed set AND allows partial matching,
+  # so make_player("mini", ...) still works.
   strategy <- match.arg(strategy)
   colour   <- match.arg(colour)
 
@@ -43,11 +61,11 @@ make_player <- function(strategy = c("random", "minimax"),
       is.numeric(depth) && length(depth) == 1L && depth >= 1L
   )
 
-  if (strategy == "minimax") {
-    MinimaxPlayer$new(name, colour, depth = as.integer(depth))
-  } else {
-    RandomPlayer$new(name, colour)
-  }
+  switch(strategy,
+    "minimax" = MinimaxPlayer$new(name, colour, depth = as.integer(depth)),
+    "greedy"  = GreedyPlayer$new(name, colour),
+    "random"  = RandomPlayer$new(name, colour)
+  )
 }
 
 

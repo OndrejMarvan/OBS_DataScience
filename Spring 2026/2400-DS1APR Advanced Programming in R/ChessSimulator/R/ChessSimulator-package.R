@@ -60,6 +60,7 @@
 #' @importFrom R6 R6Class
 #' @importFrom Rcpp evalCpp
 #' @importFrom shiny shinyApp runApp
+#' @importFrom utils tail
 #' @useDynLib ChessSimulator, .registration = TRUE
 "_PACKAGE"
 

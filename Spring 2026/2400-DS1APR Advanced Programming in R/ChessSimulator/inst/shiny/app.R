@@ -62,7 +62,9 @@ ui <- dashboardPage(
 
             h4("White player"),
             selectInput("white_type", "Type:",
-                        choices = c("Random" = "random", "Minimax AI" = "minimax"),
+                        choices = c("Random" = "random",
+                                    "Greedy (pure R)" = "greedy",
+                                    "Minimax AI (C++)" = "minimax"),
                         selected = "random"),
             textInput("white_name", "Name:", value = "White"),
             conditionalPanel(
@@ -74,7 +76,9 @@ ui <- dashboardPage(
             hr(),
             h4("Black player"),
             selectInput("black_type", "Type:",
-                        choices = c("Random" = "random", "Minimax AI" = "minimax"),
+                        choices = c("Random" = "random",
+                                    "Greedy (pure R)" = "greedy",
+                                    "Minimax AI (C++)" = "minimax"),
                         selected = "random"),
             textInput("black_name", "Name:", value = "Black"),
             conditionalPanel(
@@ -140,7 +144,8 @@ ui <- dashboardPage(
               strong("Player 1"),
               textInput("t_name1", NULL, value = "Random_A"),
               selectInput("t_type1", NULL,
-                          choices = c("Random"="random","Minimax"="minimax"),
+                          choices = c("Random"="random","Greedy"="greedy",
+                                      "Minimax"="minimax"),
                           selected = "random"),
               conditionalPanel("input.t_type1 == 'minimax'",
                 sliderInput("t_depth1", "Depth:", 1, 5, 2, step=1))
@@ -148,9 +153,10 @@ ui <- dashboardPage(
 
             div(style = "background:#f5f5f5; padding:10px; border-radius:5px; margin-bottom:8px;",
               strong("Player 2"),
-              textInput("t_name2", NULL, value = "Random_B"),
+              textInput("t_name2", NULL, value = "Greedy_B"),
               selectInput("t_type2", NULL,
-                          choices = c("Random"="random","Minimax"="minimax"),
+                          choices = c("Random"="random","Greedy"="greedy",
+                                      "Minimax"="minimax"),
                           selected = "random"),
               conditionalPanel("input.t_type2 == 'minimax'",
                 sliderInput("t_depth2", "Depth:", 1, 5, 3, step=1))
@@ -160,7 +166,8 @@ ui <- dashboardPage(
               strong("Player 3"),
               textInput("t_name3", NULL, value = "Minimax_3"),
               selectInput("t_type3", NULL,
-                          choices = c("Random"="random","Minimax"="minimax"),
+                          choices = c("Random"="random","Greedy"="greedy",
+                                      "Minimax"="minimax"),
                           selected = "minimax"),
               conditionalPanel("input.t_type3 == 'minimax'",
                 sliderInput("t_depth3", "Depth:", 1, 5, 3, step=1))
@@ -241,7 +248,7 @@ server <- function(input, output, session) {
 
   # --- Helper ---------------------------------------------------------------
   make_play_player <- function(type, name, depth, colour) {
-    ChessSimulator::make_player(
+    make_player(
       strategy = type, name = name, colour = colour,
       depth = depth %||% 3L
     )
@@ -260,7 +267,7 @@ server <- function(input, output, session) {
       input$black_type, input$black_name, input$black_depth, "black"
     ))
 
-    new_game <- ChessSimulator::Game$new(white, black, max_moves = 300L)
+    new_game <- Game$new(white, black, max_moves = 300L)
     game_rv(new_game)
 
     showNotification(
@@ -344,7 +351,7 @@ server <- function(input, output, session) {
 
       cells <- lapply(1:8, function(j) {
         file <- letters[j]
-        sq   <- ChessSimulator::Square$new(file, rank_label)
+        sq   <- Square$new(file, rank_label)
         bg   <- if (sq$is_light_square()) LIGHT_SQUARE else DARK_SQUARE
         symbol <- board_mat[i, j]
 
@@ -397,8 +404,9 @@ server <- function(input, output, session) {
     reason <- game$get_result_reason()
 
     if (status == "ongoing") {
-      paste("To move:",
-            if (nrow(game$get_move_log()) %% 2 == 0) "White" else "Black")
+      chk <- if (game$get_board()$is_in_check(game$get_turn())) " (in check!)" else ""
+      paste0("To move: ",
+             if (game$get_turn() == "white") "White" else "Black", chk)
     } else if (status == "white_wins") {
       paste("White wins by", reason, "!")
     } else if (status == "black_wins") {
@@ -444,7 +452,7 @@ server <- function(input, output, session) {
       make_play_player(input$t_type3, input$t_name3, input$t_depth3, "white")
     )
 
-    t <- ChessSimulator::Tournament$new(players, rounds = input$t_rounds)
+    t <- Tournament$new(players, rounds = input$t_rounds)
 
     withProgress(message = "Running tournament...", value = 0, {
       t$run(verbose = FALSE)
